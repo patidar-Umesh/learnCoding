@@ -28,12 +28,12 @@ const userSchema = new mongoose.Schema({
   contactNumber: {
     type: Number,
     required: true,
-    trim: true
+    trim: true,
   },
-  
+
   gender: {
     type: String,
-    required: true
+    required: true,
   },
 
   dateOfBirth: {
@@ -50,12 +50,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-  },
-
-  confirmPassword:{
-    type: String,
-    required : true,
-    trim: true
   },
 
   accountType: {
@@ -82,15 +76,20 @@ const userSchema = new mongoose.Schema({
     // required: true,
   },
 
+  token: {
+    type: String,
+  },
+
+  forgotPasswordExpire: {
+    type: Date,
+  },
+
   coursesProgress: [
     {
       type: mongoose.Schema.Types.ObjectId,
-        ref: 'CourseProgress'
-    }
+      ref: "CourseProgress",
+    },
   ],
 });
 
-
-
-
-export const User = mongoose.model('User', userSchema)
+export const User = mongoose.model("User", userSchema);

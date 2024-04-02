@@ -25,6 +25,7 @@ const courseSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  
   courseContent: [
     {
       type: mongoose.Schema.Types.ObjectId,

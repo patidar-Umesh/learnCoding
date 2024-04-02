@@ -4,7 +4,8 @@ import { Otp } from "../models/otp.model.js";
 import otpGenerator from "otp-generator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import cookie from 'cookie-parser'
+import cookie from "cookie-parser";
+import mailSender from "../utils/nodemailer.js";
 
 //sendOTP
 
@@ -20,8 +21,8 @@ const sendOTP = async (req, res) => {
     // send res if email exist
     if (existEmail) {
       res.status(401).json({
-        Success: false,
-        Message: "User already registred with this email",
+        success: false,
+        message: "User already registred with this email",
       });
     }
 
@@ -51,14 +52,14 @@ const sendOTP = async (req, res) => {
 
     // send res
     res.status(200).json({
-      Success: true,
-      Message: "OTP Generate Successfully",
+      success: true,
+      message: "OTP Generate successfully",
     });
   } catch (error) {
     console.log(`OTP is not gererated ${error}`);
     res.status(500).json({
-      Success: false,
-      Message: `OTP is not gererated ${error}`,
+      success: false,
+      message: `OTP is not gererated ${error}`,
     });
   }
 };
@@ -94,16 +95,16 @@ const singUp = async (req, res) => {
       !about
     ) {
       return res.status(403).json({
-        Success: false,
-        Message: `All field is required`,
+        success: false,
+        message: `All field is required`,
       });
     }
 
     // check password and confirmpassword are same
     if (password !== confirmPassword) {
       return res.status(400).json({
-        Success: false,
-        Message: `Password and ConfirmPassword  should be same`,
+        success: false,
+        message: `Password and ConfirmPassword  should be same`,
       });
     }
 
@@ -113,8 +114,8 @@ const singUp = async (req, res) => {
 
     if (existedUser) {
       return res.status(400).json({
-        Success: false,
-        Message: `This User is already registred with ${existedUser}`,
+        success: false,
+        message: `This User is already registred with ${existedUser}`,
       });
     }
 
@@ -126,13 +127,13 @@ const singUp = async (req, res) => {
 
     if (recentOTP.length === "") {
       return res.status(400).json({
-        Success: false,
-        Message: `OTP not found `,
+        success: false,
+        message: `OTP not found `,
       });
     } else if (recentOTP.otp !== otp) {
       return res.status(400).json({
-        Success: false,
-        Message: `Invalid OTP `,
+        success: false,
+        message: `Invalid OTP `,
       });
     }
 
@@ -158,21 +159,20 @@ const singUp = async (req, res) => {
     const createdUser = await User.findById(user._id).select("-password");
 
     return res.status(200).json({
-      Success: true,
+      success: true,
       CreatedUser: createdUser,
-      Message: `User created Successfully`,
+      message: `User created successfully`,
     });
   } catch (error) {
     console.log(`User is not registered, Please try again ${error}`);
     return res.status(500).json({
-      Success: true,
-      Message: `User is not registered, Please try again `,
+      success: true,
+      message: `User is not registered, Please try again `,
     });
   }
 };
 
 //Login
-
 const login = async (req, res) => {
   try {
     // fetch data from body
@@ -181,8 +181,8 @@ const login = async (req, res) => {
     // validate data
     if (!email && !password) {
       return res.status(400).json({
-        Success: false,
-        Message: "email or password is required",
+        success: false,
+        message: "email or password is required",
       });
     }
 
@@ -191,8 +191,8 @@ const login = async (req, res) => {
 
     if (!user) {
       return res.status(401).json({
-        Success: false,
-        Message: "user not exist",
+        success: false,
+        message: "user not exist",
       });
     }
 
@@ -201,58 +201,125 @@ const login = async (req, res) => {
 
     if (!correctPassword) {
       return res.status(401).json({
-        Success: false,
-        Message: "Invalid password",
+        success: false,
+        message: "Invalid password",
       });
     }
 
     // Generate jwt token
     const payload = {
       email: user.email,
-      id: user._id,
-      role: user.accountType,
+      _id: user._id,
+      accountType: user.accountType,
     };
 
-    const token = jwt.sign(
-      payload, 
-      process.env.ACCESS_TOKEN_SECRET, 
-      {
+    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
-      }
-    );
-    console.log(`Generated Token is ${token}`)
+    });
+    console.log(`Generated Token is ${token}`);
 
-    const loggedUser = await User.findById(user._id).select('-password')
+    const loggedUser = await User.findById(user._id).select("-password");
 
-    // create cookie 
+    // create cookie
     const options = {
-      expires: new Date(Date.now() + 3*24*60*60*1000 ),
-      httpOnly: true
-    }
-    return res.cookie('token', token, options).status(200).json(
-      {
-        Success: true,
-        token,
-        loggedUser,
-        Message: ' User loggedIn Successfully '
-      }
-    )
-    
-
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
+    return res.cookie("token", token, options).status(200).json({
+      success: true,
+      token,
+      loggedUser,
+      message: " User loggedIn successfully ",
+    });
   } catch (error) {
-    console.log(`user not logged in ${error}`)
-    return res.status(500).json(
-      {
-        Success: false,
-        Message: ' User not login '
-      }
-    )
-}
+    console.log(`user not logged in ${error}`);
+    return res.status(500).json({
+      success: false,
+      message: " User not login ",
+    });
+  }
 };
 
-
 //changePassword
+const changePassword = async () => {
+  try {
+    // fetch data
+    const { email, oldPassword, newPassword, confirmNewPassword } = req.body;
 
-// export all function
+    // validate email
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required ",
+      });
+    }
 
-export { sendOTP, singUp , login}
+    const user = await User.findOne({ email: email });
+
+    // validate user
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found ",
+      });
+    }
+
+    // compare password
+    const dcrpytPassword = bcrypt.compare(oldPassword, user.password);
+    if (!dcrpytPassword) {
+      return res.status(401).json({
+        success: false,
+        message: "Old Password is incorrect",
+      });
+    }
+
+    // validate field
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
+      return res.status(400).json({
+        success: false,
+        message: " All field is required ",
+      });
+    }
+
+    // compare new passwords
+    if (newPassword !== confirmNewPassword) {
+      return res.status(400).json({
+        success: false,
+        message: " Both password are not same ",
+      });
+    }
+
+    // hash new password
+    const hashNewPassword = await bcrypt.hash(newPassword, 10);
+    console.log(`Hash New password is ${hashNewPassword}`);
+
+    // save newpassword in db
+    const savedPassword = await User.findByIdAndUpdate(user._id, {
+      password: hashNewPassword,
+    });
+
+    // send email after changed password
+    const sendEmail = await mailSender(
+      email,
+      "Reset Password",
+      "Password changed successfully"
+    );
+
+    // return response
+    return res.status(200).json({
+      success: true,
+      sendEmail,
+      message: " Password changed Successfully ",
+    });
+  } catch (error) {
+    console.log(` Password not changed ${error}`);
+    return res.status(500).json({
+      success: false,
+      message: " Password not changed ",
+    });
+  }
+};
+
+// export all functions
+
+export { sendOTP, singUp, login, changePassword };
