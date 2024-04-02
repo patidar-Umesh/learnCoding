@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const tagSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
 
   name: {
     type: String,
@@ -23,4 +23,4 @@ const tagSchema = new mongoose.Schema({
 
 
 
-export const Tag = mongoose.model('Tags', tagSchema)
+export const Category = mongoose.model('Category', categorySchema)

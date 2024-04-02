@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 
 const sectionSchema = new mongoose.Schema({
+
   sectionName: {
-    type: String,
+      type: String,
+      required: true,
   },
 
-  SubSection: [
+  subSection: [
     {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -13,13 +15,6 @@ const sectionSchema = new mongoose.Schema({
     },
   ],
 
-  description: {
-    type: String,
-  },
-
-  videoUrl: {
-    type: String,
-  },
 });
 
 export const Section = mongoose.model("Section", sectionSchema);

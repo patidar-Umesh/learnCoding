@@ -1,7 +1,7 @@
-import { Tag } from "../models/tag.model.js";
+import { Category } from "../models/tag.model.js";
 
 // create tag
-const createTag = async (req, res) => {
+const createCategory = async (req, res) => {
   try {
     // fetch data
     const { name, description } = req.body;
@@ -16,16 +16,16 @@ const createTag = async (req, res) => {
     }
 
     // save data in db
-    const tagInfo = await Tag.create({
+    const categoryInfo = await Category.create({
       name: name,
       description: description,
     });
-    console.log(`tag info ${tagInfo}`);
+    console.log(`Category info ${categoryInfo}`);
 
     // response
     return res.status(400).json({
       success: true,
-      message: "Tag created successffuly",
+      message: "Category created successffuly",
     });
   } catch (error) {
     console.log(`something went wrong ${error}`);
@@ -38,16 +38,16 @@ const createTag = async (req, res) => {
 
 
 
-// get all tags
-const allTags = async (req, res) => {
+// get all Category
+const allCategory = async (req, res) => {
   try {
-    // fetch all tag in db
-    const alltag = await Tag.find({}, { name: true, description: true });
-    console.log(`All tag ${alltag}`);
+    // fetch all Category in db
+    const allCategory = await Category.find({}, { name: true, description: true });
+    console.log(`All category is ${allCategory}`);
 
     return res.status(200).json({
         success: true,
-        message: "Successfully fetch all tags",
+        message: "Successfully fetch all catogory",
       }); 
 
   } catch (error) {
@@ -59,4 +59,4 @@ const allTags = async (req, res) => {
   }
 };
 
-export { createTag, allTags };
+export { createCategory, allCategory };

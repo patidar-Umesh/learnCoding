@@ -1,5 +1,5 @@
+import { Category } from "../models/category.model.js";
 import { Course } from "../models/course.model.js";
-import { Tag } from "../models/tag.model.js";
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
@@ -7,7 +7,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const creatCourse = async (req, res) => {
   try {
     // get all course details from body
-    const { courseName, courseDescription, whatYouWillLearn, price, tag } =
+    const { courseName, courseDescription, whatYouWillLearn, price, category } =
       req.body;
     const { thumbnail } = req.files.file;
 
@@ -16,7 +16,7 @@ const creatCourse = async (req, res) => {
       (!courseName && !courseDescription) ||
       !whatYouWillLearn ||
       !price ||
-      !tag ||
+      !category ||
       !thumbnail
     ) {
       return res.status(400).json({
@@ -39,13 +39,13 @@ const creatCourse = async (req, res) => {
     }
 
     // check tag in db
-    const tagsInfo = await Tag.findOne(tag);
-    console.log(`Tag  is ${tagsInfo}`);
+    const categoryInfo = await Category.findOne(category);
+    console.log(`Tag  is ${categoryInfo}`);
 
     if (!tagsInfo) {
       return res.status(404).json({
         success: false,
-        message: "tag is invalid",
+        message: "category is invalid",
       });
     }
 
