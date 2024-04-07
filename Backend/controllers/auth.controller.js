@@ -13,8 +13,8 @@ const sendOTP = async (req, res) => {
   try {
     // fetch email form body
     const { email } = req.body;
-    console.log(email)
-    
+    console.log(email);
+
     // check email in db
     const existEmail = await User.findOne({ email: email });
     console.log(`exist email in db is ${existEmail}`);
@@ -78,22 +78,18 @@ const signUp = async (req, res) => {
       confirmPassword,
       otp,
       accountType,
-      gender,
-      contactNumber,
-      dateOfBirth,
     } = req.body;
 
-console.log(firstName,
-  lastName,
-  username,
-  email,
-  password,
-  confirmPassword,
-  otp,
-  accountType,
-  gender,
-  contactNumber,
-  dateOfBirth,)
+    console.log(
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      confirmPassword,
+      otp,
+      accountType
+    );
 
     // validate data
     if (
@@ -104,10 +100,7 @@ console.log(firstName,
       !password ||
       !confirmPassword ||
       !otp ||
-      !accountType ||
-      !gender ||
-      !contactNumber ||
-      !dateOfBirth 
+      !accountType
     ) {
       return res.status(403).json({
         success: false,
@@ -156,6 +149,13 @@ console.log(firstName,
     const hashPassword = await bcrypt.hash(password, 10);
     // console.log(`hash password is ${hashPassword}`);
 
+    // create profile for user additonal details
+    const profileDetails = await Profile.create({
+			gender: null,
+			dateOfBirth: null,
+			about: null,
+			contactNumber: null,
+		});
     // create user
     const user = await User.create({
       firstName,
@@ -163,11 +163,11 @@ console.log(firstName,
       username,
       email,
       password: hashPassword,
-      accountType:accountType,
-      gender,
-      contactNumber,
-      dateOfBirth,
+      accountType: accountType,
+      additionalDetails: profileDetails._id
     });
+
+
 
     // check user created or not
     const createdUser = await User.findById(user._id).select("-password");
@@ -191,6 +191,7 @@ const login = async (req, res) => {
   try {
     // fetch data from body
     const { email, password } = req.body;
+    console.log("email password", email, password);
 
     // validate data
     if (!email && !password) {
@@ -219,7 +220,7 @@ const login = async (req, res) => {
         message: "Invalid password",
       });
     }
-    
+
     // Generate jwt token
     const payload = {
       email: user.email,
@@ -227,18 +228,18 @@ const login = async (req, res) => {
       accountType: user.accountType,
     };
 
-    console.log('payload is', payload)
+    console.log("payload is", payload);
 
     const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: '10h',
+      expiresIn: "10h",
     });
     console.log(`Generated Token is ${token}`);
 
     // user = await User.findById(user._id).select("-password");
-    user.token = token
-    user.password = undefined
+    user.token = token;
+    user.password = undefined;
 
-    console.log(`login user is ${user.accountType}`)
+    console.log(`login user is ${user.accountType}`);
 
     // // create cookie
     const options = {
@@ -251,7 +252,6 @@ const login = async (req, res) => {
       user,
       message: " User loggedIn successfully ",
     });
-
   } catch (error) {
     console.log(`user not logged in ${error}`);
     return res.status(500).json({

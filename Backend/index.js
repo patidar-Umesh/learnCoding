@@ -5,6 +5,8 @@ import {config} from 'dotenv'
 import userRouter from './routes/user.routes.js'
 import courseRouter from './routes/course.routes.js'
 import paymentRouter from './routes/payments.routes.js'
+import profileRouter from './routes/Profile.routes.js'
+import constactUsRouter from './routes/Contact.routes.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { cloudinaryConnect } from './utils/cloudinary.js'
@@ -37,6 +39,12 @@ app.use(fileUpload({
 // set routes
 app.use('/api/v1/user', userRouter)
 app.use('/api/v1/course', courseRouter)
+
+// profile route
+app.use('/api/v1/profile', profileRouter)
+
+// contact us 
+app.use('/api/v1', constactUsRouter)
 
 // payment routes
 app.use('/api/v1/payment', paymentRouter)

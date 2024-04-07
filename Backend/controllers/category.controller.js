@@ -36,21 +36,21 @@ const createCategory = async (req, res) => {
   }
 };
 
-
-
 // get all Category
 const allCategory = async (req, res) => {
   try {
     // fetch all Category in db
-    const allCategory = await Category.find({}, { name: true, description: true });
+    const allCategory = await Category.find(
+      {},
+      { name: true, description: true }
+    );
     console.log(`All category is ${allCategory}`);
 
     return res.status(200).json({
-        success: true,
-      allCategory,
-        message: "Successfully fetch all catogory",
-      }); 
-
+      success: true,
+       allCategory,
+      message: "Successfully fetch all catogory",
+    });
   } catch (error) {
     console.log(`something went wrong ${error}`);
     return res.status(500).json({

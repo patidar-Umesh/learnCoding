@@ -13,7 +13,8 @@ const coursePorgressSchema = new mongoose.Schema({
       ref: 'SubSection'
     },
   ],
-});
+},
+{timestamps: true});
 
 export const CoursePorgress = mongoose.model(
   "courseProgress",

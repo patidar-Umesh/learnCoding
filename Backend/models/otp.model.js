@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import mailSender from "../utils/nodemailer.js";
-import { otpTemplate } from "../mail/templates/emailVerificationTemplate.js";
+import { otpTemplate } from "../mailTemplates/emailVerificationTemplate.js";
 
 
 

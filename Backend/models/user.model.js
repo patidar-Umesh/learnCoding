@@ -27,29 +27,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-
-    contactNumber: {
-      type: Number,
-      required: true,
-      trim: true,
-    },
-
-    gender: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-
-    dateOfBirth: {
-      type: String,
-      required: true,
-    },
-
-    // about: {
-    //   type: String,
-    //   trim: true,
-    // },
-
+   
     password: {
       type: String,
       required: true,
@@ -68,6 +46,11 @@ const userSchema = new mongoose.Schema(
         ref: "Courses",
       },
     ],
+    additionalDetails: {
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: "Profile",
+		},
 
     image: {
       type: String,

@@ -64,7 +64,7 @@ router.get('/all-rating' , allRatingReview)
 router.post('/create-category', verifyJWT, isAdmin ,createCategory)
 
 // show all category list
-router.get('/get-all-category', verifyJWT, allCategory)
+router.get('/get-all-category',  allCategory)
 
 
 
