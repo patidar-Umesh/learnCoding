@@ -1,7 +1,7 @@
 import { contactUsEmail } from "../mailTemplates/contactForm.js" 
-import {mailSender} from '../utils/nodemailer.js'
+import mailSender from '../utils/nodemailer.js'
 
-export const contactUsEmailSender = async (req, res) => {
+ const contactUsEmailSender = async (req, res) => {
  
   try {
      // fetach all data
@@ -27,3 +27,5 @@ export const contactUsEmailSender = async (req, res) => {
     })
   }
 }
+
+export {contactUsEmailSender}

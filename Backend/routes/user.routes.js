@@ -7,7 +7,7 @@ const router = Router()
 
 
 // signup and login
-router.post('/signup', signUp)
+router.post('/signUp', signUp)
 router.post('/login', login)
 
 // change password
@@ -15,7 +15,6 @@ router.put('/changepassword', verifyJWT, changePassword)
 
 // otp routes
 router.post('/sendotp', sendOTP)
-
 
 
 // generate token for reset password

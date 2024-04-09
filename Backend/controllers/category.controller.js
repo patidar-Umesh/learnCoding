@@ -48,7 +48,7 @@ const allCategory = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-       allCategory,
+       data: allCategory,
       message: "Successfully fetch all catogory",
     });
   } catch (error) {

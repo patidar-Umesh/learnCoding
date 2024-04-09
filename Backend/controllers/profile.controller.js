@@ -8,17 +8,21 @@ import {Profile} from '../models/profile.model.js'
 
 const updateProfile = async (req, res) => {
 	try {
-		const { dateOfBirth = "", about = "", contactNumber } = req.body;
+		const { dateOfBirth = "", about = "", contactNumber, gender } = req.body;
 		const id = req.user.id;
+
+		console.log('profile ',dateOfBirth , about ,contactNumber, gender);
+
 
 		// Find the profile by id
 		const userDetails = await User.findById(id);
 
         // update details in profile 
 		const profile = await Profile.findByIdAndUpdate(userDetails.additionalDetails,{
-            dateOfBirth = dateOfBirth;
-            about = about;
-            contactNumber = contactNumber;
+            dateOfBirth: dateOfBirth,
+            about: about,
+			gender: gender,
+            contactNumber: contactNumber
         });
 
 		return res.status(200).json({
@@ -70,11 +74,14 @@ const deleteAccount = async (req, res) => {
 const getUserAllDetails = async (req, res) => {
 	try {
 		const id = req.user.id;
+		// const {id} = req.body
 
         // get all details of user
-		const userDetails = await User.findById(id)
+		const userDetails = await User.findById({_id: id},)
 			.populate("additionalDetails")
 			.exec();
+
+			
 		console.log(userDetails);
 
 		res.status(200).json({
@@ -85,7 +92,7 @@ const getUserAllDetails = async (req, res) => {
 	} catch (error) {
 		return res.status(500).json({
 			success: false,
-			message: error.message,
+			message: 'somthing error when getting all details'
 		});
 	}
 };

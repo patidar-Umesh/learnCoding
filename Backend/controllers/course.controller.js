@@ -8,18 +8,38 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const creatCourse = async (req, res) => {
   try {
     // get all course details from body
-    const { courseName, courseDescription, whatYouWillLearn, tag, price, category } =
-      req.body;
-    const thumbnail  = req.files.image;
-    console.log('image file ', thumbnail)
+    let {
+      courseName,
+      courseDescription,
+      whatYouWillLearn,
+      tag,
+      price,
+      category,
+      instructions,
+      status,
+    } = req.body;
+
+    let image = req.files.image;
+    console.log("image file ", image);
+    console.log(
+      "inst tag ",
+      courseName,
+      courseDescription,
+      whatYouWillLearn,
+      tag,
+      price,
+      category,
+      instructions,
+      status
+    );
 
     // validate fields
     if (
       (!courseName && !courseDescription) ||
       !whatYouWillLearn ||
       !price ||
-      !category  ||
-      !thumbnail ||
+      !category ||
+      !image ||
       !tag
     ) {
       return res.status(400).json({
@@ -28,12 +48,15 @@ const creatCourse = async (req, res) => {
       });
     }
 
+    if (!status || status === undefined) {
+      status = "Draft";
+    }
     // get instructor  details
     let instructorId = req.user.id;
-    instructorId =  new mongoose.Types.ObjectId(instructorId)
-    console.log('id is ',  instructorId)
+    instructorId = new mongoose.Types.ObjectId(instructorId);
+    console.log("id is ", instructorId);
 
-    const instructorDetails = await User.findById({_id: instructorId} );
+    const instructorDetails = await User.findById({ _id: instructorId });
 
     console.log(`Instructor is ${instructorDetails.firstName}`);
 
@@ -45,7 +68,7 @@ const creatCourse = async (req, res) => {
     }
 
     // check tag in db
-    const categoryInfo = await Category.findOne({_id: category});
+    const categoryInfo = await Category.findOne({ _id: category });
     console.log(`Category  is ${categoryInfo}`);
 
     if (!categoryInfo) {
@@ -56,7 +79,10 @@ const creatCourse = async (req, res) => {
     }
 
     // upload image/thumbnail on cloudinary
-    const uploadedImageInfo = await uploadOnCloudinary(thumbnail, process.env.CLOUDINARY_IMAGE_FOLDER);
+    const uploadedImageInfo = await uploadOnCloudinary(
+      image,
+      process.env.CLOUDINARY_IMAGE_FOLDER
+    );
     console.log(`Uploaded image details is ${uploadedImageInfo}`);
 
     if (!uploadedImageInfo) {
@@ -73,28 +99,29 @@ const creatCourse = async (req, res) => {
       whatYouWillLearn,
       price,
       tag,
+      instructions,
+      status,
       instructor: instructorDetails._id,
-      thumbnail: uploadedImageInfo.secure_url,
+      image: uploadedImageInfo.secure_url,
     });
 
     // save course id in user schema
-    const user = await User.findByIdAndUpdate({_id: instructorDetails._id}, 
-        {
-            $push:{courses: course._id}
-        },
-        {new: true}
-    )
-    console.log(`created course id is ${user.courses}`)
+    const user = await User.findByIdAndUpdate(
+      { _id: instructorDetails._id },
+      {
+        $push: { courses: course._id },
+      },
+      { new: true }
+    );
+    console.log(`created course id is ${user.courses}`);
 
-
-    // return 
+    // return
     console.log(`course added successfully ${course}`);
     return res.status(200).json({
       success: true,
       message: "Course added successfully",
-      courseData: course
+      courseData: course,
     });
-
   } catch (error) {
     console.log(`something went wrong ${error}`);
     return res.status(500).json({
@@ -104,20 +131,18 @@ const creatCourse = async (req, res) => {
   }
 };
 
-
 // get all courses
 const allCourses = async (req, res) => {
   try {
     // fetch courses
-    const courses = await Course.find()
-    console.log(`all courses is ${courses}`)
+    const courses = await Course.find();
+    // console.log(`all courses is ${courses}`);
 
     return res.status(200).json({
-        success: true,
-        courses: courses,
-        message: "all courses fetch successfully",
-      });
-    
+      success: true,
+      data: courses,
+      message: "all courses fetch successfully",
+    });
   } catch (error) {
     console.log(`something went wrong ${error}`);
     return res.status(500).json({
@@ -125,61 +150,58 @@ const allCourses = async (req, res) => {
       message: "somthing",
     });
   }
-}
-
-
+};
 
 //get course Details by  course id
 const getCourseDetails = async (req, res) => {
   try {
-          //get course id
-          const {courseId} = req.body;
-          console.log('course id is ' , courseId)
+    //get course id
+    // const courseId = req.params.courseId;
+    const {courseId} = req.body;
 
-          //get course details
-          const courseDetails = await Course.find(
-                                      {_id:new mongoose.Types.ObjectId(courseId)})
-                                      .populate(
-                                          {
-                                              path:"instructor",
-                                          }
-                                      )
-                                      .populate("category")
-                                      .populate("ratingAndReviews")
-                                      .populate({
-                                          path:"courseContent",
-                                          populate:{
-                                              path:"subSection",
-                                          },
-                                      })
-                                      .exec();
+    console.log("course id is ", courseId);
 
-              //validation
+    //get course details
+    const courseDetails = await Course.findById({
+      _id: courseId,
+    })
+      .populate({
+        path: "instructor",
+      })
+      .populate("category")
+      // .populate("ratingAndReviews")
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      })
+      .exec();
 
-              if(!courseDetails) {
-                  return res.status(400).json({
-                      success:false,
-                      message:`Could not find the course with ${courseId}`,
-                  });
-              }
+    console.log("course is", courseDetails);
 
-              // res
-              return res.status(200).json({
-                  success:true,
-                  message:"fatched course details successfully",
-                  courseDetails,
-              })
+    //validation
 
-  }
-  catch(error) {
-      console.log(`Somthing went wrong ${error}`);
-      return res.status(500).json({
-          success:false,
-          message:'Somthing went wrong in getting course details'
+    if (!courseDetails) {
+      return res.status(400).json({
+        success: false,
+        message: `Could not find the course with ${courseId}`,
       });
+    }
+
+    // res
+    return res.status(200).json({
+      success: true,
+      message: "fatched course details successfully",
+      data: courseDetails,
+    });
+  } catch (error) {
+    console.log(`Somthing went wrong ${error}`);
+    return res.status(500).json({
+      success: false,
+      message: "Somthing went wrong in getting course details",
+    });
   }
-}
+};
 
-
-
-export {creatCourse, allCourses, getCourseDetails}
+export { creatCourse, allCourses, getCourseDetails };

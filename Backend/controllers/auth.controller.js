@@ -1,4 +1,4 @@
-// import all require package and files
+// import all require packages and files
 import { User } from "../models/user.model.js";
 import { Otp } from "../models/otp.model.js";
 import otpGenerator from "otp-generator";
@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookie from "cookie-parser";
 import mailSender from "../utils/nodemailer.js";
+import { Profile } from "../models/profile.model.js";
 
 //sendOTP
 
@@ -72,7 +73,6 @@ const signUp = async (req, res) => {
     const {
       firstName,
       lastName,
-      username,
       email,
       password,
       confirmPassword,
@@ -80,10 +80,11 @@ const signUp = async (req, res) => {
       accountType,
     } = req.body;
 
+    // console.log(req.files.image);
+
     console.log(
       firstName,
       lastName,
-      username,
       email,
       password,
       confirmPassword,
@@ -95,7 +96,6 @@ const signUp = async (req, res) => {
     if (
       !firstName ||
       !lastName ||
-      !username ||
       !email ||
       !password ||
       !confirmPassword ||
@@ -128,17 +128,18 @@ const signUp = async (req, res) => {
     }
 
     // check recent OTP
-    const recentOTP = await Otp.findOne({ otp: otp, email: email })
+    const recentOTP = await Otp.find({ otp: otp, email: email })
       .sort({ createdAt: -1 })
       .limit(1);
-    console.log(`Recent OTP is ${recentOTP}`);
 
-    if (recentOTP.length === "") {
+    console.log(`Recent OTP is ${recentOTP.otp}`);
+
+    if (recentOTP.length === 0) {
       return res.status(400).json({
         success: false,
         message: `OTP not found `,
       });
-    } else if (recentOTP.otp !== otp) {
+    } else if (otp !== recentOTP[0].otp) {
       return res.status(400).json({
         success: false,
         message: `Invalid OTP `,
@@ -151,36 +152,34 @@ const signUp = async (req, res) => {
 
     // create profile for user additonal details
     const profileDetails = await Profile.create({
-			gender: null,
-			dateOfBirth: null,
-			about: null,
-			contactNumber: null,
-		});
+      gender: null,
+      dateOfBirth: null,
+      about: null,
+      contactNumber: null,
+    });
+
     // create user
     const user = await User.create({
       firstName,
       lastName,
-      username,
       email,
       password: hashPassword,
       accountType: accountType,
-      additionalDetails: profileDetails._id
+      additionalDetails: profileDetails._id,
     });
-
-
 
     // check user created or not
     const createdUser = await User.findById(user._id).select("-password");
 
     return res.status(200).json({
       success: true,
-      CreatedUser: createdUser,
+      data: createdUser,
       message: `User created successfully`,
     });
   } catch (error) {
     console.log(`User is not registered, Please try again ${error}`);
     return res.status(500).json({
-      success: true,
+      success: false,
       message: `User is not registered, Please try again `,
     });
   }
@@ -191,7 +190,7 @@ const login = async (req, res) => {
   try {
     // fetch data from body
     const { email, password } = req.body;
-    console.log("email password", email, password);
+    // console.log("email password", email, password);
 
     // validate data
     if (!email && !password) {
@@ -202,7 +201,9 @@ const login = async (req, res) => {
     }
 
     // check data in db
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }).populate(
+      "additionalDetails"
+    );
 
     if (!user) {
       return res.status(401).json({
@@ -228,18 +229,18 @@ const login = async (req, res) => {
       accountType: user.accountType,
     };
 
-    console.log("payload is", payload);
+    // console.log("payload is", payload);
 
     const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: "10h",
     });
-    console.log(`Generated Token is ${token}`);
+    // console.log(`Generated Token is ${token}`);
 
     // user = await User.findById(user._id).select("-password");
     user.token = token;
     user.password = undefined;
 
-    console.log(`login user is ${user.accountType}`);
+    // console.log(`login user is ${user.accountType}`);
 
     // // create cookie
     const options = {
@@ -262,10 +263,10 @@ const login = async (req, res) => {
 };
 
 //changePassword
-const changePassword = async () => {
+const changePassword = async (req, res) => {
   try {
     // fetch data
-    const { email, oldPassword, newPassword, confirmNewPassword } = req.body;
+    const { email, oldPassword, newPassword } = req.body;
 
     // validate email
     if (!email) {
@@ -295,7 +296,7 @@ const changePassword = async () => {
     }
 
     // validate field
-    if (!oldPassword || !newPassword || !confirmNewPassword) {
+    if (!oldPassword || !newPassword) {
       return res.status(400).json({
         success: false,
         message: " All field is required ",
@@ -303,12 +304,12 @@ const changePassword = async () => {
     }
 
     // compare new passwords
-    if (newPassword !== confirmNewPassword) {
-      return res.status(400).json({
-        success: false,
-        message: " Both password are not same ",
-      });
-    }
+    // if (newPassword !== confirmNewPassword) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: " Both password are not same ",
+    //   });
+    // }
 
     // hash new password
     const hashNewPassword = await bcrypt.hash(newPassword, 10);

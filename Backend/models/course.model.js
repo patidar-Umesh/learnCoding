@@ -45,7 +45,7 @@ const courseSchema = new mongoose.Schema(
       requied: true,
     },
 
-    thumbnail: {
+    image: {
       type: String,
       // required: true,
     },
@@ -67,7 +67,9 @@ const courseSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-
+    instructions: {
+      type: [String],
+    },
     status: {
       type: String,
       enum: ["Draft", "Published"],

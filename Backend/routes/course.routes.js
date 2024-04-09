@@ -14,10 +14,10 @@ const router = Router()
 router.post('/create-course', verifyJWT, isInstructor, creatCourse)
 
 // get all courses 
-router.get('/all-courses', verifyJWT, isInstructor, allCourses)
+router.get('/all-courses',  allCourses)
 
 // get course by id 
-router.get('/get-course-details', getCourseDetails)
+router.post('/get-course-details', getCourseDetails)
 
 
                   //                Section routes                          //
