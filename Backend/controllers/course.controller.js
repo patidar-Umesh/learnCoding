@@ -9,7 +9,7 @@ const creatCourse = async (req, res) => {
   try {
     // get all course details from body
     let {
-      courseName,
+      courseTitle,
       courseDescription,
       whatYouWillLearn,
       tag,
@@ -20,22 +20,10 @@ const creatCourse = async (req, res) => {
     } = req.body;
 
     let image = req.files.image;
-    console.log("image file ", image);
-    console.log(
-      "inst tag ",
-      courseName,
-      courseDescription,
-      whatYouWillLearn,
-      tag,
-      price,
-      category,
-      instructions,
-      status
-    );
 
     // validate fields
     if (
-      (!courseName && !courseDescription) ||
+      (!courseTitle && !courseDescription) ||
       !whatYouWillLearn ||
       !price ||
       !category ||
@@ -54,11 +42,8 @@ const creatCourse = async (req, res) => {
     // get instructor  details
     let instructorId = req.user.id;
     instructorId = new mongoose.Types.ObjectId(instructorId);
-    console.log("id is ", instructorId);
 
     const instructorDetails = await User.findById({ _id: instructorId });
-
-    console.log(`Instructor is ${instructorDetails.firstName}`);
 
     if (!instructorDetails) {
       return res.status(404).json({
@@ -69,7 +54,6 @@ const creatCourse = async (req, res) => {
 
     // check tag in db
     const categoryInfo = await Category.findOne({ _id: category });
-    console.log(`Category  is ${categoryInfo}`);
 
     if (!categoryInfo) {
       return res.status(404).json({
@@ -83,7 +67,6 @@ const creatCourse = async (req, res) => {
       image,
       process.env.CLOUDINARY_IMAGE_FOLDER
     );
-    console.log(`Uploaded image details is ${uploadedImageInfo}`);
 
     if (!uploadedImageInfo) {
       return res.status(400).json({
@@ -94,7 +77,7 @@ const creatCourse = async (req, res) => {
 
     // save data in db
     const course = await Course.create({
-      courseName,
+      courseTitle,
       courseDescription,
       whatYouWillLearn,
       price,
@@ -113,10 +96,8 @@ const creatCourse = async (req, res) => {
       },
       { new: true }
     );
-    console.log(`created course id is ${user.courses}`);
 
     // return
-    console.log(`course added successfully ${course}`);
     return res.status(200).json({
       success: true,
       message: "Course added successfully",
@@ -156,26 +137,25 @@ const allCourses = async (req, res) => {
 const getCourseDetails = async (req, res) => {
   try {
     //get course id
-    // const courseId = req.params.courseId;
-    const {courseId} = req.body;
+    const { courseId } = req.body;
 
     console.log("course id is ", courseId);
 
     //get course details
     const courseDetails = await Course.findById({
-      _id: courseId,
+      _id: new mongoose.Types.ObjectId(courseId),
     })
       .populate({
         path: "instructor",
       })
       .populate("category")
       // .populate("ratingAndReviews")
-      .populate({
-        path: "courseContent",
-        populate: {
-          path: "subSection",
-        },
-      })
+      // .populate({
+      //   path: "courseContent",
+      //   populate: {
+      //     path: "subSection",
+      //   },
+      // })
       .exec();
 
     console.log("course is", courseDetails);
@@ -204,4 +184,62 @@ const getCourseDetails = async (req, res) => {
   }
 };
 
-export { creatCourse, allCourses, getCourseDetails };
+// get course by instructor
+const getInstructorCourses = async (req, res) => {
+  try {
+    // Get the instructor ID from the authenticated user or request body
+    const instructorId = req.user.id;
+
+    // Find all courses belonging to the instructor
+    const instructorCourses = await Course.find({
+      instructor: instructorId,
+    }).sort({ createdAt: -1 });
+
+    // Return the instructor's courses
+    res.status(200).json({
+      success: true,
+      data: instructorCourses,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve instructor courses",
+      error: error.message,
+    });
+  }
+};
+
+const deleteCourse = async (req, res) => {
+  try {
+    // fetch course id
+    const { courseId } = req.body;
+    console.log("course id", courseId);
+
+    // check course in db
+    const course = await Course.findByIdAndDelete({_id: courseId},{
+      new: true
+    })
+
+
+    return res.status(200).json({
+      success: true,
+      message: "Course deleted successfully",
+      data: course
+    });
+
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve instructor courses",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+export { creatCourse, allCourses, getCourseDetails, getInstructorCourses, deleteCourse };

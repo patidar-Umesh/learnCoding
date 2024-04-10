@@ -8,13 +8,13 @@ const router = Router()
 router.delete("/deleteProfile", verifyJWT, deleteAccount)
 
 // update profile
-router.put("/updateProfile", verifyJWT, updateProfile)
+router.put("/update-profile", verifyJWT, updateProfile)
 
 // get all user details
 router.get("/getUserDetails", verifyJWT, getUserAllDetails)
 
 // update profile pic
-router.put("/updateDisplayPicture", verifyJWT, updateProfilePicture)
+router.put("/update-display-picture", verifyJWT, updateProfilePicture)
 
 // Get Enrolled Courses
 // router.get("/getEnrolledCourses", verifyJWT, getEnrolledCourses)

@@ -8,27 +8,38 @@ import {Profile} from '../models/profile.model.js'
 
 const updateProfile = async (req, res) => {
 	try {
-		const { dateOfBirth = "", about = "", contactNumber, gender } = req.body;
+		const { dateOfBirth , about , contactNumber, gender, lastName, firstName } = req.body;
 		const id = req.user.id;
 
 		console.log('profile ',dateOfBirth , about ,contactNumber, gender);
 
 
 		// Find the profile by id
-		const userDetails = await User.findById(id);
+		const userDetails = await User.findByIdAndUpdate(id,{firstName: firstName, lastName: lastName}).select("-password");
+		// console.log('user is', userDetails);
 
-        // update details in profile 
-		const profile = await Profile.findByIdAndUpdate(userDetails.additionalDetails,{
+        // update details in profile additionalDetails
+		const profile = await Profile.findByIdAndUpdate({_id: userDetails.additionalDetails._id},{
             dateOfBirth: dateOfBirth,
             about: about,
 			gender: gender,
             contactNumber: contactNumber
-        });
+        },
+	{new: true});
+
+
+
+		if(!profile){
+			return res.status(200).json({
+				success: false,
+				message: "No additioanl details available",
+			});
+		}
 
 		return res.status(200).json({
 			success: true,
 			message: "Profile updated successfully",
-			profile,
+			data: profile
 		});
 	} catch (error) {
 		console.log(error);
@@ -100,13 +111,15 @@ const getUserAllDetails = async (req, res) => {
 const  updateProfilePicture = async (req, res) => {
     try {
         // fecth image 
-      const image = req.files.profilePicture
+      const image = req.files.image
       const userId = req.user.id
+
+	  console.log('image', image);
 
 
       // upload profile image on clodinary
       const savedImg = await uploadOnCloudinary(
-        displayPicture,
+        image,
         process.env.FOLDER_NAME,
         1000,
         1000
@@ -119,7 +132,8 @@ const  updateProfilePicture = async (req, res) => {
         { image: savedImg.secure_url },
         { new: true }
       )
-      res.send({
+
+      return res.send({
         success: true,
         message: `Image Updated successfully`,
         data: updatedProfile,

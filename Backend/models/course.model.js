@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const courseSchema = new mongoose.Schema(
   {
-    courseName: {
+    courseTitle: {
       type: String,
       required: true,
       trim: true,
@@ -67,9 +67,11 @@ const courseSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+
     instructions: {
       type: [String],
     },
+
     status: {
       type: String,
       enum: ["Draft", "Published"],

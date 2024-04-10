@@ -38,6 +38,10 @@ const userSchema = new Schema(
       ref: "Profile",
     },
 
+    image: {
+      type: String,
+      trm: true
+    },
     courses: [
       {
         type: Schema.Types.ObjectId,

@@ -44,7 +44,7 @@ const allCategory = async (req, res) => {
       {},
       { name: true, description: true }
     );
-    console.log(`All category is ${allCategory}`);
+    // console.log(`All category is ${allCategory}`);
 
     return res.status(200).json({
       success: true,
