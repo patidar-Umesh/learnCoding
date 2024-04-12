@@ -1,7 +1,7 @@
 // import all require package and files
 import express from 'express'
 import connectDB from './config/database.js'
-import {config} from 'dotenv'
+import dotenv from 'dotenv'
 import userRouter from './routes/user.routes.js'
 import courseRouter from './routes/course.routes.js'
 import paymentRouter from './routes/payments.routes.js'
@@ -16,7 +16,9 @@ import fileUpload from 'express-fileupload'
 connectDB()
 
 // connect dotenv 
-config()
+dotenv.config({
+    path: './.env'
+})
 
 // connect cloudinary
 cloudinaryConnect()

@@ -5,6 +5,7 @@ import {
   getCourseDetails,
   getInstructorCourses,
   deleteCourse,
+  editCourse,
 } from "../controllers/course.controller.js";
 import {
   createSection,
@@ -41,11 +42,19 @@ const router = Router();
 // create course by instructor
 router.post("/create-course", verifyJWT, isInstructor, creatCourse);
 
+// edit course
+router.post('/edit-course', verifyJWT, isInstructor, editCourse)
+
+
 // get all courses
 router.get("/all-courses", allCourses);
 
 // get course by id
 router.post("/get-course-details", getCourseDetails);
+
+// get full details by instructor
+router.get("/get-full-course-details", verifyJWT, isInstructor, getCourseDetails);
+
 
 // get course by instructor
 router.get("/get-instructor-courses", verifyJWT, isInstructor, getInstructorCourses)

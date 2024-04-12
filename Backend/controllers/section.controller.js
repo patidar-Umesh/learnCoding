@@ -8,6 +8,7 @@ const createSection = async (req, res) => {
   try {
     // fetch data
     const { sectionName, courseId } = req.body;
+    console.log('section name and id',sectionName, courseId);
 
     if (!sectionName || !courseId) {
       return res.status(400).json({
@@ -21,16 +22,17 @@ const createSection = async (req, res) => {
     console.log("savedSection", savedSection);
 
     // update courseContent in Course schema
-    console.log("savedSection", savedSection);
-    const upadatCourse = await Course.findByAndUpdate(
-                                                     courseId,
+
+    const upadatCourse = await Course.findByIdAndUpdate(
+                                                     {_id :courseId},
                                                     {
                                                       $push: {
-                                                        courseContent: savedSection._id,
+                                                        courseContent: new mongoose.Types.ObjectId( savedSection._id),
                                                       },
                                                     },
                                                     { new: true }
-                                                  ).populate({
+                                                  )
+                                                  .populate({
                                                     path: "courseContent",
                                                     populate: {
                                                       path: "subSection",
@@ -38,11 +40,13 @@ const createSection = async (req, res) => {
                                                   })
                                                   .exec();;
 
-    console.log(`upadted course is ${upadatCourse}`);
+    console.log(`upadated course is ${upadatCourse}`);
 
+    console.log('hello ji');
     return res.status(200).json({
       success: true,
       message: "add section successfully",
+      data: upadatCourse
     });
 
   } catch (error) {
@@ -93,17 +97,10 @@ const updateSection = async (req, res) => {
 const deleteSection = async (req, res) => {
   try {
     const { sectionId } = req.body;
-    console.log('section id',sectionId);
 
     const deletedSection = await Section.findByIdAndDelete(sectionId);
-    console.log(deletedSection);
 
-    await Course.findByIdAndUpdate(sectionId,
-    
-      {
-        courseContent: null,
-      },
-      { new: true }
+    await Course.findById(sectionId,
     );
 
     return res.status(200).json({

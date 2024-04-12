@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose,{Schema} from "mongoose";
 
-const courseSchema = new mongoose.Schema(
+const courseSchema = new Schema(
   {
     courseTitle: {
       type: String,
@@ -15,7 +15,7 @@ const courseSchema = new mongoose.Schema(
     },
 
     instructor: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       // requied: true,
     },
@@ -28,14 +28,14 @@ const courseSchema = new mongoose.Schema(
 
     courseContent: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Section",
       },
     ],
 
     ratingAndReview: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "RatingAndReview",
       },
     ],
@@ -51,7 +51,7 @@ const courseSchema = new mongoose.Schema(
     },
 
     category: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Category",
     },
 
@@ -62,7 +62,7 @@ const courseSchema = new mongoose.Schema(
 
     studentsEnrolled: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         required: true,
         ref: "User",
       },

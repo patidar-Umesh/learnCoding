@@ -5,7 +5,7 @@ const verifyJWT = async (req, res, next) => {
     try {
             // fetch token 
         const token = req.cookies.token || req.header('Authorization')?.replace('Bearer ', '')
-        console.log(`Token is ${token}`)
+        console.log(`Token is 8 ${token}`)
 
         // validate token
         if(!token){
@@ -19,7 +19,6 @@ const verifyJWT = async (req, res, next) => {
        try {
         // verify token
         const decodeToken =   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-        console.log(`decode Token is ${decodeToken}`)
         req.user = decodeToken
        } catch (error) {
         return res.status(404).json({
