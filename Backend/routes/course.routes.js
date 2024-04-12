@@ -32,6 +32,7 @@ import {
   allCategory,
   createCategory,
 } from "../controllers/category.controller.js";
+import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();
 
@@ -40,7 +41,7 @@ const router = Router();
 //                 coures routes               //
 
 // create course by instructor
-router.post("/create-course", verifyJWT, isInstructor, creatCourse);
+router.post("/create-course",  verifyJWT, isInstructor, creatCourse);
 
 // edit course
 router.post('/edit-course', verifyJWT, isInstructor, editCourse)

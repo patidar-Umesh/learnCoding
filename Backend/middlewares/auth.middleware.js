@@ -5,7 +5,7 @@ const verifyJWT = async (req, res, next) => {
     try {
             // fetch token 
         const token = req.cookies.token || req.header('Authorization')?.replace('Bearer ', '')
-        console.log(`Token is 8 ${token}`)
+        // console.log(`Token is 8 ${token}`)
 
         // validate token
         if(!token){

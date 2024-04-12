@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Section } from "../models/section.model.js";
 import { SubSection } from "../models/subSection.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
@@ -7,15 +8,15 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const createSubSection = async (req, res) => {
   try {
     // fetch data
-    const { sectionId, title, timeDuration, description } = req.body;
-    console.log(`data is`,sectionId, title, timeDuration, description );
+    const { sectionId, title, description } = req.body;
+    console.log(`data is`, sectionId, title, description);
 
-    const videoFile = req.files.videoFile;
+    let videoFile = req.files.video;
+
     console.log(`video file is ${videoFile}`);
 
-
     // validate all fields
-    if (!sectionId || !title || !timeDuration || !description  || !videoFile) {
+    if (!sectionId || !title || !description) {
       return res.status(400).json({
         success: false,
         message: " all fields are required for create sub section",
@@ -27,7 +28,8 @@ const createSubSection = async (req, res) => {
       videoFile,
       process.env.CLOUDINARY_VIDEO_FOLDER
     );
-    console.log(`upladed video file is ${uploadedVideoFile}`);
+
+    console.log(`uploaded video file is ${uploadedVideoFile.public_id}`);
 
     if (!uploadedVideoFile) {
       return res.status(400).json({
@@ -39,14 +41,13 @@ const createSubSection = async (req, res) => {
     // save all data
     const createdSubSection = await SubSection.create({
       title,
-      timeDuration,
+      // timeDuration:
       description,
       videoUrl: uploadedVideoFile.secure_url,
     });
-    console.log(`created section is ${createdSubSection}`)
 
     // insert sub Section in section
-    const updatedSection =  await Section.findByIdAndUpdate(
+    const updatedSection = await Section.findByIdAndUpdate(
       sectionId,
       {
         $push: {
@@ -55,14 +56,13 @@ const createSubSection = async (req, res) => {
       },
       { new: true }
     );
-    console.log(`updated section is ${updatedSection}`)
+    console.log(`updated section is ${updatedSection}`);
 
     return res.status(200).json({
-        success: true,
-        message: "successfully created sub section",
-      });
-
-
+      success: true,
+      message: "successfully created sub section",
+      data: updatedSection,
+    });
   } catch (error) {
     console.log(`something went wrong ${error}`);
     return res.status(500).json({
@@ -72,14 +72,13 @@ const createSubSection = async (req, res) => {
   }
 };
 
-
 // update sub section by id
 const updateSubSection = async (req, res) => {
   try {
     // fetch data
     const { subSectionId } = req.params.id;
     const { title, timeDuration, description } = req.body;
-    const videoFile = req.files.file;
+    const videoFile = req.files.video;
 
     // validate all fields
     if (!title || !timeDuration || !description || !videoFile) {
@@ -119,6 +118,7 @@ const updateSubSection = async (req, res) => {
     return res.status(200).json({
       success: false,
       message: "Update succssfully",
+      data: updateSubSection,
     });
   } catch (error) {
     console.log(`something went wrong ${error}`);
@@ -133,11 +133,31 @@ const updateSubSection = async (req, res) => {
 
 const deleteSubSection = async (req, res) => {
   try {
-    const { SubSectionId } = req.params.id;
+    const { subSectionId, sectionId } = req.body;
+
+    // delete id section array
+    await Section.findByIdAndUpdate(
+      { _id: new mongoose.Types.ObjectId(sectionId) },
+      {
+        $pull: {
+          subSection: subSectionId
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     // delete sub section by id
-    await SubSection.findByIdAndDelete({ _id: SubSectionId });
-    
+    const deletedsubSection = await SubSection.findByIdAndDelete({
+      _id: new mongoose.Types.ObjectId(subSectionId),
+    });
+
+
+    return res.status(200).json({
+      success: true,
+      message: "Delete successfully seb section",
+    });
   } catch (error) {
     console.log(`something went wrong ${error}`);
     return res.status(500).json({

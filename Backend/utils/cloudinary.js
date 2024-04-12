@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs"
+import fs from "fs";
 
 // setup cloudinary
 const cloudinaryConnect = () => {
@@ -12,32 +12,37 @@ const cloudinaryConnect = () => {
 
 // cloudinary handler
 const uploadOnCloudinary = async (file, folder) => {
+  console.log("file is kya hal hai", file.tempFilePath);
   try {
-    const options = { folder, resource_Type: "auto" };
-    
+    const options = { folder, resource_type: "auto" };
+
     // return
     return await cloudinary.uploader.upload(file.tempFilePath, options);
+  } catch (error) {
+    console.log(`something went wrong ${error}`);
+    return null;
+  }
+};
+
+// cloudinary delete handler
+const deleteFromCloudinary = async (file) => {
+  try {
+    const fileUrl = file;
+    const fileType = fileUrl?.endsWith(".mp4") || fileUrl?.endsWith(".mov");
+
+    let publicId = fileUrl.split("/");
+
+    let result = publicId.slice(7, 9).join("/");
+    result = result.split(".").slice(0, 1).join();
+
+    console.log("public id", result);
+
+    return await cloudinary.uploader.destroy(result, {
+      resource_type: `${fileType ? "video" : "image"}`,
+    });
   } catch (error) {
     console.log(`something went wrong ${error}`);
   }
 };
 
-// cloudinary delete handler
-// const deleteFromCloudinary = async (file) => {
-//   try {
-//     const fileSt = file;
-
-//     let publicId = fileSt.split("/");
-
-//     let result = publicId.slice(7, 9).join('/');
-//     result = result.split(".").slice(0, 1).join();
-
-//     // return
-//     return await cloudinary.uploader.destroy(result);
-
-//   } catch (error) {
-//     console.log(`something went wrong ${error}`);
-//   }
-// };
-
-export { uploadOnCloudinary, cloudinaryConnect };
+export { uploadOnCloudinary, cloudinaryConnect, deleteFromCloudinary };
