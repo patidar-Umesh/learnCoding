@@ -24,6 +24,16 @@ const creatCourse = async (req, res) => {
       status,
     } = req.body;
 
+    console.log(
+      courseTitle,
+      courseDescription,
+      whatYouWillLearn,
+      tag,
+      price,
+      category,
+      instructions,
+      status
+    );
     let image = req.files.image;
 
     // validate fields
@@ -125,10 +135,10 @@ const creatCourse = async (req, res) => {
 // edit course
 const editCourse = async (req, res) => {
   try {
-    const { courseId } = req.body;
+    const { courseId, courseTitle, whatYouWillLearn,  courseDescription, price, category,instructions  } = req.body;
     const updates = req.body;
 
-    console.log("edit course", req.body);
+    console.log("edit course",courseId, courseTitle, whatYouWillLearn,  courseDescription, price, category,instructions );
     const course = await Course.findById(courseId);
 
     if (!course) {
@@ -139,14 +149,14 @@ const editCourse = async (req, res) => {
     }
 
     if (req.files) {
-      console.log("thumbnail update", req.files.image);
+      console.log("image update", req.files.image);
       const image = req.files.image;
 
-      const thumbnailImage = await uploadOnCloudinary(
+      const uploadedImage = await uploadOnCloudinary(
         image,
         process.env.CLOUDINARY_IMAGE_FOLDER
       );
-      course.image = thumbnailImage.secure_url;
+      course.image = uploadedImage.secure_url;
     }
 
     for (const key in updates) {
@@ -180,9 +190,9 @@ const editCourse = async (req, res) => {
       })
       .exec();
 
-    res.json({
+   return res.json({
       success: true,
-      message: "Course updated successfully",
+      message: "Course Updated Successfully",
       data: updatedCourse,
     });
   } catch (error) {
@@ -220,12 +230,19 @@ const allCourses = async (req, res) => {
 const getCourseDetails = async (req, res) => {
   try {
     //get course id
-    const { courseId } = req.body;
+    const  {courseId}  = req.body;
     console.log("course id is ", courseId);
 
+    // if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: `Invalid course ID format: ${courseId}`,
+    //   });
+    // }
+
     //get course details
-    const courseDetails = await Course.findById({
-      _id: new mongoose.Types.ObjectId(courseId),
+    const courseDetails = await Course.findOne({
+      _id: courseId
     })
       .populate({
         path: "instructor",
@@ -240,7 +257,7 @@ const getCourseDetails = async (req, res) => {
       })
       .exec();
 
-    // console.log("course is", courseDetails);
+    console.log("course is", courseDetails);
 
     //validation
 
@@ -293,10 +310,10 @@ const getFullCourseDetails = async (req, res) => {
       })
       .exec();
 
-    // let courseProgressCount = await CourseProgress.findOne({
-    //   courseID: courseId,
-    //   userId: userId,
-    // })
+    let courseProgressCount = await CourseProgress.findOne({
+      courseID: courseId,
+      userId: userId,
+    })
 
     // console.log("courseProgressCount : ", courseProgressCount)
 
@@ -307,32 +324,32 @@ const getFullCourseDetails = async (req, res) => {
       });
     }
 
-    // if (courseDetails.status === "Draft") {
-    //   return res.status(403).json({
-    //     success: false,
-    //     message: `Accessing a draft course is forbidden`,
-    //   });
-    // }
+    if (courseDetails.status === "Draft") {
+      return res.status(403).json({
+        success: false,
+        message: `Accessing a draft course is forbidden`,
+      });
+    }
 
     // let totalDurationInSeconds = 0
-    // courseDetails.courseContent.forEach((content) => {
-    //   content.subSection.forEach((subSection) => {
-    //     const timeDurationInSeconds = parseInt(subSection.timeDuration)
-    //     totalDurationInSeconds += timeDurationInSeconds
-    //   })
-    // })
+    courseDetails.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration)
+        totalDurationInSeconds += timeDurationInSeconds
+      })
+    })
 
     // const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
 
     return res.status(200).json({
       success: true,
       data: courseDetails,
-      // totalDuration,
-      // completedVideos: courseProgressCount?.completedVideos
-      //   ? courseProgressCount?.completedVideos
-      //   : [],
-      // },
-    });
+      totalDuration,
+      completedVideos: courseProgressCount?.completedVideos
+        ? courseProgressCount?.completedVideos
+        : [],
+      }
+    );
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -386,10 +403,8 @@ const deleteCourse = async (req, res) => {
 
           // delete video from cloudinary
           const deletedVideoFile = await deleteFromCloudinary(
-            subSection?.videoUrl
+            subSection.videoUrl
           );
-
-          console.log("deleted video res", deletedVideoFile);
 
           if (deletedVideoFile.result !== "ok") {
             console.log("Getting error from cloudinary video deletion");
@@ -399,21 +414,19 @@ const deleteCourse = async (req, res) => {
             });
           }
 
+          console.log(
+            " Video Deleted succssfully from cloudinary",
+            deletedVideoFile
+          );
+
           // delete subsections
           await SubSection.findByIdAndDelete(subSectionId);
-
-          console.log(
-            "deleted video res",
-            subSection.videoUrl,
-            deletedVideoFile.result
-          );
         }
       }
     }
 
     // delete img file from cloudinary
-    const deletedImageFile = await deleteFromCloudinary(course?.image);
-    console.log("Getting error from cloudinary", deletedImageFile);
+    const deletedImageFile = await deleteFromCloudinary(course.image);
 
     if (deletedImageFile.result !== "ok") {
       console.log("Getting error from cloudinary image");
@@ -422,6 +435,11 @@ const deleteCourse = async (req, res) => {
         message: "somthing went wrong when deleted image from coudinary",
       });
     }
+
+    console.log(
+      " Image deleted successfully from cloudinary",
+      deletedImageFile
+    );
 
     // delete section
     await Section.findByIdAndDelete({ _id: course.courseContent });
@@ -438,6 +456,7 @@ const deleteCourse = async (req, res) => {
       { new: true }
     );
 
+    console.log("course deleted successfully");
     return res.status(200).json({
       success: true,
       message: "Course deleted successfully",

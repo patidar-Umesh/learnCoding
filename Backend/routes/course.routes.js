@@ -44,11 +44,11 @@ const router = Router();
 router.post("/create-course",  verifyJWT, isInstructor, creatCourse);
 
 // edit course
-router.post('/edit-course', verifyJWT, isInstructor, editCourse)
+router.put('/edit-course', verifyJWT, isInstructor, editCourse)
 
 
 // get all courses
-router.get("/all-courses", allCourses);
+router.get("/all-courses", allCourses); 
 
 // get course by id
 router.post("/get-course-details", getCourseDetails);

@@ -27,7 +27,7 @@ const createSection = async (req, res) => {
                                                      {_id :courseId},
                                                     {
                                                       $push: {
-                                                        courseContent: new mongoose.Types.ObjectId( savedSection._id),
+                                                        courseContent:  savedSection._id
                                                       },
                                                     },
                                                     { new: true }
@@ -40,9 +40,10 @@ const createSection = async (req, res) => {
                                                   })
                                                   .exec();;
 
-    console.log(`upadated course is ${upadatCourse}`);
+    console.log(`upadated course is ${upadatCourse.courseContent}`);
 
     console.log('hello ji');
+
     return res.status(200).json({
       success: true,
       message: "add section successfully",
@@ -62,6 +63,8 @@ const updateSection = async (req, res) => {
   try {
     // fetch data
     const { sectionName, sectionId } = req.body;
+    console.log(`updated name is ${ sectionName, sectionId}`);
+  
 
     if (!sectionName) {
       return res.status(400).json({
@@ -78,17 +81,19 @@ const updateSection = async (req, res) => {
       },
       { new: true }
     );
-    console.log(`updated name is ${updatedSectionName.sectionName}`);
+
+    console.log(`updated  section name is 83 ${updatedSectionName}`);
 
     // response
     return res.status(200).json({
-      success: false,
+      success: true,
       message: "Section name upadate successfully",
+      data : updatedSectionName
     });
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "updation faild",
+      message: "updation failed",
     });
   }
 };

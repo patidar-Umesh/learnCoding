@@ -208,7 +208,7 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "user not exist",
+        message: "User not exist",
       });
     }
 
@@ -229,18 +229,15 @@ const login = async (req, res) => {
       accountType: user.accountType,
     };
 
-    // console.log("payload is", payload);
 
     const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: "10h",
     });
-    // console.log(`Generated Token is ${token}`);
 
     // user = await User.findById(user._id).select("-password");
     user.token = token;
     user.password = undefined;
 
-    // console.log(`login user is ${user.accountType}`);
 
     // // create cookie
     const options = {
@@ -266,7 +263,8 @@ const login = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     // fetch data
-    const { email, oldPassword, newPassword } = req.body;
+    const {  oldPassword, newPassword } = req.body;
+    const email = req.user.email
 
     // validate email
     if (!email) {
@@ -287,7 +285,8 @@ const changePassword = async (req, res) => {
     }
 
     // compare password
-    const dcrpytPassword = bcrypt.compare(oldPassword, user.password);
+    const dcrpytPassword = await bcrypt.compare(oldPassword, user.password);
+
     if (!dcrpytPassword) {
       return res.status(401).json({
         success: false,
@@ -303,17 +302,9 @@ const changePassword = async (req, res) => {
       });
     }
 
-    // compare new passwords
-    // if (newPassword !== confirmNewPassword) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: " Both password are not same ",
-    //   });
-    // }
 
     // hash new password
     const hashNewPassword = await bcrypt.hash(newPassword, 10);
-    console.log(`Hash New password is ${hashNewPassword}`);
 
     // save newpassword in db
     const savedPassword = await User.findByIdAndUpdate(user._id, {
@@ -330,7 +321,6 @@ const changePassword = async (req, res) => {
     // return response
     return res.status(200).json({
       success: true,
-      sendEmail,
       message: " Password changed Successfully ",
     });
   } catch (error) {

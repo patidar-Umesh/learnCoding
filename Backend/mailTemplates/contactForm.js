@@ -46,19 +46,7 @@ export const contactUsEmail = (
                 font-size: 16px;
                 margin-bottom: 20px;
             }
-    
-            .cta {
-                display: inline-block;
-                padding: 10px 20px;
-                background-color: #FFD60A;
-                color: #000000;
-                text-decoration: none;
-                border-radius: 5px;
-                font-size: 16px;
-                font-weight: bold;
-                margin-top: 20px;
-            }
-    
+        
             .support {
                 font-size: 14px;
                 color: #999999;
@@ -74,8 +62,8 @@ export const contactUsEmail = (
     
     <body>
         <div class="container">
-            <a href="https://studynotion-edtech-project.vercel.app"><img class="logo"
-                    src="https://i.ibb.co/7Xyj3PC/logo.png" alt="StudyNotion Logo"></a>
+            <a href="https://learnCoding-edtech-project.vercel.app"><img class="logo"
+                    src="" alt="LearnCoding Logo"></a>
             <div class="message">Contact Form Confirmation</div>
             <div class="body">
                 <p>Dear ${firstname} ${lastname},</p>
@@ -84,12 +72,12 @@ export const contactUsEmail = (
                 <p>Here are the details you provided:</p>
                 <p>Name: ${firstname} ${lastname}</p>
                 <p>Email: ${email}</p>
-                <p>Phone Number: ${phoneNo}</p>
+                <p>Phone Number: ${countrycode}-${phoneNo}</p>
                 <p>Message: ${message}</p>
                 <p>We appreciate your interest and will get back to you shortly. </p>
             </div>
             <div class="support">If you have any further questions or need immediate assistance, please feel free to reach
-                out to us at <a href="mailto:info@studynotion.com">info@studynotion.com</a>. We are here to help!</div>
+                out to us at <a href="mailto:info@learncoding.com">info@learncoding.com</a>. We are here to help!</div>
         </div>
     </body>
     

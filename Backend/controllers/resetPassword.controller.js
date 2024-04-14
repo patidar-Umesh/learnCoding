@@ -19,7 +19,7 @@ const forgotPasswordToken = async (req, res) => {
 
     // generate token using crypto
     const token = crypto.randomUUID();
-    console.log(`toekn is ${token}`);
+    // console.log(`toekn is ${token}`);
 
     // store token and expiry in db
     const updateInfo = await User.findOneAndUpdate(
@@ -32,17 +32,19 @@ const forgotPasswordToken = async (req, res) => {
         new: true,
       }
     );
-    console.log(`update info is ${updateInfo}`);
+
+    // console.log(`update info is ${updateInfo}`);
 
     // send email
-    const url = `http://localhost:3000/update-password/${token}`;
+    const url = `http://localhost:5173/update-password/${token}`;
 
-    const mail = await mailSender(
+    const emailInfo = await mailSender(
       email,
       "Password reset link",
       `Please click on this link for change password ${url}`
     );
-    console.log(`email response is ${mail.response}`);
+
+    // console.log(`email response is ${emailInfo.response}`);
 
     // res
     return res.status(200).json({
@@ -78,14 +80,12 @@ const forgotPassword = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: "Both password shoulb be same",
+        message: "Both password should be same",
       });
     }
 
-   
-
-    //token time check
-    if (userDetails.forgotPasswordExpire < Date.now()) {
+    //token validity check
+    if (userDetails.resetPasswordExpires < Date.now()) {
       return res.status(400).json({
         success: false,
         message: "Token is expired, please regenerate your token",

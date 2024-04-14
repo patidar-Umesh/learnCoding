@@ -11,7 +11,7 @@ router.post('/signUp', signUp)
 router.post('/login', login)
 
 // change password
-router.put('/changepassword', verifyJWT, changePassword)
+router.put('/change-password', verifyJWT, changePassword)
 
 // otp routes
 router.post('/sendotp', sendOTP)
@@ -21,7 +21,7 @@ router.post('/sendotp', sendOTP)
 router.post('/reset-password-token', forgotPasswordToken)
 
 // resest password
-router.put('/reset-password', forgotPassword)
+router.post('/reset-password', forgotPassword)
 
 
 

@@ -29,7 +29,7 @@ const createSubSection = async (req, res) => {
       process.env.CLOUDINARY_VIDEO_FOLDER
     );
 
-    console.log(`uploaded video file is ${uploadedVideoFile.public_id}`);
+    console.log(`uploaded video file is ${uploadedVideoFile.duration}`);
 
     if (!uploadedVideoFile) {
       return res.status(400).json({
@@ -41,7 +41,7 @@ const createSubSection = async (req, res) => {
     // save all data
     const createdSubSection = await SubSection.create({
       title,
-      // timeDuration:
+      timeDuration: uploadedVideoFile.duration,
       description,
       videoUrl: uploadedVideoFile.secure_url,
     });
