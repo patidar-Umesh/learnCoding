@@ -1,2 +1,0 @@
-# learnCoding
-hello dosto
