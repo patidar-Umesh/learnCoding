@@ -230,7 +230,7 @@ const allCourses = async (req, res) => {
 const getCourseDetails = async (req, res) => {
   try {
     //get course id
-    const  {courseId}  = req.body;
+    const  {courseId}  = req.body
     console.log("course id is ", courseId);
 
     // if (!mongoose.Types.ObjectId.isValid(courseId)) {
@@ -246,7 +246,7 @@ const getCourseDetails = async (req, res) => {
     })
       .populate({
         path: "instructor",
-      })
+      }).select(' -password ')
       .populate("category")
       // .populate("ratingAndReviews")
       .populate({
@@ -257,7 +257,7 @@ const getCourseDetails = async (req, res) => {
       })
       .exec();
 
-    console.log("course is", courseDetails);
+    // console.log("course is", courseDetails);
 
     //validation
 
@@ -271,7 +271,7 @@ const getCourseDetails = async (req, res) => {
     // res
     return res.status(200).json({
       success: true,
-      message: "fatched course details successfully",
+      message: "Course details  fetched Successfully",
       data: courseDetails,
     });
   } catch (error) {
@@ -331,7 +331,7 @@ const getFullCourseDetails = async (req, res) => {
       });
     }
 
-    // let totalDurationInSeconds = 0
+    let totalDurationInSeconds = 0
     courseDetails.courseContent.forEach((content) => {
       content.subSection.forEach((subSection) => {
         const timeDurationInSeconds = parseInt(subSection.timeDuration)
@@ -339,7 +339,7 @@ const getFullCourseDetails = async (req, res) => {
       })
     })
 
-    // const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
 
     return res.status(200).json({
       success: true,
@@ -403,7 +403,7 @@ const deleteCourse = async (req, res) => {
 
           // delete video from cloudinary
           const deletedVideoFile = await deleteFromCloudinary(
-            subSection.videoUrl
+            subSection?.videoUrl
           );
 
           if (deletedVideoFile.result !== "ok") {
@@ -420,15 +420,16 @@ const deleteCourse = async (req, res) => {
           );
 
           // delete subsections
-          await SubSection.findByIdAndDelete(subSectionId);
+          await SubSection.findByIdAndDelete({_id: subSectionId});
         }
       }
     }
 
     // delete img file from cloudinary
-    const deletedImageFile = await deleteFromCloudinary(course.image);
+    console.log('image', course.image);
+    const deletedImageFile = await deleteFromCloudinary(course?.image);
 
-    if (deletedImageFile.result !== "ok") {
+    if (deletedImageFile?.result !== "ok") {
       console.log("Getting error from cloudinary image");
       return res.status(404).json({
         success: false,

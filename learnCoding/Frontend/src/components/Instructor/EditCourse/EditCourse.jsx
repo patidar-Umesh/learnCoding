@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
-  fetchCourseDetails,
+  getCourseDetails,
   getFullDetailsOfCourse,
 } from "../../../apiServices/apiHandler/courseDetailsAPI";
 import { setCourse, setEditCourse } from "../../../store/slices/courseSlice";

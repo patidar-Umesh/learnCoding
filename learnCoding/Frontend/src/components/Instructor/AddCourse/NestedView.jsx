@@ -26,6 +26,10 @@ export default function NestedView({ handleChangeEditSectionName }) {
 
   const [confirmationModal, setConfirmationModal] = useState(null);
 
+
+  console.log('updated course ', viewSubSection);
+  console.log('updated course ', course);
+
   const handleDeleleSection = async (sectionId) => {
     const result = await deleteSection(
       {
@@ -110,10 +114,10 @@ export default function NestedView({ handleChangeEditSectionName }) {
 
             <div className="px-6 pb-4">
               {/* Render All Sub Sections Within a Section */}
-              {section.subSection.map((data) => (
+              {section.subSection?.map((data) => (
                 <div
                   key={data?._id}
-                  onClick={() => setViewSubSection(data)}
+                  onClick={() => console.log(data)}
                   className="flex cursor-pointer items-center justify-between gap-x-3 border-b-2 border-b-richblack-600 py-2"
                 >
                   <div className="flex items-center gap-x-3 py-2 ">

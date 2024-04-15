@@ -32,9 +32,9 @@ export default function CourseBuilderForm() {
   const [editSectionName, setEditSectionName] = useState(null);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log("course id", course);
-  });
+  // useEffect(() => {
+  //   console.log("course id", course);
+  // });
 
   // handle form submission
   const onSubmit = async (data) => {
@@ -63,7 +63,7 @@ export default function CourseBuilderForm() {
       );
     }
     if (result) {
-      // console.log("section result", result)
+      console.log("section result", result)
       dispatch(setCourse(result));
       setEditSectionName(null);
       setValue("sectionName", "");

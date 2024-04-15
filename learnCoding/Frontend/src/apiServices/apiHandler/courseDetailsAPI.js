@@ -41,21 +41,22 @@ const {
 //   return result
 // }
 
-export const fetchCourseDetails = async (courseId) => {
+export const getCourseDetails = async (courseId) => {
   const toastId = toast.loading("Loading...")
   console.log("id 46 ", courseId);
-  let result = null;
+  let result = null
   try {
     const response = await apiConnector("POST", COURSE_DETAILS_API,
       courseId
     );
 
-    // console.log("Course details api response", response);
+    console.log("Course details api response", response);
 
     if (!response.data.success) {
       throw new Error(response.data.message);
     }
-    result = response.data;
+    result = response.data.data
+    console.log('result is',result);
   } catch (error) {
     console.log("Course details api error", error);
     result = error.response.data;
@@ -154,7 +155,7 @@ export const createSection = async (data, token) => {
     result = response?.data?.data;
   } catch (error) {
     console.log("Create section Api Error........", error);
-    toast.error(error.message);
+    toast.error(error.response);
   }
   toast.dismiss(toastId);
   return result;

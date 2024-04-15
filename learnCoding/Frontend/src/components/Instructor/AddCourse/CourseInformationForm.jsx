@@ -14,7 +14,7 @@ import Upload from "./Upload";
 import RequirementsField from "./RequirementField";
 import Button from "../../common/Button";
 import Input from "../../common/Input";
-import TagInput from "./tagInput";
+import TagInput from "./TagInput";
 
 export default function CourseInformationForm() {
   const {

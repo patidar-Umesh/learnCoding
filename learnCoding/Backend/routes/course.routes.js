@@ -6,6 +6,7 @@ import {
   getInstructorCourses,
   deleteCourse,
   editCourse,
+  getFullCourseDetails,
 } from "../controllers/course.controller.js";
 import {
   createSection,
@@ -54,7 +55,7 @@ router.get("/all-courses", allCourses);
 router.post("/get-course-details", getCourseDetails);
 
 // get full details by instructor
-router.get("/get-full-course-details", verifyJWT, isInstructor, getCourseDetails);
+router.post("/get-full-course-details", verifyJWT, isInstructor, getFullCourseDetails);
 
 
 // get course by instructor

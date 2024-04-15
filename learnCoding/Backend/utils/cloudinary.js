@@ -29,9 +29,9 @@ const deleteFromCloudinary = async (file) => {
   try {
     const fileUrl = file;
     const fileType = fileUrl?.endsWith(".mp4") || fileUrl?.endsWith(".mov");
-    console.log("file type ", fileType);
+    // console.log("file type ", fileType);
 
-    let publicId = fileUrl.split("/");
+    let publicId = fileUrl?.split("/");
 
     let result = publicId.slice(7, 9).join("/");
     result = result.split(".").slice(0, 1).join();
