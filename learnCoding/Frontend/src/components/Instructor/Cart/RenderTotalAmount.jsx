@@ -22,9 +22,8 @@ export default function RenderTotalAmount() {
       <p className="mb-6 text-3xl justify-center items-center font-medium text-yellow-100">₹ {total}</p>
       <Button
         btnText='Buy Now'
-        className='text-[1rem]'
+        className='text-[1rem] bg-yellow-50'
         onclick={handleBuyCourse}
-        active='true'
       />
     </div>
   )

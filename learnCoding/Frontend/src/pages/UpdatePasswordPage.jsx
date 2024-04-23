@@ -9,20 +9,21 @@ import Button from "../components/common/Button";
 import toast from "react-hot-toast";
 
 const UpdatePasswordPage = () => {
+  const { loading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading } = useSelector((state) => state.auth);
   const params = useParams();
 
-  console.log("token is", params.token);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
   });
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { password, confirmPassword } = formData;
+  
+  // console.log("token is", params.token);
 
   // onchage handler
   const handleOnChange = (e) => {
@@ -33,7 +34,7 @@ const UpdatePasswordPage = () => {
   };
 
   // reset password handler
-  const handleOnSubmit = (e) => {
+  const resetPassHandler = (e) => {
     e.preventDefault();
     
     if (formData.password !== formData.confirmPassword) {
@@ -41,6 +42,7 @@ const UpdatePasswordPage = () => {
       return;
     }
 
+    // get token from params
     const token = params.token;
     dispatch(resetPassword(password, confirmPassword, token, navigate));
   };
@@ -105,7 +107,7 @@ const UpdatePasswordPage = () => {
 
             <Button
               type="submit"
-              onClick={handleOnSubmit}
+              onClick={resetPassHandler}
               className="mt-6 w-full  bg-yellow-50 "
               btnText="Reset Password"
             />

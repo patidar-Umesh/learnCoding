@@ -16,94 +16,87 @@ import GetAvgRating from "../utils/avgRating.js";
 import ErrorPage from "./ErrorPage.jsx";
 import { apiConnector } from "../apiServices/apiConnector.js";
 import { courseEndpoints } from "../apiServices/apis.js";
+import Button from "../components/common/Button.jsx";
 
 const CourseDetailsPage = () => {
-  const { user } = useSelector((state) => state.profile)
-  const { token } = useSelector((state) => state.auth)
-  const { loading } = useSelector((state) => state.profile)
-  const { paymentLoading } = useSelector((state) => state.course)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { user } = useSelector((state) => state.profile);
+  const { token } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.profile);
+  const { paymentLoading } = useSelector((state) => state.course);
 
-  const { courseId } = useParams()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  // Declear a state to save the course details
-  const [response, setResponse] = useState(null)
-  const [confirmationModal, setConfirmationModal] = useState(null)
+  const { courseId } = useParams();
+  const [response, setResponse] = useState(null);
+  const [confirmationModal, setConfirmationModal] = useState(null);
+
+  const fetchCourse = async () => {
+    console.log("course details response: ");
+    try {
+      const res = await getCourseDetails(courseId);
+
+      console.log("Course details api res", res);
+
+      setResponse(res);
+      console.log("result is", res);
+      console.log("response is", response);
+    } catch (error) {
+      console.log("Course details api error", error);
+    }
+  };
+
   useEffect(() => {
-    // Calling fetchCourseDetails fucntion to fetch the details
-    ;(async () => {
-      try {
-        const res = await getCourseDetails({courseId})
-        console.log("course details res: ", res)
-        setResponse(res.data.data)
-      } catch (error) {
-        console.log("Could not fetch Course Details")
-      }
-    })()
-  }, [courseId])
+    fetchCourse();
+  }, [courseId]);
 
-  console.log("response: ", response)
+  console.log("course details response: ", response);
 
   // Calculating Avg Review count
-  const [avgReviewCount, setAvgReviewCount] = useState(0)
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
   useEffect(() => {
-    const count = GetAvgRating(response?.data?.courseDetails.ratingAndReviews)
-    setAvgReviewCount(count)
-  }, [response])
-  // console.log("avgReviewCount: ", avgReviewCount)
+    const count = GetAvgRating(response?.data?.courseDetails.ratingAndReviews);
+    setAvgReviewCount(count);
+  }, [response]);
+  console.log("avgReviewCount: ", avgReviewCount);
 
   // // Collapse all
-  // const [collapse, setCollapse] = useState("")
-  const [isActive, setIsActive] = useState(Array(0))
+  const [collapse, setCollapse] = useState("");
+  const [isActive, setIsActive] = useState(Array(0));
   const handleActive = (id) => {
     // console.log("called", id)
     setIsActive(
       !isActive.includes(id)
         ? isActive.concat([id])
         : isActive.filter((e) => e != id)
-    )
-  }
+    );
+  };
 
   // Total number of lectures
-  const [totalNoOfLectures, setTotalNoOfLectures] = useState(0)
+  const [totalNoOfLectures, setTotalNoOfLectures] = useState(0);
   useEffect(() => {
-    let lectures = 0
+    let lectures = 0;
     response?.data?.courseDetails?.courseContent?.forEach((sec) => {
-      lectures += sec.subSection.length || 0
-    })
-    setTotalNoOfLectures(lectures)
-  }, [response])
+      lectures += sec.subSection.length || 0;
+    });
+    setTotalNoOfLectures(lectures);
+  }, [response]);
 
   if (loading || !response) {
     return (
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="spinner"></div>
       </div>
-    )
+    );
   }
   if (!response.success) {
-    return <Error />
+    return <Error />;
   }
-
-  const {
-    _id: course_id,
-    courseName,
-    courseDescription,
-    thumbnail,
-    price,
-    whatYouWillLearn,
-    courseContent,
-    ratingAndReviews,
-    instructor,
-    studentsEnroled,
-    createdAt,
-  } = response.data?.courseDetails
 
   const handleBuyCourse = () => {
     if (token) {
-      BuyCourse(token, [courseId], user, navigate, dispatch)
-      return
+      buyCourse(token, [courseId], user, navigate, dispatch);
+      return;
     }
     setConfirmationModal({
       text1: "You are not logged in!",
@@ -112,8 +105,8 @@ const CourseDetailsPage = () => {
       btn2Text: "Cancel",
       btn1Handler: () => navigate("/login"),
       btn2Handler: () => setConfirmationModal(null),
-    })
-  }
+    });
+  };
 
   if (paymentLoading) {
     // console.log("payment loading")
@@ -121,8 +114,22 @@ const CourseDetailsPage = () => {
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="spinner"></div>
       </div>
-    )
+    );
   }
+
+  const {
+    // _id: courseId,
+    courseName,
+    courseDescription,
+    thumbnail,
+    price,
+    whatYouWillLearn,
+    courseContent,
+    ratingAndReviews,
+    instructor,
+    studentsEnrolled,
+    createdAt,
+  } = response.data?.courseDetails;
 
   return (
     <>
@@ -150,8 +157,8 @@ const CourseDetailsPage = () => {
               <div className="text-md flex flex-wrap items-center gap-2">
                 <span className="text-yellow-25">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews.length} reviews)`}</span>
-                <span>{`${studentsEnroled.length} students enrolled`}</span>
+                <span>{`(${ratingAndReviews?.length} reviews)`}</span>
+                <span>{`${studentsEnrolled?.length} students enrolled`}</span>
               </div>
               <div>
                 <p className="">
@@ -169,16 +176,8 @@ const CourseDetailsPage = () => {
                 </p>
               </div>
             </div>
-            <div className="flex w-full flex-col gap-4 border-y border-y-richblack-500 py-4 lg:hidden">
-              <p className="space-x-3 pb-4 text-3xl font-semibold text-richblack-5">
-                Rs. {price}
-              </p>
-              <button className="yellowButton" onClick={handleBuyCourse}>
-                Buy Now
-              </button>
-              <button className="blackButton">Add to Cart</button>
-            </div>
           </div>
+
           {/* Courses Card */}
           <div className="right-[1rem] top-[60px] mx-auto hidden min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0 lg:absolute  lg:block">
             <CourseDetailsCard
@@ -187,8 +186,10 @@ const CourseDetailsPage = () => {
               handleBuyCourse={handleBuyCourse}
             />
           </div>
+
         </div>
       </div>
+      
       <div className="mx-auto box-content px-4 text-start text-richblack-5 lg:w-[1260px]">
         <div className="mx-auto max-w-maxContentTab lg:mx-0 xl:max-w-[810px]">
           {/* What will you learn section */}
@@ -258,10 +259,12 @@ const CourseDetailsPage = () => {
           </div>
         </div>
       </div>
+
       <Footer />
+
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>
-  )
-}
+  );
+};
 
 export default CourseDetailsPage;

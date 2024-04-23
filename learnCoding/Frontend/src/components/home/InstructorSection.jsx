@@ -28,7 +28,7 @@ const InstructorSection = () => {
             </p>
 
             <div className='w-fit'>
-                <Button active={true} linkto={"/signup"} btnText='Start Learning Today'>
+                <Button  linkto={"/signup"} className='bg-yellow-50' btnText='Start Learning Today'>
                     <div className='flex flex-row gap-2 items-center'>
                         <FaArrowRight />
                     </div>

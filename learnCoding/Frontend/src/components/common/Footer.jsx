@@ -166,7 +166,7 @@ const Footer = () => {
             })}
           </div>
 
-          <div className="text-center"> learnCoding © 2024 </div>
+          <div className="text-center"> LearnCoding © 2024 </div>
         </div>
       </div>
     </div>

@@ -38,13 +38,13 @@ export default function ChangeProfilePicture() {
   };
 
   const handleFileUpload = () => {
+    console.log("uploading...");
     try {
-      console.log("uploading...");
       setLoading(true);
       const formData = new FormData();
       formData.append("image", imageFile);
 
-      console.log("formdata", formData);
+      // console.log("formdata", formData);
       dispatch(updateDisplayPicture(token, formData)).then(() => {
         setLoading(false);
       });
@@ -62,7 +62,6 @@ export default function ChangeProfilePicture() {
   return (
     <>
       <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12 text-richblack-5">
-
         <div className="flex items-center gap-x-4">
           <img
             src={previewSource || user?.image}
@@ -74,7 +73,6 @@ export default function ChangeProfilePicture() {
             <p>Change Profile Picture</p>
 
             <div className="flex flex-row gap-3">
-
               <input
                 type="file"
                 ref={fileInputRef}
@@ -87,14 +85,15 @@ export default function ChangeProfilePicture() {
               <Button
                 onClick={handleClick}
                 disabled={loading}
-                btnText='Select'
+                btnText="Select"
                 className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
               />
-                
+
               <Button
+                type="submit"
                 btnText={loading ? "Uploading..." : "Upload"}
                 className="flex gap-x-2 bg-yellow-50 items-center justify-center"
-                onclick={handleFileUpload}
+                onClick={handleFileUpload}
                 children={
                   !loading && (
                     <FiUpload className="text-lg text-richblack-900" />

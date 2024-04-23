@@ -42,28 +42,25 @@ const {
 // }
 
 export const getCourseDetails = async (courseId) => {
-  const toastId = toast.loading("Loading...")
+  // const toastId = toast.loading("Loading...");
   console.log("id 46 ", courseId);
-  let result = null
+  let result = null;
   try {
-    const response = await apiConnector("POST", COURSE_DETAILS_API,
-      courseId
-    );
+    const response = await apiConnector("POST", COURSE_DETAILS_API, {courseId});
 
     console.log("Course details api response", response);
 
     if (!response.data.success) {
       throw new Error(response.data.message);
     }
-    result = response.data.data
-    console.log('result is',result);
+    result = response.data;
+    console.log("result is", result);
   } catch (error) {
     console.log("Course details api error", error);
     result = error.response.data;
     toast.error(error.response.data.message);
   }
-  toast.dismiss(toastId);
-  dispatch(setLoading(false));
+  // toast.dismiss(toastId);
   return result;
 };
 
@@ -216,7 +213,7 @@ export const updateSubSection = async (data, token) => {
   const toastId = toast.loading("Loading...");
 
   try {
-    const response = await apiConnector("POST", UPDATE_SUBSECTION_API, data, {
+    const response = await apiConnector("PUT", UPDATE_SUBSECTION_API, data, {
       Authorization: `Bearer ${token}`,
     });
     console.log("Update sub section Api Response......", response);
@@ -297,7 +294,7 @@ export const fetchInstructorCourses = async (token) => {
         Authorization: `Bearer ${token}`,
       }
     );
-    console.log("Instructor courses api Response.......", response);
+    // console.log("Instructor courses api Response.......", response);
 
     if (!response?.data?.success) {
       throw new Error("Could Not Fetch Instructor Courses");
@@ -335,14 +332,14 @@ export const deleteCourse = async (data, token) => {
 // get full details of a course
 export const getFullDetailsOfCourse = async (courseId, token) => {
   console.log("courseid 324", courseId, token);
-  const toastId = toast.loading("Loading...");
+  // const toastId = toast.loading("Loading...");
 
   let result = null;
   try {
     const response = await apiConnector(
-      "GET",
+      "POST",
       GET_FULL_COURSE_DETAILS_AUTHENTICATED,
-      courseId,
+    {courseId},
       {
         Authorization: `Bearer ${token}`,
       }
@@ -358,7 +355,7 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
     result = error.response.data;
     // toast.error(error.response.data.message);
   }
-  toast.dismiss(toastId);
+  // toast.dismiss(toastId);
   //   dispatch(setLoading(false));
   return result;
 };

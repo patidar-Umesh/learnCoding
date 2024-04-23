@@ -60,7 +60,7 @@ const App = () => {
         />
 
         <Route
-          path="/update-password/:token"
+          path="/reset-password/:token"
           element={<OpenRoute children={<UpdatePasswordPage />} />}
         />
 

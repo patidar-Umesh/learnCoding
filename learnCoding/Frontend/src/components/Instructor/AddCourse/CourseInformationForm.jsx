@@ -37,7 +37,7 @@ export default function CourseInformationForm() {
       setLoading(true);
       const categories = await fetchCourseCategories();
 
-      if (categories.length > 0) {
+      if (categories?.length > 0) {
         setCourseCategories(categories);
       }
       setLoading(false);
@@ -65,7 +65,7 @@ export default function CourseInformationForm() {
       currentValues.coursePrice !== course.price ||
       currentValues.courseTags.toString() !== course.tag.toString() ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
-      currentValues.courseCategory._id !== course.category._id ||
+      currentValues.courseCategory?._id !== course.category?._id ||
       currentValues.courseRequirements.toString() !==
         course.instructions.toString() ||
       currentValues.image !== course.image
@@ -84,7 +84,7 @@ export default function CourseInformationForm() {
         const currentValues = getValues();
         const formData = new FormData();
 
-        formData.append("courseId", course._id);
+        formData.append("courseId", course?._id);
 
         if (currentValues.courseTitle !== course.courseName) {
           formData.append("courseTitle", data.courseTitle);
@@ -162,16 +162,16 @@ export default function CourseInformationForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
+      className="space-y-8 rounded-md border-[1px] w-full border-richblack-700 bg-richblack-800 p-6"
     >
       {/* Course Title */}
       <div className="flex flex-col space-y-2">
         <Input
           label="Course Title"
+          type="text"
           astrick="true"
           id="courseTitle"
           name="courseTitle"
-          value={course?.courseTitle}
           placeholder="Enter Course Title"
           register={{ ...register("courseTitle", { required: true }) }}
           error={errors.courseTitle && "Course title is required"}
@@ -186,7 +186,6 @@ export default function CourseInformationForm() {
         <textarea
           id="courseShortDesc"
           placeholder="Enter Description"
-          value={course?.discription}
           {...register("courseShortDesc", { required: true })}
           className="rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400  resize-x-none min-h-[130px] w-full"
         />
@@ -204,10 +203,8 @@ export default function CourseInformationForm() {
           type="number"
           label="Course Price"
           name="coursePrice"
-          value={course?.parice}
           id="coursePrice"
-          placeholder="Enter Course Price"
-          className="placeholder:ml-4"
+          className=""
           register={{
             ...register("coursePrice", {
               required: true,
@@ -219,7 +216,7 @@ export default function CourseInformationForm() {
           }}
           error={errors.coursePrice && "Course Price is required"}
         />
-        <HiOutlineCurrencyRupee className="absolute left-3 top-[40px] inline-block -translate-y-1/2 text-2xl text-richblack-400" />
+       <p><HiOutlineCurrencyRupee className="absolute mr-5 left-3 top-[55px] inline-block -translate-y-1/2 text-2xl text-richblack-400" /></p>
       </div>
 
       {/* Course Category */}
@@ -230,7 +227,6 @@ export default function CourseInformationForm() {
         <select
           {...register("courseCategory", { required: true })}
           defaultValue=""
-          valus={course?.category}
           id="courseCategory"
           className="rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 w-full  placeholder:text-richblack-400 "
         >
@@ -238,8 +234,8 @@ export default function CourseInformationForm() {
             Choose a Category
           </option>
           {!loading &&
-            courseCategories?.map((category, indx) => (
-              <option key={indx} value={category?._id}>
+            courseCategories?.map((category, index) => (
+              <option key={index} value={category?._id}>
                 {category?.name}
               </option>
             ))}

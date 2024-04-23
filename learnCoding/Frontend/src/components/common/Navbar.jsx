@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react'
-import { Link, NavLink,  } from 'react-router-dom'
+import { Link, NavLink, useLocation,  } from 'react-router-dom'
 import {NavbarLinks} from "../../data/navbar-links.js"
 import { useSelector } from 'react-redux'
 import {AiOutlineShoppingCart} from "react-icons/ai"
@@ -14,7 +14,7 @@ const Navbar = () => {
     const {token} = useSelector(state => state.auth)
     const {user} = useSelector(state => state.profile)
     const {total, totalItems} = useSelector(state => state.cart)
-
+    const location = useLocation()
     const [category, setCategory] = useState([])
 
 
@@ -45,7 +45,7 @@ const Navbar = () => {
         {/* Left logo / name  */}
       <Link to="/">
         {/* <img src='' width={160} height={42} loading='lazy'/> */}
-        <h1 className='text-white text-[3rem]'>LearnCoding</h1>
+        <h1 className='text-white text-[1.5rem]'>LearnCoding</h1>
       </Link>
 
       {/* center links */}
@@ -86,13 +86,14 @@ const Navbar = () => {
                             </div>
 
                         ) : (
-                            <NavLink  to={link?.path}>
-                                {/* {`${ matchRoute(link?.path) ? "text-yellow-25" : */}
-                                <p className='text-richblack-25'>
+                            <Link to={link?.path}>
+                                <p  
+                                 className={`${location.pathname === link?.path ? 'text-yellow-25' : 'text-richblack-50'}`}
+                                >
                                     {link.title}
                                 </p>
                                 
-                            </NavLink>
+                            </Link>
                         )
                     }
                 </li>

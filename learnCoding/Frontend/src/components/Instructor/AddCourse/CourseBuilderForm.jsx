@@ -16,6 +16,7 @@ import {
   setStep,
 } from "../../../store/slices/courseSlice.js";
 import Input from "../../common/Input.jsx";
+import Button from "../../common/Button.jsx";
 
 export default function CourseBuilderForm() {
   const {
@@ -37,8 +38,8 @@ export default function CourseBuilderForm() {
   // });
 
   // handle form submission
-  const onSubmit = async (data) => {
-    // console.log(data)
+  const sectionUpdateHandler = async (data) => {
+    console.log(data);
     setLoading(true);
 
     let result;
@@ -52,7 +53,6 @@ export default function CourseBuilderForm() {
         },
         token
       );
-      // console.log("edit", result)
     } else {
       result = await createSection(
         {
@@ -63,7 +63,7 @@ export default function CourseBuilderForm() {
       );
     }
     if (result) {
-      console.log("section result", result)
+      console.log("section result", result);
       dispatch(setCourse(result));
       setEditSectionName(null);
       setValue("sectionName", "");
@@ -107,7 +107,8 @@ export default function CourseBuilderForm() {
   return (
     <div className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6">
       <p className="text-2xl font-semibold text-richblack-5">Course Builder</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+      <form  className="space-y-4">
 
         <div className="flex flex-col space-y-2">
           <Input
@@ -120,16 +121,16 @@ export default function CourseBuilderForm() {
           />
         </div>
 
-        <div className="flex items-end gap-x-4">
-          <IconBtn
+        <div className="flex items-start gap-x-2">
+          <Button
             type="submit"
-            disabled={loading}
-            onclick={handleSubmit(onSubmit)}
-            text={editSectionName ? "Edit Section Name" : "Create Section"}
-            outline={true}
-          >
-            <IoAddCircleOutline size={20} className="text-yellow-50" />
-          </IconBtn>
+            className='px-5 flex bg-yellow-50'
+            onClick={handleSubmit(sectionUpdateHandler)}
+            btnText={editSectionName ? "Edit Section Name" : "Create Section"}
+            children={
+              <IoAddCircleOutline size={20} className="ml-2" />
+            }
+          />
 
           {editSectionName && (
             <button
@@ -142,20 +143,25 @@ export default function CourseBuilderForm() {
           )}
         </div>
       </form>
+
       {course?.courseContent?.length > 0 && (
         <NestedView handleChangeEditSectionName={handleChangeEditSectionName} />
       )}
+
       {/* Next Prev Button */}
       <div className="flex justify-end gap-x-3">
-        <button
+
+        <Button
           onClick={goBack}
-          className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
-        >
-          Back
-        </button>
-        <IconBtn disabled={loading} text="Next" onclick={goToNext}>
-          <MdNavigateNext />
-        </IconBtn>
+         btnText='Back'
+        />
+
+        <Button
+          btnText="Next"
+          onClick={goToNext}
+          className='bg-yellow-50 flex items-center '
+          children={<MdNavigateNext className="ml-1 font-extrabold text-[1.5rem]" />}
+        />
       </div>
     </div>
   );

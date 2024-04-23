@@ -14,7 +14,7 @@ function ForgotPasswordPage() {
   const { loading } = useSelector((state) => state.auth)
 
   // send token handler
-  const handleOnSubmit = (e) => {
+  const tokenHanlder = (e) => {
     e.preventDefault()
     dispatch(sendPasswordResetToken(email, setEmailSent))
   }
@@ -25,9 +25,11 @@ function ForgotPasswordPage() {
         <div className="spinner"></div>
       ) : (
         <div className="max-w-[500px] p-4 lg:p-8">
+          
           <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
             {!emailSent ? "Reset your password" : "Check email"}
           </h1>
+
           <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
             {!emailSent
               ? "Have no fear. We'll email you instructions to reset your password. If you dont have access to your email we can try account recovery"
@@ -50,9 +52,9 @@ function ForgotPasswordPage() {
             
             <Button
               type="submit"
-              onClick={handleOnSubmit}
+              onClick={tokenHanlder}
               className='bg-yellow-50 mt-4 w-full'
-              btnText={`${emailSent ? "Sumbit" : "Resend Email"}`}
+              btnText={`${emailSent ? "Resend Email" : "Send Email"}`}
             />
 
           </form>

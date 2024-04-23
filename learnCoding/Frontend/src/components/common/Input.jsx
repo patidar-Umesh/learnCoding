@@ -1,4 +1,4 @@
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 
 const Input = function Input({
   label = "",
@@ -9,22 +9,17 @@ const Input = function Input({
   astrick = false,
   required = false,
   id = "",
-  error=  false,
-  onChange ,
+  error = false,
+  onChange,
   register,
   ...props
-}) 
-
-
-{
-
+}) {
   return (
-    <div className={`w-full my-2  `} >
-
+    <div className={`w-full my-2  `}>
       {label && (
         <label className="font-[500] text-white text-[.9rem] mb-1" htmlFor={id}>
           {label}
-        {astrick &&   <sup className="text-pink-200 ml-2">*</sup>}
+          {astrick && <sup className="text-pink-200 ml-2">*</sup>}
         </label>
       )}
 
@@ -40,11 +35,11 @@ const Input = function Input({
         {...props}
       />
 
-      {error &&
-       <span className="ml-2 text-xs tracking-wide text-pink-200">
-            {error}
-          </span>}
-
+      {error && (
+        <span className="ml-2 text-xs tracking-wide text-pink-200">
+          {error}
+        </span>
+      )}
     </div>
   );
 };

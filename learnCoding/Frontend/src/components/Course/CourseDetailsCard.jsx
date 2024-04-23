@@ -60,7 +60,6 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
 
           <div className="flex flex-col justify-center items-center gap-4">
             <Button
-              active="true"
               onClick={
                 user && course?.studentsEnrolled.includes(user?._id)
                   ? () => navigate("/dashboard/enrolled-courses")
@@ -71,6 +70,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
                   ? "Go to Course"
                   : "Buy Now"
               }
+              className='bg-yellow-50'
             />
 
             {(!user || !course?.studentsEnrolled.includes(user?._id)) && (

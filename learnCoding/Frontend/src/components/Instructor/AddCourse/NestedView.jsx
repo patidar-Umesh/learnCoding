@@ -17,7 +17,6 @@ export default function NestedView({ handleChangeEditSectionName }) {
   const { course } = useSelector((state) => state.course);
   const { token } = useSelector((state) => state.auth);
 
-
   const dispatch = useDispatch();
 
   const [addSubSection, setAddSubsection] = useState(null);
@@ -26,9 +25,8 @@ export default function NestedView({ handleChangeEditSectionName }) {
 
   const [confirmationModal, setConfirmationModal] = useState(null);
 
-
-  console.log('updated course ', viewSubSection);
-  console.log('updated course ', course);
+  console.log("updated course ", viewSubSection);
+  console.log("updated course ", course);
 
   const handleDeleleSection = async (sectionId) => {
     const result = await deleteSection(
@@ -36,7 +34,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
         sectionId,
         courseId: course._id,
       },
-       token 
+      token
     );
 
     if (result) {
@@ -45,11 +43,18 @@ export default function NestedView({ handleChangeEditSectionName }) {
     setConfirmationModal(null);
   };
 
+  const courseId = course._id;
+
   const handleDeleteSubSection = async (subSectionId, sectionId) => {
-    const result = await deleteSubSection({ subSectionId, sectionId, token });
+    console.log("courseId",subSectionId, sectionId );
+    
+    const result = await deleteSubSection(
+      { subSectionId, sectionId, courseId },
+      token
+    );
     if (result) {
       // update the structure of course
-      const updatedCourseContent = course.courseContent.map((section) =>
+      const updatedCourseContent = course.courseContent?.map((section) =>
         section._id === sectionId ? result : section
       );
       const updatedCourse = { ...course, courseContent: updatedCourseContent };
@@ -73,7 +78,6 @@ export default function NestedView({ handleChangeEditSectionName }) {
           <details key={section._id} open>
             {/* Section Dropdown Content */}
             <summary className="flex cursor-pointer items-center justify-between border-b-2 border-b-richblack-600 py-2">
-
               <div className="flex items-center gap-x-3">
                 <RxDropdownMenu className="text-2xl text-richblack-50" />
                 <p className="font-semibold text-richblack-50">
@@ -117,7 +121,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
               {section.subSection?.map((data) => (
                 <div
                   key={data?._id}
-                  onClick={() => console.log(data)}
+                  onClick={() => console.log('kya hal hai',data)}
                   className="flex cursor-pointer items-center justify-between gap-x-3 border-b-2 border-b-richblack-600 py-2"
                 >
                   <div className="flex items-center gap-x-3 py-2 ">
@@ -137,8 +141,9 @@ export default function NestedView({ handleChangeEditSectionName }) {
                     >
                       <MdEdit className="text-xl text-richblack-300" />
                     </button>
+
                     <button
-                      onClick={() =>
+                      onClick={() => 
                         setConfirmationModal({
                           text1: "Delete this Sub-Section?",
                           text2: "This lecture will be deleted",
@@ -155,6 +160,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
                   </div>
                 </div>
               ))}
+
               {/* Add New Lecture to Section */}
               <button
                 onClick={() => setAddSubsection(section._id)}
@@ -167,6 +173,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
           </details>
         ))}
       </div>
+
       {/* Modal Display */}
       {addSubSection ? (
         <SubSectionModal
@@ -189,12 +196,14 @@ export default function NestedView({ handleChangeEditSectionName }) {
       ) : (
         <></>
       )}
+
       {/* Confirmation Modal */}
       {confirmationModal ? (
         <ConfirmationModal modalData={confirmationModal} />
       ) : (
         <></>
       )}
+      
     </>
   );
 }
