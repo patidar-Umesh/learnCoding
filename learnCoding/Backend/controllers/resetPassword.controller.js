@@ -36,7 +36,7 @@ const forgotPasswordToken = async (req, res) => {
     // console.log(`update info is ${updateInfo}`);
 
     // send email
-    const url = `http://localhost:5173/update-password/${token}`;
+    const url = `http://localhost:5173/reset-password/${token}`;
 
     const emailInfo = await mailSender(
       email,

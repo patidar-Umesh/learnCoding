@@ -132,7 +132,6 @@ const signUp = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(1);
 
-    console.log(`Recent OTP is ${recentOTP.otp}`);
 
     if (recentOTP.length === 0) {
       return res.status(400).json({
@@ -190,7 +189,6 @@ const login = async (req, res) => {
   try {
     // fetch data from body
     const { email, password } = req.body;
-    // console.log("email password", email, password);
 
     // validate data
     if (!email && !password) {
@@ -239,7 +237,7 @@ const login = async (req, res) => {
     user.password = undefined;
 
 
-    // // create cookie
+    // create cookie
     const options = {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       httpOnly: true,
@@ -302,12 +300,11 @@ const changePassword = async (req, res) => {
       });
     }
 
-
     // hash new password
     const hashNewPassword = await bcrypt.hash(newPassword, 10);
 
     // save newpassword in db
-    const savedPassword = await User.findByIdAndUpdate(user._id, {
+     await User.findByIdAndUpdate(user._id, {
       password: hashNewPassword,
     });
 

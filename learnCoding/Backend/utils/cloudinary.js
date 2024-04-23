@@ -12,12 +12,11 @@ const cloudinaryConnect = () => {
 
 // cloudinary handler
 const uploadOnCloudinary = async (file, folder) => {
-  console.log("file is kya hal hai", file.tempFilePath);
   try {
     const options = { folder, resource_type: "auto" };
 
     // return
-    return await cloudinary.uploader.upload(file.tempFilePath, options);
+    return await cloudinary.uploader.upload(file?.tempFilePath, options);
   } catch (error) {
     console.log(`something went wrong ${error}`);
     return null;
@@ -29,12 +28,12 @@ const deleteFromCloudinary = async (file) => {
   try {
     const fileUrl = file;
     const fileType = fileUrl?.endsWith(".mp4") || fileUrl?.endsWith(".mov");
-    // console.log("file type ", fileType);
+    console.log("file type ", fileType);
 
     let publicId = fileUrl?.split("/");
 
-    let result = publicId.slice(7, 9).join("/");
-    result = result.split(".").slice(0, 1).join();
+    let result = publicId?.slice(7, 9).join("/");
+    result = result?.split(".").slice(0, 1).join();
 
     console.log("public id", result);
 

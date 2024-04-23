@@ -21,9 +21,11 @@ const createSection = async (req, res) => {
     const savedSection = await Section.create({ sectionName: sectionName });
     console.log("savedSection", savedSection);
 
-    const course = await Course.findById(courseId).populate({path: 'courseContent', populate:{path:'subSection'}})
+    const course = await Course.findById(courseId).populate({
+      path: "courseContent",
+      populate: { path: "subSection" },
+    });
     console.log("savedSection", course);
-
 
     // update courseContent in Course schema
     const upadatCourse = await Course.findByIdAndUpdate(
@@ -64,7 +66,7 @@ const updateSection = async (req, res) => {
   try {
     // fetch data
     const { sectionName, sectionId, courseId } = req.body;
-    console.log(`updated name is ${(sectionName, sectionId)}`);
+    // console.log(`updated name is ${(sectionName, sectionId)}`);
 
     if (!sectionName) {
       return res.status(400).json({
@@ -81,13 +83,14 @@ const updateSection = async (req, res) => {
       },
       { new: true }
     );
+    // console.log(`updated  section name is 85 ${updatedSectionName}`);
 
-    console.log(`updated  section name is 85 ${updatedSectionName}`);
-
-
-    const updatedCourse = await Course.findById({_id: courseId})
-    .populate({path: 'courseContent', populate: {path: 'subSection'}}
-  ) 
+    const updatedCourse = await Course.findById({ _id: courseId })
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection" },
+      })
+      .exec();
 
     // response
     return res.status(200).json({
@@ -111,8 +114,11 @@ const deleteSection = async (req, res) => {
     const deletedSection = await Section.findByIdAndDelete(sectionId);
 
     const course = await Course.findByIdAndUpdate(courseId, {
-      $pull: { courseContent: sectionId },
-    });
+                                                    $pull: { courseContent: sectionId },
+                                                  })
+                                                  .populate({ 
+                                                    path: "courseContent", populate: "subSection" 
+                                                  }).exec();
 
     return res.status(200).json({
       success: true,

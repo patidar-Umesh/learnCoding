@@ -31,11 +31,11 @@ const otpSchema = new mongoose.Schema({
 const sendConfirmationMail = async (email, otp) => {
   try {
 
-    const mail = await mailSender(email, 'Verification mail from learnCoding', otpTemplate(otp))
-    console.log('Successfully send mail', mail)
+    const sentEmail = await mailSender(email, 'Verification mail from learnCoding', otpTemplate(otp))
+    console.log('Successfully send mail', sentEmail)
 
   } catch (error) {
-    console.log('error getting when send mail', error)
+    console.log('error getting when send email', error)
   }
 }
 
