@@ -32,6 +32,7 @@ import {
 import {
   allCategory,
   createCategory,
+  categoryCourses
 } from "../controllers/category.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
@@ -64,9 +65,6 @@ router.get("/get-instructor-courses", verifyJWT, isInstructor, getInstructorCour
 
 // delete course by id
 router.delete("/delete-course", verifyJWT, isInstructor, deleteCourse)
-
-
-
 
 
 
@@ -123,6 +121,7 @@ router.get("/get-all-category", allCategory);
 
 
 
+router.post("/category-courses", categoryCourses);
 
 
 export default router;

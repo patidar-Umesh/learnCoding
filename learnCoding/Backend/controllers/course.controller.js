@@ -103,11 +103,17 @@ const creatCourse = async (req, res) => {
       price,
       tag,
       instructions,
+      category: categoryInfo._id,
       status,
       instructor: instructorDetails._id,
       image: uploadedImageInfo.secure_url,
     });
 
+    // insert course id in category collection
+    categoryInfo.courses = course._id
+    await categoryInfo.save()
+
+    
     console.log("created course", course);
 
     // save course id in user schema
@@ -140,7 +146,7 @@ const editCourse = async (req, res) => {
     const { courseId, courseTitle, whatYouWillLearn,  courseDescription, price, category,instructions  } = req.body;
     const updates = req.body;
 
-    console.log("edit course",courseId, courseTitle, whatYouWillLearn,  courseDescription, price, category,instructions );
+    // console.log("edit course",courseId, courseTitle, whatYouWillLearn,  courseDescription, price, category,instructions );
     const course = await Course.findById(courseId);
 
     if (!course) {
@@ -151,17 +157,18 @@ const editCourse = async (req, res) => {
     }
 
     if (req.files) {
-      console.log("image update", req.files.image);
+      console.log("image", req.files.image);
       const image = req.files.image;
 
       const uploadedImage = await uploadOnCloudinary(
         image,
         process.env.CLOUDINARY_IMAGE_FOLDER
       );
-      course.image = uploadedImage.secure_url;
+      course.image = uploadedImage?.secure_url;
     }
 
     for (const key in updates) {
+      // console.log('keys', key);
       if (updates.hasOwnProperty(key)) {
         if (key === "tag" || key === "instructions") {
           course[key] = JSON.parse(updates[key]);

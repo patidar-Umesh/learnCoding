@@ -35,7 +35,7 @@ const createSubSection = async (req, res) => {
 
     console.log(`uploaded video file is ${uploadedVideoFile}`);
 
-    if (uploadedVideoFile?.result !== 'ok') {
+    if (!uploadedVideoFile) {
       return res.status(400).json({
         success: false,
         message: " Error getting when upload on cloudinary",
@@ -98,38 +98,40 @@ const updateSubSection = async (req, res) => {
       });
     }
 
-    // upload video file on cloudinary
-    const uploadedVideoFile = await uploadOnCloudinary(
-      videoFile,
-      process.env.CLOUDINARY_VIDEO_FOLDER
-    );
-    console.log(`upladed video file is ${uploadedVideoFile?.secure_url}`);
-
-    if (uploadedVideoFile?.result === "ok") {
-      return res.status(400).json({
-        success: false,
-        message: " Error getting when upload on cloudinary",
-      });
+    if(title || description){
+      subSection.title = title
+      subSection.description = description
     }
 
-    // save all data
-    const updatedSubSection = await SubSection.findByIdAndUpdate(
-      { _id: subSectionId },
-      {
-        title: title && title,
-        timeDuration: uploadedVideoFile?.duration,
-        description: description && description,
-        videoUrl: uploadedVideoFile?.secure_url,
-      },
-      { new: true }
-    );
-    console.log(`something went wrong ${updatedSubSection}`);
+
+    // upload video file on cloudinary
+    if (videoFile) {
+      const uploadedVideoFile = await uploadOnCloudinary(
+        videoFile,
+        process.env.CLOUDINARY_VIDEO_FOLDER
+      );
+      console.log(`upladed video file is ${uploadedVideoFile?.secure_url}`);
+
+      if (!uploadedVideoFile) {
+        return res.status(400).json({
+          success: false,
+          message: " Error getting when upload on cloudinary",
+        });
+      }
+      
+      // save all data
+      subSection.videoUrl = uploadedVideoFile?.secure_url
+      subSection.timeDuration = uploadedVideoFile?.duration
+      
+    }
+
+    await subSection.save()
 
     const updatedSection = await Section.findById(sectionId)
       .populate("subSection")
       .exec();
 
-    console.log(`something went wrong ${updatedSection}`);
+    console.log(`updated section ${updatedSection}`);
 
     return res.status(200).json({
       success: true,
@@ -140,7 +142,7 @@ const updateSubSection = async (req, res) => {
     console.log(`something went wrong ${error}`);
     return res.status(500).json({
       success: false,
-      message: "update faild",
+      message: "update failed",
     });
   }
 };

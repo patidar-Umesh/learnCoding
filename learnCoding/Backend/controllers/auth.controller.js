@@ -18,7 +18,7 @@ const sendOTP = async (req, res) => {
 
     // check email in db
     const existEmail = await User.findOne({ email: email });
-    console.log(`exist email in db is ${existEmail}`);
+    // console.log(`exist email in db is ${existEmail}`);
 
     // send res if email exist
     if (existEmail) {
@@ -34,7 +34,7 @@ const sendOTP = async (req, res) => {
       specialChars: false,
       upperCaseAlphabets: false,
     });
-    console.log(`Generated OTP is ${generatedOTP}`);
+    // console.log(`Generated OTP is ${generatedOTP}`);
 
     // check otp in db
     let existOTP = await Otp.findOne({ otp: generatedOTP });
@@ -50,7 +50,7 @@ const sendOTP = async (req, res) => {
 
     // save email and OTP in DB
     let savedOTPEmail = await Otp.create({ email: email, otp: generatedOTP });
-    console.log(`Saved data is ${savedOTPEmail}`);
+    // console.log(`Saved data is ${savedOTPEmail}`);
 
     // send res
     res.status(200).json({
