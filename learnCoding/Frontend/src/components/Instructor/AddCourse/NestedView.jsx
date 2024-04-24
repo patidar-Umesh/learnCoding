@@ -25,8 +25,8 @@ export default function NestedView({ handleChangeEditSectionName }) {
 
   const [confirmationModal, setConfirmationModal] = useState(null);
 
-  console.log("updated course ", viewSubSection);
-  console.log("updated course ", course);
+  // console.log("updated course ", viewSubSection);
+  // console.log("updated course ", course);
 
   const handleDeleleSection = async (sectionId) => {
     const result = await deleteSection(
@@ -46,14 +46,14 @@ export default function NestedView({ handleChangeEditSectionName }) {
   const courseId = course._id;
 
   const handleDeleteSubSection = async (subSectionId, sectionId) => {
-    console.log("courseId",subSectionId, sectionId );
+    // console.log("courseId",subSectionId, sectionId );
     
     const result = await deleteSubSection(
       { subSectionId, sectionId, courseId },
       token
     );
+
     if (result) {
-      // update the structure of course
       const updatedCourseContent = course.courseContent?.map((section) =>
         section._id === sectionId ? result : section
       );
@@ -63,18 +63,15 @@ export default function NestedView({ handleChangeEditSectionName }) {
     setConfirmationModal(null);
   };
 
-  // useEffect(() => {
-  //   console.log("course", course);
-  // });
+ 
 
   return (
     <>
       <div
         className="rounded-lg bg-richblack-700 p-6 px-8"
-        id="nestedViewContainer"
+        // id="nestedViewContainer"
       >
         {course.courseContent?.map((section) => (
-          // Section Dropdown
           <details key={section._id} open>
             {/* Section Dropdown Content */}
             <summary className="flex cursor-pointer items-center justify-between border-b-2 border-b-richblack-600 py-2">
@@ -118,10 +115,10 @@ export default function NestedView({ handleChangeEditSectionName }) {
 
             <div className="px-6 pb-4">
               {/* Render All Sub Sections Within a Section */}
-              {section.subSection?.map((data) => (
+              {section?.subSection?.map((data) => (
                 <div
                   key={data?._id}
-                  onClick={() => console.log('kya hal hai',data)}
+                  onClick={() => setViewSubSection(data)}
                   className="flex cursor-pointer items-center justify-between gap-x-3 border-b-2 border-b-richblack-600 py-2"
                 >
                   <div className="flex items-center gap-x-3 py-2 ">

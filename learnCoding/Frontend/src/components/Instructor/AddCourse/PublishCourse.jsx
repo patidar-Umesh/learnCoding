@@ -50,6 +50,7 @@ export default function PublishCourse() {
 
     formData.append("status", courseStatus)
     setLoading(true)
+
     const result = await editCourseDetails(formData, token)
     if (result) {
       goToCourses()
@@ -57,7 +58,7 @@ export default function PublishCourse() {
     setLoading(false)
   }
 
-  const onSubmit = (data) => {
+  const publishHandle = () => {
     handleCoursePublish()
   }
 
@@ -66,7 +67,7 @@ export default function PublishCourse() {
       <p className="text-2xl font-semibold text-richblack-5">
         Publish Settings
       </p>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(publishHandle)}>
         {/* Checkbox */}
         <div className="my-6 mb-8">
           <label htmlFor="public" className="inline-flex items-center text-lg">

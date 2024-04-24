@@ -5,10 +5,6 @@ import CourseSubSectionAccordion from "./CourseSubSectionAccordion"
 export default function CourseAccordionBar({ course, isActive, handleActive }) {
   const contentEl = useRef(null)
 
-
-
-  
-
   const [active, setActive] = useState(false)
   useEffect(() => {
     setActive(isActive?.includes(course._id))

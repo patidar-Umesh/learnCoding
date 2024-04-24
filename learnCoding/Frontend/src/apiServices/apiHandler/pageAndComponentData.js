@@ -9,6 +9,7 @@ export const getCatalogaPageData = async(categoryId) => {
   try{
         const response = await apiConnector("POST", catalogData.CATALOGPAGEDATA_API, 
         {categoryId: categoryId,});
+        console.log("Category courses Api Res....", response);
 
         if(!response?.data?.success)
             throw new Error("Could not Fetch Category page data");
@@ -17,7 +18,7 @@ export const getCatalogaPageData = async(categoryId) => {
 
   }
   catch(error) {
-    console.log("CATALOG PAGE DATA API ERROR....", error);
+    console.log("Category courses Api Error....", error);
     toast.error(error.message);
     result = error.response?.data;
   }

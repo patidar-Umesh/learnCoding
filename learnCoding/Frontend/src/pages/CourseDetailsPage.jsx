@@ -207,7 +207,7 @@ const CourseDetailsPage = () => {
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="flex gap-2">
                   <span>
-                    {courseContent.length} {`section(s)`}
+                    {courseContent?.length} {`section(s)`}
                   </span>
                   <span>
                     {totalNoOfLectures} {`lecture(s)`}

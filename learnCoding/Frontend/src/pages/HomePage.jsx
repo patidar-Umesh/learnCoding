@@ -31,13 +31,13 @@ const HomePage = () => {
         if (!response?.data?.success) {
           throw new Error("Could Not Fetch Course Categories");
         }
-        setCourse(response.data.data);
-        console.log("courses ", response?.data?.data);
+        setCourse(response?.data?.data);
+        // console.log("courses ", response?.data?.data);
       } catch (error) {
         console.log("Get Course api error", error);
         toast.error(error.message);
       }
-      toast.dismiss(toastId);
+      // toast.dismiss(toastId);
     };
 
     getall();

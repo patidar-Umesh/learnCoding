@@ -96,6 +96,7 @@ const App = () => {
         </Route>
 
         <Route element={<PrivateRoute children={<ViewCoursePage />} />}>
+          
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
               <Route
