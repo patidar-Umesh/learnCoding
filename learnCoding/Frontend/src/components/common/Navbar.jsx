@@ -46,47 +46,33 @@ const Navbar = () => {
           <ul className="flex gap-x-6 text-richblack-25">
             {NavbarLinks.map((link, index) => (
               <li key={index}>
-                {link.title === "Catalog" ? (
+                {link.title === "Courses" ? (
                   <div className="relative flex items-center gap-2 group">
                     <p>{link.title}</p>
                     <IoIosArrowDropdownCircle />
 
-                    <div
-                      className="invisible absolute left-[50%]
-                                    translate-x-[-50%] translate-y-[80%]
-                                flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900
-                                opacity-0 transition-all duration-200 group-hover:visible
-                                group-hover:opacity-100 h-auto lg:w-[300px] space-y-2 z-30"
-                    >
-                      <div
-                        className="absolute left-[50%] top-0
-                                translate-x-[80%]
-                                translate-y-[-45%] h-6 w-6 rotate-45 rounded bg-richblack-5"
-                      ></div>
+                    <div className="absolute invisible top-[28px] left-1/2 transform -translate-x-1/2 translate-y-2 flex flex-col rounded-md bg-richblack-5 p-4 text-richblack-900 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 h-auto lg:w-[300px] space-y-2 z-50">
+                      <div className="absolute left-[50%] top-0 transform -translate-x-1/2 translate-y-[-45%] h-6 w-6 rotate-45 z-50 rounded bg-richblack-5"></div>
 
                       {loading ? (
                         <p className="spinner"></p>
                       ) : category ? (
                         <>
-                          {category
-                            // ?.filter((cate) => cate?.courses?.length > 0)
-                            ?.map((cate, index) => (
-                              <Link
-                                to={`/catalog/${cate.name
-                                  .split(" ")
-                                  .join("-")
-                                  .toLowerCase()}`}
-                                className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
-                                key={index}
-                              >
-                                <p>{cate.name} </p>
-                              </Link>
-                            ))}
+                          {category.map((cate, index) => (
+                            <Link
+                              to={`/category/${cate.name
+                                .split(" ")
+                                .join("-")
+                                .toLowerCase()}`}
+                              className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                              key={index}
+                            >
+                              <p>{cate.name}</p>
+                            </Link>
+                          ))}
                         </>
                       ) : (
-                        <p className="text-center">
-                          No Category Found
-                        </p>
+                        <p className="text-center">No Category Found</p>
                       )}
                     </div>
                   </div>

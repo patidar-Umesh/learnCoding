@@ -70,7 +70,7 @@ export const ratingsEndpoints = {
 
 // CATALOG PAGE DATA
 export const catalogData = {
-  CATALOGPAGEDATA_API: BASE_URL + "/category-courses",
+  CATALOGPAGEDATA_API: BASE_URL + "/course/category-courses",
 }
 
 // CONTACT-US API

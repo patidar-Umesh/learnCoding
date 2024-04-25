@@ -205,13 +205,16 @@ const HomePage = () => {
 
       {/*Section 3 */}
       <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white">
-        this is course slider herer
-        <CourseSlider Courses={course} />
+        {/* this is course slider herer */}
+        <CourseSlider Courses={course} nextPrevBtn='true' />
+
         {/* instructor section */}
         <InstructorSection />
+
         <h2 className="text-center text-4xl font-semobold mt-10">
           review from Other Learners
         </h2>
+
         {/* Review Slider here */}
         <ReviewSlider />
       </div>

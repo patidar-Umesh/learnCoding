@@ -1,5 +1,5 @@
 import AboutPage from './AboutPage';
-import CatalogPage from "./CatalogPage";
+import CategoryCoursePage from "./CategoryCoursePage";
 import ContactPage from "./ContactPage";
 import CourseDetailsPage from "./CourseDetailsPage";
 import DashboardPage from "./DashboardPage";
@@ -13,4 +13,4 @@ import VerifyEmailPage from "./VerifyEmailPage";
 import ViewCoursePage from './ViewCoursePage'
 
 
-export {AboutPage, CatalogPage, ContactPage, CourseDetailsPage, DashboardPage, ErrorPage, ForgotPasswordPage, HomePage, LoginPage, SignupPage, UpdatePasswordPage, VerifyEmailPage, ViewCoursePage}
+export {AboutPage, CategoryCoursePage, ContactPage, CourseDetailsPage, DashboardPage, ErrorPage, ForgotPasswordPage, HomePage, LoginPage, SignupPage, UpdatePasswordPage, VerifyEmailPage, ViewCoursePage}

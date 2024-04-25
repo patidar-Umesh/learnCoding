@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import {
   AboutPage,
-  CatalogPage,
+  CategoryCoursePage,
   ContactPage,
   CourseDetailsPage,
   DashboardPage,
@@ -40,7 +40,7 @@ const App = () => {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/catalog/:catalogName" element={<CatalogPage />} />
+        <Route path="/category/:categoryName" element={<CategoryCoursePage />} />
         <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
 
         <Route

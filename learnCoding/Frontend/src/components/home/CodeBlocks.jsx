@@ -22,13 +22,11 @@ const CodeBlocks = ({
 
         <div className="flex gap-7 mt-7">
           <Button
-            className="bg-yellow-50 text-black"
+            className="bg-yellow-50 flex justify-center items-center text-black"
             linkto={btn1.linkto}
             btnText={btn1.btnText}
           >
-            <div className="flex gap-2 items-center">
-              <FaArrowRight />
-            </div>
+              <FaArrowRight className="mx-2" />
           </Button>
 
           <Button
@@ -41,7 +39,6 @@ const CodeBlocks = ({
 
       {/*Section 2*/}
       <div className=" h-fit  flex flex-row text-10[px] w-[100%] py-4 lg:w-[500px]">
-        {/*HW -> BG gradient*/}
 
         <div className="text-center flex flex-col w-[10%] text-richblack-400 font-inter font-bold">
           <p>1</p>
