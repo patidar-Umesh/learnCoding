@@ -19,12 +19,16 @@ const creatCourse = async (req, res) => {
       courseTitle,
       courseDescription,
       whatYouWillLearn,
-      tag,
+      tag: _tag,
       price,
       category,
-      instructions,
+      instructions: _instructions,
       status,
     } = req.body;
+
+    const tag = JSON.parse(_tag);
+    const instructions = JSON.parse(_instructions);
+    console.log("type", tag, instructions);
 
     console.log(
       courseTitle,
@@ -36,6 +40,7 @@ const creatCourse = async (req, res) => {
       instructions,
       status
     );
+
     let image = req.files.image;
 
     // validate fields
@@ -110,10 +115,16 @@ const creatCourse = async (req, res) => {
     });
 
     // insert course id in category collection
-    categoryInfo.courses = course._id
-    await categoryInfo.save()
+    // categoryInfo.courses = course._id
+    await Category.findByIdAndUpdate(
+      { _id: category },
+      {
+        $push: {
+          courses: course._id,
+        },
+      }
+    );
 
-    
     console.log("created course", course);
 
     // save course id in user schema
@@ -143,7 +154,15 @@ const creatCourse = async (req, res) => {
 // edit course
 const editCourse = async (req, res) => {
   try {
-    const { courseId, courseTitle, whatYouWillLearn,  courseDescription, price, category,instructions  } = req.body;
+    const {
+      courseId,
+      courseTitle,
+      whatYouWillLearn,
+      courseDescription,
+      price,
+      category,
+      instructions,
+    } = req.body;
     const updates = req.body;
 
     // console.log("edit course",courseId, courseTitle, whatYouWillLearn,  courseDescription, price, category,instructions );
@@ -199,7 +218,7 @@ const editCourse = async (req, res) => {
       })
       .exec();
 
-   return res.json({
+    return res.json({
       success: true,
       message: "Course Updated Successfully",
       data: updatedCourse,
@@ -239,7 +258,7 @@ const allCourses = async (req, res) => {
 
 const getCourseDetails = async (req, res) => {
   try {
-    const { courseId } = req.body
+    const { courseId } = req.body;
 
     const courseDetails = await Course.findOne({
       _id: courseId,
@@ -259,13 +278,13 @@ const getCourseDetails = async (req, res) => {
           select: "-videoUrl",
         },
       })
-      .exec()
+      .exec();
 
     if (!courseDetails) {
       return res.status(400).json({
         success: false,
         message: `Could not find course with id: ${courseId}`,
-      })
+      });
     }
 
     // if (courseDetails.status === "Draft") {
@@ -275,15 +294,15 @@ const getCourseDetails = async (req, res) => {
     //   });
     // }
 
-    let totalDurationInSeconds = 0
+    let totalDurationInSeconds = 0;
     courseDetails.courseContent.forEach((content) => {
       content.subSection.forEach((subSection) => {
-        const timeDurationInSeconds = parseInt(subSection.timeDuration)
-        totalDurationInSeconds += timeDurationInSeconds
-      })
-    })
+        const timeDurationInSeconds = parseInt(subSection.timeDuration);
+        totalDurationInSeconds += timeDurationInSeconds;
+      });
+    });
 
-    const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
 
     return res.status(200).json({
       success: true,
@@ -291,15 +310,14 @@ const getCourseDetails = async (req, res) => {
         courseDetails,
         totalDuration,
       },
-    })
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: error.message,
-    })
+    });
   }
-}
-
+};
 
 // get full details of course
 const getFullCourseDetails = async (req, res) => {
@@ -307,7 +325,7 @@ const getFullCourseDetails = async (req, res) => {
     const { courseId } = req.body;
     console.log("course id ", courseId);
 
-    const userId = req.user.id
+    const userId = req.user.id;
 
     const courseDetails = await Course.findOne({
       _id: courseId,
@@ -331,7 +349,7 @@ const getFullCourseDetails = async (req, res) => {
     let courseProgressCount = await CoursePorgress.findOne({
       courseID: courseId,
       userId: userId,
-    })
+    });
 
     // console.log("courseProgressCount : ", courseProgressCount)
 
@@ -349,25 +367,24 @@ const getFullCourseDetails = async (req, res) => {
     //   });
     // }
 
-    let totalDurationInSeconds = 0
+    let totalDurationInSeconds = 0;
     courseDetails.courseContent.forEach((content) => {
       content.subSection.forEach((subSection) => {
-        const timeDurationInSeconds = parseInt(subSection.timeDuration)
-        totalDurationInSeconds += timeDurationInSeconds
-      })
-    })
+        const timeDurationInSeconds = parseInt(subSection.timeDuration);
+        totalDurationInSeconds += timeDurationInSeconds;
+      });
+    });
 
-    const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
 
     return res.status(200).json({
       success: true,
-      data: {courseDetails},
+      data: { courseDetails },
       totalDuration,
       completedVideos: courseProgressCount?.completedVideos
         ? courseProgressCount?.completedVideos
         : [],
-      }
-    );
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -375,7 +392,6 @@ const getFullCourseDetails = async (req, res) => {
     });
   }
 };
-
 
 // get course by instructor
 const getInstructorCourses = async (req, res) => {
@@ -403,14 +419,13 @@ const getInstructorCourses = async (req, res) => {
   }
 };
 
-
 // delete course
 const deleteCourse = async (req, res) => {
   try {
     // fetch course id
     const { courseId } = req.body;
 
-    const course = await Course.findById({ _id: courseId });
+    const course = await Course.findById(courseId);
 
     const sections = course.courseContent;
 
@@ -441,20 +456,20 @@ const deleteCourse = async (req, res) => {
           );
 
           // delete subsections
-          await SubSection.findByIdAndDelete({_id: subSectionId});
+          await SubSection.findByIdAndDelete({ _id: subSectionId });
         }
       }
     }
 
     // delete img file from cloudinary
-    console.log('image', course.image);
+    // console.log("image", course.image);
     const deletedImageFile = await deleteFromCloudinary(course?.image);
 
     if (deletedImageFile?.result !== "ok") {
       console.log("Getting error from cloudinary image");
       return res.status(404).json({
         success: false,
-        message: "somthing went wrong when deleted image from coudinary",
+        message: "somthing went wrong when delete image from coudinary",
       });
     }
 
