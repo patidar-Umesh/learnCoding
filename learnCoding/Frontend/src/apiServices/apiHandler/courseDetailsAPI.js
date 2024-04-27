@@ -332,7 +332,7 @@ export const deleteCourse = async (data, token) => {
 
 // get full details of a course
 export const getFullDetailsOfCourse = async (courseId, token) => {
-  console.log("courseid 324", courseId, token);
+  // console.log("courseid 324", courseId, token);
   // const toastId = toast.loading("Loading...");
 
   let result = null;

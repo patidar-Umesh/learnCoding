@@ -12,6 +12,7 @@ export default function RenderTotalAmount() {
   const dispatch = useDispatch()
 
   const handleBuyCourse = () => {
+    console.log('kya hal chal hai');
     const courses = cart.map((course) => course._id)
     buyCourse(token, courses, user, navigate, dispatch)
   }
@@ -23,7 +24,7 @@ export default function RenderTotalAmount() {
       <Button
         btnText='Buy Now'
         className='text-[1rem] bg-yellow-50'
-        onclick={handleBuyCourse}
+        onClick={handleBuyCourse}
       />
     </div>
   )

@@ -39,10 +39,10 @@ export function getUserDetails(token, navigate) {
 }
 
 
-// get buy courses
-
+// get buy courses of student
 export async function getUserEnrolledCourses(token) {
   const toastId = toast.loading("Loading...")
+  console.log('token',token);
   let result = []
   try {
     const response = await apiConnector(

@@ -32,15 +32,15 @@ const CourseDetailsPage = () => {
   const [confirmationModal, setConfirmationModal] = useState(null);
 
   const fetchCourse = async () => {
-    console.log("course details response: ");
+    // console.log("course details response: ");
     try {
       const res = await getCourseDetails(courseId);
 
-      console.log("Course details api res", res);
+      // console.log("Course details api res", res);
 
       setResponse(res);
-      console.log("result is", res);
-      console.log("response is", response);
+      // console.log("result is", res);
+      // console.log("response is", response);
     } catch (error) {
       console.log("Course details api error", error);
     }
@@ -50,7 +50,7 @@ const CourseDetailsPage = () => {
     fetchCourse();
   }, [courseId]);
 
-  console.log("course details response: ", response);
+  // console.log("course details response: ", response);
 
   // Calculating Avg Review count
   const [avgReviewCount, setAvgReviewCount] = useState(0);
@@ -58,7 +58,7 @@ const CourseDetailsPage = () => {
     const count = GetAvgRating(response?.data?.courseDetails.ratingAndReviews);
     setAvgReviewCount(count);
   }, [response]);
-  console.log("avgReviewCount: ", avgReviewCount);
+  // console.log("avgReviewCount: ", avgReviewCount);
 
   // // Collapse all
   const [collapse, setCollapse] = useState("");
@@ -162,7 +162,7 @@ const CourseDetailsPage = () => {
               </div>
               <div>
                 <p className="">
-                  Created By {`${instructor.firstName} ${instructor.lastName}`}
+                  Created By {`${instructor?.firstName} ${instructor?.lastName}`}
                 </p>
               </div>
               <div className="flex flex-wrap gap-5 text-lg">
@@ -186,10 +186,9 @@ const CourseDetailsPage = () => {
               handleBuyCourse={handleBuyCourse}
             />
           </div>
-
         </div>
       </div>
-      
+
       <div className="mx-auto box-content px-4 text-start text-richblack-5 lg:w-[1260px]">
         <div className="mx-auto max-w-maxContentTab lg:mx-0 xl:max-w-[810px]">
           {/* What will you learn section */}
@@ -240,18 +239,20 @@ const CourseDetailsPage = () => {
             {/* Author Details */}
             <div className="mb-12 py-4">
               <p className="text-[28px] font-semibold">Author</p>
+
               <div className="flex items-center gap-4 py-4">
                 <img
                   src={
                     instructor.image
                       ? instructor.image
-                      : `https://api.dicebear.com/5.x/initials/svg?seed=${instructor.firstName} ${instructor.lastName}`
+                      : `https://api.dicebear.com/5.x/initials/svg?seed=${instructor?.firstName} ${instructor?.lastName}`
                   }
                   alt="Author"
                   className="h-14 w-14 rounded-full object-cover"
                 />
-                <p className="text-lg">{`${instructor.firstName} ${instructor.lastName}`}</p>
+                <p className="text-lg">{`${instructor?.firstName} ${instructor?.lastName}`}</p>
               </div>
+
               <p className="text-richblack-50">
                 {instructor?.additionalDetails?.about}
               </p>
@@ -260,6 +261,7 @@ const CourseDetailsPage = () => {
         </div>
       </div>
 
+      {/* footer components */}
       <Footer />
 
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}

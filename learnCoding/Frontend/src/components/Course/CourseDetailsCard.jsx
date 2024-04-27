@@ -17,16 +17,20 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
 
   // console.log("image is", course.image);
 
+  // copy link handler
   const handleShare = () => {
     copy(window.location.href);
     toast.success("Link copied to clipboard");
   };
 
+
+  // add to cart handler
   const handleAddToCart = () => {
     if (user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
       toast.error("You are an Instructor. You can't buy a course.");
       return;
     }
+    
     if (token) {
       dispatch(addToCart(course));
       return;
@@ -100,6 +104,8 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
               })}
             </div>
           </div>
+
+              {/* share btn */}
           <div className="text-center">
             <button
               className="mx-auto flex items-center gap-2 py-6 text-yellow-100 "
@@ -108,6 +114,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
               <FaShareSquare size={15} /> Share
             </button>
           </div>
+
         </div>
       </div>
     </>

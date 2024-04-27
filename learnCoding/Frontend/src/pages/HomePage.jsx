@@ -18,7 +18,7 @@ import { toast } from "react-hot-toast";
 
 const HomePage = () => {
   const [course, setCourse] = useState([]);
-  console.log("courses", course);
+  // console.log("courses", course);
 
   useEffect(() => {
     const getall = async () => {

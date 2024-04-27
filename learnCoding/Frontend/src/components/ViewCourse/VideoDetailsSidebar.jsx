@@ -19,7 +19,7 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
 
     useEffect(()=> {
         const setActiveFlags = () => {
-            if(!courseSectionData.length)
+            if(!courseSectionData?.length)
                 return;
             const currentSectionIndex = courseSectionData.findIndex(
                 (data) => data._id === sectionId
@@ -47,7 +47,7 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
             {/* for buttons and headings */}
             <div>
                 {/* for buttons */}
-                <div>
+                <div> hello ji
                     <div 
                     onClick={()=> {
                         navigate("/dashboard/enrolled-courses")
@@ -74,7 +74,7 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
             {/* for sections and subSections */}
             <div>
                 {
-                    courseSectionData.map((course, index)=> (
+                    courseSectionData?.map((course, index)=> (
                         <div
                         onClick={() => setActiveStatus(course?._id)}
                         key={index}
