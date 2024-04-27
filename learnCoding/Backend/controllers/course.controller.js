@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Category } from "../models/category.model.js";
 import { Course } from "../models/course.model.js";
 import { User } from "../models/user.model.js";
-import { CoursePorgress } from "../models/courseProgress.model.js";
+import { CourseProgress } from "../models/courseProgress.model.js";
 import {
   deleteFromCloudinary,
   uploadOnCloudinary,
@@ -346,7 +346,7 @@ const getFullCourseDetails = async (req, res) => {
       })
       .exec();
 
-    let courseProgressCount = await CoursePorgress.findOne({
+    let courseProgressCount = await CourseProgress.findOne({
       courseID: courseId,
       userId: userId,
     });

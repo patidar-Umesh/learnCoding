@@ -56,7 +56,7 @@ router.get("/all-courses", allCourses);
 router.post("/get-course-details", getCourseDetails);
 
 // get full details by instructor
-router.post("/get-full-course-details", verifyJWT, isInstructor, getFullCourseDetails);
+router.post("/get-full-course-details", verifyJWT,  getFullCourseDetails);
 
 
 // get course by instructor

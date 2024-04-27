@@ -1,217 +1,223 @@
 import { Course } from "../models/course.model.js";
-import { CoursePorgress } from "../models/courseProgress.model.js"; 
+import { CourseProgress } from "../models/courseProgress.model.js";
 import { User } from "../models/user.model.js";
-import {uploadOnCloudinary} from '../utils/cloudinary.js';
-import {Profile} from '../models/profile.model.js'
-
-
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { Profile } from "../models/profile.model.js";
+import convertSecondsToDuration from "../utils/secToDuration.js";
 
 const updateProfile = async (req, res) => {
-	try {
-		const { dateOfBirth , about , contactNumber, gender, lastName, firstName } = req.body;
-		const id = req.user.id;
+  try {
+    const { dateOfBirth, about, contactNumber, gender, lastName, firstName } =
+      req.body;
+    const id = req.user.id;
 
-		console.log('profile ',dateOfBirth , about ,contactNumber, gender);
+    // console.log("profile ", dateOfBirth, about, contactNumber, gender);
+	
+    // Find the profile by id
+    const userDetails = await User.findByIdAndUpdate(id, {
+      firstName: firstName,
+      lastName: lastName,
+    })
+      .select("-password")
+      .populate("additionalDetails");
 
+    // update details in profile additionalDetails
+    const profile = await Profile.findByIdAndUpdate(
+      { _id: userDetails.additionalDetails._id },
+      {
+        dateOfBirth: dateOfBirth,
+        about: about,
+        gender: gender,
+        contactNumber: contactNumber,
+      },
+      { new: true }
+    );
 
-		// Find the profile by id
-		const userDetails = await User.findByIdAndUpdate(id,{firstName: firstName, lastName: lastName}).select("-password");
-		// console.log('user is', userDetails);
+    // console.log('user is', userDetails);
 
-        // update details in profile additionalDetails
-		const profile = await Profile.findByIdAndUpdate({_id: userDetails.additionalDetails._id},{
-            dateOfBirth: dateOfBirth,
-            about: about,
-			gender: gender,
-            contactNumber: contactNumber
-        },
-	{new: true});
+    if (!profile) {
+      return res.status(200).json({
+        success: false,
+        message: "No additioanl details available",
+      });
+    }
 
+    console.log("user", userDetails);
 
-
-		if(!profile){
-			return res.status(200).json({
-				success: false,
-				message: "No additioanl details available",
-			});
-		}
-
-		return res.status(200).json({
-			success: true,
-			message: "Profile updated successfully",
-			data: profile
-		});
-	} catch (error) {
-		console.log(error);
-		return res.status(500).json({
-			success: false,
-			error: error.message,
-		});
-	}
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: userDetails,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
 };
 
 const deleteAccount = async (req, res) => {
-	try {
-	
-		const id = req.user.id;
-		console.log("user id is ", req.user.id);
-		
-		const user = await User.findById({ _id: id });
-		if (!user) {
-			return res.status(404).json({
-				success: false,
-				message: "User not found",
-			});
-		}
+  try {
+    const id = req.user.id;
+    console.log("user id is ", req.user.id);
 
-		// delete  Profile   
-		await Profile.findByIdAndDelete({ _id: user.additionalDetails });
+    const user = await User.findById({ _id: id });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
-		//  Delete User
-		await User.findByIdAndDelete({ _id: id });
+    // delete  Profile
+    await Profile.findByIdAndDelete({ _id: user.additionalDetails });
 
-		res.status(200).json({
-			success: true,
-			message: "User deleted successfully",
-		});
-	} catch (error) {
-		console.log(error);
-		res
-			.status(500)
-			.json({ success: false, message: "User Cannot be deleted successfully" });
-	}
+    //  Delete User
+    await User.findByIdAndDelete({ _id: id });
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, message: "User Cannot be deleted successfully" });
+  }
 };
 
 const getUserAllDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    // const {id} = req.body
+
+    // get all details of user
+    const userDetails = await User.findById({ _id: id })
+      .populate("additionalDetails")
+      .exec();
+
+    console.log(userDetails);
+
+    res.status(200).json({
+      success: true,
+      message: "User Data fetched successfully",
+      data: userDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "somthing error when getting all details",
+    });
+  }
+};
+
+const updateProfilePicture = async (req, res) => {
+  try {
+    // fecth image
+    const image = req.files.image;
+    const userId = req.user.id;
+
+    console.log("image", image);
+
+    // upload profile image on clodinary
+    const savedImg = await uploadOnCloudinary(
+      image,
+      process.env.FOLDER_NAME,
+      1000,
+      1000
+    );
+    console.log(image);
+
+    // update in db
+    const updatedProfile = await User.findByIdAndUpdate(
+      { _id: userId },
+      { image: savedImg.secure_url },
+      { new: true }
+    );
+
+    return res.send({
+      success: true,
+      message: `Image Updated successfully`,
+      data: updatedProfile,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+const getEnrolledCourses = async (req, res) => {
 	try {
-		const id = req.user.id;
-		// const {id} = req.body
+	  const userId = req.user.id
+    
+	  let userDetails = await User.findOne({
+		_id: userId,
+	  })
+		.populate({
+		  path: "courses",
+		  populate: {
+			path: "courseContent",
+			populate: {
+			  path: "subSection",
+			},
+		  },
+		})
+		.exec()
 
-        // get all details of user
-		const userDetails = await User.findById({_id: id},)
-			.populate("additionalDetails")
-			.exec();
+	  userDetails = userDetails.toObject()
+	  var SubsectionLength = 0
+	  for (var i = 0; i < userDetails.courses.length; i++) {
+		let totalDurationInSeconds = 0
+		SubsectionLength = 0
+		for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
+		  totalDurationInSeconds += userDetails.courses[i].courseContent[
+			j
+		  ].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
+		  userDetails.courses[i].totalDuration = convertSecondsToDuration(
+			totalDurationInSeconds
+		  )
+		  SubsectionLength +=
+			userDetails.courses[i].courseContent[j].subSection?.length
+		}
+		let courseProgressCount = await CourseProgress.findOne({
+		  courseID: userDetails.courses[i]._id,
+		  userId: userId,
+		})
+		courseProgressCount = courseProgressCount?.completedVideos?.length
+		if (SubsectionLength === 0) {
+		  userDetails.courses[i].progressPercentage = 100
+		} else {
+		  // To make it up to 2 decimal point
+		  const multiplier = Math.pow(10, 2)
+		  userDetails.courses[i].progressPercentage =
+			Math.round(
+			  (courseProgressCount / SubsectionLength) * 100 * multiplier
+			) / multiplier
+		}
+	  }
 
-			
-		console.log(userDetails);
-
-		res.status(200).json({
-			success: true,
-			message: "User Data fetched successfully",
-			data: userDetails,
-		});
+	  if (!userDetails) {
+		return res.status(400).json({
+		  success: false,
+		  message: `Could not find user with id: ${userDetails}`,
+		})
+	  }
+	  return res.status(200).json({
+		success: true,
+		data: userDetails.courses,
+	  })
 	} catch (error) {
-		return res.status(500).json({
-			success: false,
-			message: 'somthing error when getting all details'
-		});
+	  return res.status(500).json({
+		success: false,
+		message: error.message,
+	  })
 	}
-};
-
-const  updateProfilePicture = async (req, res) => {
-    try {
-        // fecth image 
-      const image = req.files.image
-      const userId = req.user.id
-
-	  console.log('image', image);
-
-
-      // upload profile image on clodinary
-      const savedImg = await uploadOnCloudinary(
-        image,
-        process.env.FOLDER_NAME,
-        1000,
-        1000
-      )
-      console.log(image)
-
-      // update in db
-      const updatedProfile = await User.findByIdAndUpdate(
-        { _id: userId },
-        { image: savedImg.secure_url },
-        { new: true }
-      )
-
-      return res.send({
-        success: true,
-        message: `Image Updated successfully`,
-        data: updatedProfile,
-      })
-    } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: error.message,
-      })
-    }
-};
-  
-// const getEnrolledCourses = async (req, res) => {
-// 	try {
-// 	  const userId = req.user.id
-// 	  let userDetails = await User.findOne({
-// 		_id: userId,
-// 	  })
-// 		.populate({
-// 		  path: "courses",
-// 		  populate: {
-// 			path: "courseContent",
-// 			populate: {
-// 			  path: "subSection",
-// 			},
-// 		  },
-// 		})
-// 		.exec()
-
-// 	  userDetails = userDetails.toObject()
-// 	  var SubsectionLength = 0
-// 	  for (var i = 0; i < userDetails.courses.length; i++) {
-// 		let totalDurationInSeconds = 0
-// 		SubsectionLength = 0
-// 		for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
-// 		  totalDurationInSeconds += userDetails.courses[i].courseContent[
-// 			j
-// 		  ].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
-// 		  userDetails.courses[i].totalDuration = convertSecondsToDuration(
-// 			totalDurationInSeconds
-// 		  )
-// 		  SubsectionLength +=
-// 			userDetails.courses[i].courseContent[j].subSection.length
-// 		}
-// 		let courseProgressCount = await CourseProgress.findOne({
-// 		  courseID: userDetails.courses[i]._id,
-// 		  userId: userId,
-// 		})
-// 		courseProgressCount = courseProgressCount?.completedVideos.length
-// 		if (SubsectionLength === 0) {
-// 		  userDetails.courses[i].progressPercentage = 100
-// 		} else {
-// 		  // To make it up to 2 decimal point
-// 		  const multiplier = Math.pow(10, 2)
-// 		  userDetails.courses[i].progressPercentage =
-// 			Math.round(
-// 			  (courseProgressCount / SubsectionLength) * 100 * multiplier
-// 			) / multiplier
-// 		}
-// 	  }
-  
-// 	  if (!userDetails) {
-// 		return res.status(400).json({
-// 		  success: false,
-// 		  message: `Could not find user with id: ${userDetails}`,
-// 		})
-// 	  }
-// 	  return res.status(200).json({
-// 		success: true,
-// 		data: userDetails.courses,
-// 	  })
-// 	} catch (error) {
-// 	  return res.status(500).json({
-// 		success: false,
-// 		message: error.message,
-// 	  })
-// 	}
-//   }
+  }
 
 // const instructorDashboard = async(req, res) => {
 // 	try{
@@ -241,6 +247,10 @@ const  updateProfilePicture = async (req, res) => {
 // 	}
 // }
 
-
-
-export {updateProfile, updateProfilePicture, deleteAccount, getUserAllDetails}
+export {
+  updateProfile,
+  updateProfilePicture,
+  deleteAccount,
+  getUserAllDetails,
+  getEnrolledCourses
+};

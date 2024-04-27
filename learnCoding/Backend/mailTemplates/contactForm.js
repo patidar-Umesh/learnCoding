@@ -62,7 +62,7 @@ export const contactUsEmail = (
     
     <body>
         <div class="container">
-            <a href="https://learnCoding-edtech-project.vercel.app"><img class="logo"
+            <a href="https://LearnCoding-edtech-project.vercel.app"><img class="logo"
                     src="" alt="LearnCoding Logo"></a>
             <div class="message">Contact Form Confirmation</div>
             <div class="body">
@@ -77,9 +77,9 @@ export const contactUsEmail = (
                 <p>We appreciate your interest and will get back to you shortly. </p>
             </div>
             <div class="support">If you have any further questions or need immediate assistance, please feel free to reach
-                out to us at <a href="mailto:info@learncoding.com">info@learncoding.com</a>. We are here to help!</div>
+                out to us at <a href="mailto:info@Learncoding.com">info@Learncoding.com</a>. We are here to help!</div>
         </div>
-    </body>
+    </body>L
     
     </html>`
   }

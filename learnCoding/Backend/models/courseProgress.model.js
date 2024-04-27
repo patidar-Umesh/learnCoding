@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const coursePorgressSchema = new mongoose.Schema({
+const courseProgressSchema = new mongoose.Schema({
     
   courseId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -16,7 +16,7 @@ const coursePorgressSchema = new mongoose.Schema({
 },
 {timestamps: true});
 
-export const CoursePorgress = mongoose.model(
+export const CourseProgress = mongoose.model(
   "courseProgress",
-  coursePorgressSchema
+  courseProgressSchema
 );

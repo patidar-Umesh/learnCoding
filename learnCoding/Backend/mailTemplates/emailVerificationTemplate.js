@@ -76,7 +76,7 @@ export const otpTemplate = (otp) => {
 				Once your account is verified, you will have access to our platform and its features.</p>
 			</div>
 			<div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
-					href="mailto:support@learnCoding.com">support@learnCoding.com</a>. We are here to help!</div>
+					href="mailto:support@LearnCoding.com">support@LearnCoding.com</a>. We are here to help!</div>
 		</div>
 	</body>
 	

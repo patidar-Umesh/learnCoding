@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import { verifyJWT, isInstructor }  from "../middlewares/auth.middleware.js"
-import {deleteAccount, updateProfile, getUserAllDetails, updateProfilePicture} from '../controllers/profile.controller.js';
+import {deleteAccount, updateProfile, getUserAllDetails, updateProfilePicture, getEnrolledCourses} from '../controllers/profile.controller.js';
 
 const router = Router()
 
@@ -17,7 +17,7 @@ router.get("/getUserDetails", verifyJWT, getUserAllDetails)
 router.put("/update-display-picture", verifyJWT, updateProfilePicture)
 
 // Get Enrolled Courses
-// router.get("/getEnrolledCourses", verifyJWT, getEnrolledCourses)
+router.get("/get-enrolled-courses", verifyJWT, getEnrolledCourses)
 // router.get("/instructorDashboard", verifyJWT, isInstructor, instructorDashboard)
 
 export default router
