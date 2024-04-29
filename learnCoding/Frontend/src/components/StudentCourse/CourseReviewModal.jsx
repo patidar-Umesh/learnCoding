@@ -8,7 +8,7 @@ import ReactStars from "react-rating-stars-component";
 const CourseReviewModal = ({setReviewModal}) => {
     const {user} = useSelector((state)=>state.profile);
     const {token} = useSelector((state) => state.auth);
-    const {courseEntireData} = useSelector((state)=> state.viewCourse);
+    const {courseEntireData} = useSelector((state)=> state.studentCourse);
 
     const {
         register,
@@ -18,6 +18,7 @@ const CourseReviewModal = ({setReviewModal}) => {
     } = useForm();
 
     useEffect(()=> {
+        // console.log('course data is', courseEntireData?.courseDetails._id);
         setValue("courseExperience", "");
         setValue("courseRating", 0);
     },[])
@@ -26,10 +27,10 @@ const CourseReviewModal = ({setReviewModal}) => {
         setValue("courseRating", newRating);
     }
 
-    const onSubmit = async(data) => {
+    const ratingAndReviewHandler = async(data) => {
         await createRating(
             {
-                courseId:courseEntireData._id,
+                courseId:courseEntireData?.courseDetails._id,
                 rating:data.courseRating,
                 review:data.courseExperience,
             },
@@ -68,7 +69,7 @@ const CourseReviewModal = ({setReviewModal}) => {
 
 
                 <form
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(ratingAndReviewHandler)}
                 className='mt-6 flex flex-col items-center'>
 
                     <ReactStars 

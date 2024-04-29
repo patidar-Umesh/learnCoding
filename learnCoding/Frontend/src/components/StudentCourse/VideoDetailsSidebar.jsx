@@ -2,22 +2,27 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import IconBtn from '../common/IconBtn';
+import { FaChevronDown, FaChevronUp  } from "react-icons/fa";
 
 const VideoDetailsSidebar = ({setReviewModal}) => {
 
     const [activeStatus, setActiveStatus] = useState("");
     const [videoBarActive, setVideoBarActive] = useState("");
+    const [active, setActive] = useState(true)
+
     const navigate = useNavigate();
     const location = useLocation();
     const {sectionId, subSectionId} = useParams();
+
     const {
         courseSectionData,
         courseEntireData,
         totalNoOfLectures,
         completedLectures,
-    } = useSelector((state)=>state.viewCourse);
+    } = useSelector((state)=>state.studentCourse);
 
     useEffect(()=> {
+        console.log("entire data",active);
         const setActiveFlags = () => {
             if(!courseSectionData?.length)
                 return;
@@ -34,89 +39,91 @@ const VideoDetailsSidebar = ({setReviewModal}) => {
             setVideoBarActive(activeSubSectionId);
         }
         setActiveFlags();
-    },[courseSectionData, courseEntireData, location.pathname])
+    },[courseSectionData, courseEntireData, location.pathname, active])
 
-    const handleAddReview = () => {
-        console.log("I am inside Add handleAddReview")
-        setReviewModal(true);
-    }
+
+    // add review handler
+    // const handleAddReview = () => {
+    //     console.log("I am inside Add handleAddReview")
+    //     setReviewModal(true);
+    // }
 
   return (
     <>
         <div className='text-white'>
-            {/* for buttons and headings */}
+            {/*  buttons and headings */}
             <div>
-                {/* for buttons */}
-                <div> hello ji
-                    <div 
+                {/* buttons */}
+                <div className=''>
+                    <button 
                     onClick={()=> {
                         navigate("/dashboard/enrolled-courses")
                     }}
                     >
                         Back
-                    </div>
+                    </button>
 
                     <div>
                         <IconBtn 
                             text="Add Review"
-                            onclick={() => handleAddReview()}
+                            onclick={()=>  setReviewModal(true)}
                         />
                     </div>
 
                 </div>
-                {/* for heading or title */}
+                {/* heading or title */}
                 <div>
                     <p>{courseEntireData?.courseName}</p>
                     <p>{completedLectures?.length} / {totalNoOfLectures}</p>
                 </div>
             </div>
 
-            {/* for sections and subSections */}
+            {/*  sections and subSections */}
             <div>
                 {
-                    courseSectionData?.map((course, index)=> (
-                        <div
-                        onClick={() => setActiveStatus(course?._id)}
+                    courseSectionData?.map((section, index)=> (
+                        <div className='my-2'
+                        onClick={() => setActiveStatus(section?._id)}
                         key={index}
                         >
 
                             {/* section */}
 
-                            <div>
-                                <div>
-                                    {course?.sectionName}
+                            <div className='bg-[gray] px-1 py-2 items-center gap-y-4 flex justify-between' > 
+                                <div >
+                                    {section?.sectionName}
                                 </div>
-                                {/* HW- add icon here and handle rotate 180 logic */}
+                                <FaChevronUp/> 
                             </div>
 
                             {/* subSections */}
                             <div>
                                 {
-                                    activeStatus === course?._id && (
+                                    activeStatus === section?._id && (
                                         <div>
                                             {
-                                                course.subSection.map((topic, index) => (
+                                                section.subSection.map((subSec, index) => (
                                                     <div
-                                                    className={`flex gap-5 p-5 ${
-                                                        videoBarActive === topic._id
+                                                    className={`flex gap-x-5 gap-y-1 p-5 ${
+                                                        videoBarActive === subSec._id
                                                         ? "bg-yellow-200 text-richblack-900"
-                                                        : "bg-richblack-900 text-white"
+                                                        : "bg-pure-greys-600 text-white"
                                                     }`}
                                                     key={index}
                                                     onClick={() => {
                                                         navigate(
-                                                            `/view-course/${courseEntireData?._id}/section/${course?._id}/sub-section/${topic?._id}`
+                                                            `/view-course/${courseEntireData?._id}/section/${section?._id}/sub-section/${subSec?._id}`
                                                         )
-                                                        setVideoBarActive(topic?._id);
+                                                        setVideoBarActive(subSec?._id);
                                                     }}
                                                     >
                                                         <input
                                                         type='checkbox'
-                                                        checked= {completedLectures.includes(topic?._id)}
+                                                        checked= {completedLectures.includes(subSec?._id)}
                                                         onChange={() => {}}
                                                         />
                                                         <span>
-                                                            {topic.title}
+                                                            {subSec.title}
                                                         </span>
                                                     </div>
                                                 ))

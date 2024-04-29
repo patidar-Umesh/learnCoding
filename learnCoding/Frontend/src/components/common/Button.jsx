@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Button = ({
   btnText,
-  type,
-  // disabled,
+  type='button',
+  disabled,
   className,
   children,
   linkTo,
@@ -14,9 +14,9 @@ const Button = ({
   return (
     <Link to={linkTo}>
       <button
+      onClick={onClick}
         type={type}
-        // disabled={disabled}
-        onClick={onClick}
+        disabled={disabled}
         className={` text-center text-[16px] px-6 py-3 bg-richblack-200 rounded-md font-bold
         hover:scale-95 transition-all text-black duration-200 ${className}
         `}

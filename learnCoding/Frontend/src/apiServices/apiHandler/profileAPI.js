@@ -27,7 +27,7 @@ export function getUserDetails(token, navigate) {
       //   ? response.data.data.image
       //   : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`
       dispatch(setUser({ ...response.data }))
-      console.log('user', response.data.data);
+      // console.log('user', response.data.data);
     } catch (error) {
       dispatch(logout(navigate))
       console.log("User api error", error)
@@ -42,7 +42,6 @@ export function getUserDetails(token, navigate) {
 // get buy courses of student
 export async function getUserEnrolledCourses(token) {
   const toastId = toast.loading("Loading...")
-  console.log('token',token);
   let result = []
   try {
     const response = await apiConnector(
@@ -53,7 +52,7 @@ export async function getUserEnrolledCourses(token) {
         Authorization: `Bearer ${token}`,
       }
     )
-    console.log("response is", response);
+    // console.log("response is", response);
     
     if (!response.data.success) {
       throw new Error(response.data.message)

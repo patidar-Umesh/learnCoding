@@ -48,7 +48,7 @@ const ReviewSlider = () => {
             >
 
                 {
-                    reviews.map((review, index) => (
+                    reviews?.map((review, index) => (
                         <SwiperSlide key={index}>
                             <img
                             src={review?.user?.image
@@ -63,6 +63,7 @@ const ReviewSlider = () => {
                                 {review?.review}
                             </p>
                             <p>{review?.rating.toFixed(1)}</p>
+                            
                             <ReactStars 
                                 count={5}
                                 value={review.rating}

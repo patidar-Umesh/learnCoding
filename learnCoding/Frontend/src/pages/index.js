@@ -10,7 +10,7 @@ import LoginPage from './LoginPage'
 import SignupPage from "./SignupPage";
 import UpdatePasswordPage from "./UpdatePasswordPage";
 import VerifyEmailPage from "./VerifyEmailPage";
-import ViewCoursePage from './ViewCoursePage'
+import StudentCoursePage from './StudentCoursePage'
 
 
-export {AboutPage, CategoryCoursePage, ContactPage, CourseDetailsPage, DashboardPage, ErrorPage, ForgotPasswordPage, HomePage, LoginPage, SignupPage, UpdatePasswordPage, VerifyEmailPage, ViewCoursePage}
+export {AboutPage, CategoryCoursePage, ContactPage, CourseDetailsPage, DashboardPage, ErrorPage, ForgotPasswordPage, HomePage, LoginPage, SignupPage, UpdatePasswordPage, VerifyEmailPage, StudentCoursePage}

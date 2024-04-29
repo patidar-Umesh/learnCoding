@@ -12,13 +12,13 @@ import {
   SignupPage,
   UpdatePasswordPage,
   VerifyEmailPage,
-  ViewCoursePage,
+  StudentCoursePage
 } from "./pages/index.js";
 import Navbar from "./components/common/Navbar.jsx";
 import Settings from "./components/Profile/settings.jsx";
 import MyProfile from "./components/Profile/MyProfile.jsx";
 import EnrolledCourses from "./components/Profile/EnrolledCourses.jsx";
-import VideoDetails from "./components/ViewCourse/VideoDetails.jsx";
+import VideoDetails from "./components/StudentCourse/VideoDetails.jsx";
 import OpenRoute from "./components/Auth/OpenRoute.jsx";
 import PrivateRoute from "./components/Auth/PrivateRoute.jsx";
 import { useSelector } from "react-redux";
@@ -101,7 +101,7 @@ const App = () => {
           )}
         </Route>
 
-        <Route element={<PrivateRoute children={<ViewCoursePage />} />}>
+        <Route element={<PrivateRoute children={<StudentCoursePage />} />}>
           
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
