@@ -206,7 +206,7 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "User not exist",
+        message: "Invalid user credentials",
       });
     }
 
@@ -216,7 +216,7 @@ const login = async (req, res) => {
     if (!correctPassword) {
       return res.status(401).json({
         success: false,
-        message: "Invalid password",
+        message: "Invalid user credentials",
       });
     }
 

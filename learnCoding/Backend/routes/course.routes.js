@@ -35,6 +35,8 @@ import {
   categoryCourses
 } from "../controllers/category.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
+import {updateCourseProgress} from '../controllers/courseProgress.controller.js'
+
 
 const router = Router();
 
@@ -119,9 +121,12 @@ router.post("/create-category", verifyJWT, isAdmin, createCategory);
 // show all category list
 router.get("/get-all-category", allCategory);
 
-
-
+// show course by category
 router.post("/category-courses", categoryCourses);
+
+// completed course
+router.post("/update-courseProgress", verifyJWT, isStudent, updateCourseProgress);
+
 
 
 export default router;

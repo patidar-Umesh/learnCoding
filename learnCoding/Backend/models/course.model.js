@@ -63,7 +63,6 @@ const courseSchema = new Schema(
     studentsEnrolled: [
       {
         type: Schema.Types.ObjectId,
-        required: true,
         ref: "User",
       },
     ],

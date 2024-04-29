@@ -331,7 +331,7 @@ const getFullCourseDetails = async (req, res) => {
       _id: courseId,
     })
       .populate({
-        path: "instructor",
+        path: "instructor", select: '-password',
         populate: {
           path: "additionalDetails",
         },
@@ -379,7 +379,7 @@ const getFullCourseDetails = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: { courseDetails },
+      data: {courseDetails},
       totalDuration,
       completedVideos: courseProgressCount?.completedVideos
         ? courseProgressCount?.completedVideos
