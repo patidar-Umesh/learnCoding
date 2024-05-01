@@ -28,7 +28,9 @@ const ContactPage = () => {
         </h1>
 
         {/* review slider */}
-        <ReviewSlider />
+       <div className="ml-[80px] w-full">
+       <ReviewSlider />
+       </div>
       </div>
 
 

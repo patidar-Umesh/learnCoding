@@ -10,9 +10,10 @@ const CodeBlocks = ({
   btn1,
   btn2,
   codeblock,
-  backgroudGradient,
   codeColor,
 }) => {
+
+
   return (
     <div className={`flex ${position} my-20 justify-between gap-10`}>
       {/*Section 1*/}

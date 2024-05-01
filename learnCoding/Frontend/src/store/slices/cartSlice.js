@@ -20,7 +20,7 @@ const cartSlice = createSlice({
   initialState,
 
   reducers: {
-      // add cart
+      // add to cart
     addToCart: (state, action) => {
       const course = action.payload
       const index = state.cart.findIndex((item) => item._id === course._id)
@@ -40,7 +40,7 @@ const cartSlice = createSlice({
       toast.success("Course added to cart")
     },
 
-    // remove cart
+    // remove from cart
     removeFromCart: (state, action) => {
       const courseId = action.payload
       const index = state.cart.findIndex((item) => item._id === courseId)

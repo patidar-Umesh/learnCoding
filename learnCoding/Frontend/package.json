@@ -38,6 +38,7 @@
     "redux-toolkit": "^1.1.2",
     "swiper": "^11.1.0",
     "table-js": "^9.1.0",
+    "tw-elements-react": "^1.0.0-alpha2",
     "video-react": "^0.16.0"
   },
   "devDependencies": {

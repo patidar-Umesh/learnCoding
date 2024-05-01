@@ -19,7 +19,7 @@ const Instructor = () => {
             const instructorApiData = await getInstructorData(token);
             const result = await fetchInstructorCourses(token);
 
-            console.log(instructorApiData);
+            console.log('instructor Api Data',instructorApiData);
 
             if(instructorApiData.length)
                 setInstructorData(instructorApiData);

@@ -15,14 +15,13 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // console.log("image is", course.image);
+  console.log("image is", course);
 
   // copy link handler
   const handleShare = () => {
     copy(window.location.href);
     toast.success("Link copied to clipboard");
   };
-
 
   // add to cart handler
   const handleAddToCart = () => {

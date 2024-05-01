@@ -112,7 +112,7 @@ export function login(email, password, navigate) {
       dispatch(setToken(response.data.token));
       dispatch(setUser({ ...response.data.user }));
 
-      // store toke and user data in localstorage
+      // store token and user data in localstorage
       localStorage.setItem("token", JSON.stringify(response.data.token));
       localStorage.setItem("user", JSON.stringify(response.data.user));
       navigate("/dashboard/my-profile");

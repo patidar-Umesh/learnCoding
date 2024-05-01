@@ -1,17 +1,15 @@
 import React from "react";
-
-import FoundingStory from "../assets/Images/FoundingStory.png";
 import BannerImage1 from "../assets/Images/aboutus1.webp";
 import BannerImage2 from "../assets/Images/aboutus2.webp";
 import BannerImage3 from "../assets/Images/aboutus3.webp";
-import AboutContactForm from "../components/About/AboutContactForm";
-import LearningGrid from "../components/About/LearningGrid";
-import Quote from "../components/About/Quote";
-import StatsComponents from "../components/About/Stats";
-import HighlightText from "../components/home/HighlightText";
+import FoundingStory from "../assets/Images/FoundingStory.png";
 import ReviewSlider from "../components/common/ReviewSlider";
+import Quote from "../components/About/Quote";
+import LearningGrid from "../components/About/LearningGrid";
+import StatsComponents from "../components/About/Stats";
 import Footer from "../components/common/Footer";
-
+import AboutContactForm from "../components/About/AboutContactForm";
+import HighlightText from "../components/home/HighlightText";
 
 
 const AboutPage = () => {
@@ -23,12 +21,13 @@ const AboutPage = () => {
             Driving Innovation in Online Education for a
             <HighlightText text={"Brighter Future"} />
             <p className="mx-auto mt-3 text-center text-base font-medium text-richblack-300 lg:w-[95%]">
-            learnCoding is at the forefront of driving innovation in online
+            LearnCoding is at the forefront of driving innovation in online
               education. We're passionate about creating a brighter future by
               offering cutting-edge courses, leveraging emerging technologies,
               and nurturing a vibrant learning community
             </p>
           </header>
+
           <div className="sm:h-[70px] lg:h-[150px]"></div>
           <div className="absolute bottom-0 left-[50%] grid w-[100%] translate-x-[-50%] translate-y-[30%] grid-cols-3 gap-3 lg:gap-5">
             <img src={BannerImage1} alt="" />
@@ -78,6 +77,7 @@ const AboutPage = () => {
               />
             </div>
           </div>
+
           <div className="flex flex-col items-center lg:gap-10 lg:flex-row justify-between">
             <div className="my-24 flex lg:w-[40%] flex-col gap-10">
               <h1 className="bg-gradient-to-b from-[#FF512F] to-[#F09819] bg-clip-text text-4xl font-semibold text-transparent lg:w-[70%] ">
@@ -92,6 +92,7 @@ const AboutPage = () => {
                 dynamic and interactive learning experience.
               </p>
             </div>
+
             <div className="my-24 flex lg:w-[40%] flex-col gap-10">
               <h1 className="bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] text-transparent bg-clip-text text-4xl font-semibold lg:w-[70%] ">
                 Our Mission
@@ -106,6 +107,7 @@ const AboutPage = () => {
               </p>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -116,17 +118,20 @@ const AboutPage = () => {
       </section>
 
       {/* contact form */}
-      <div className="mx-auto w-[50%]">
+      <section className="mx-auto w-[50%]">
         <AboutContactForm />
-      </div>
+      </section>
 
-      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
+      <section className="relative px-4  mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8  text-white">
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
         {/* <ReviewSlider /> */}
+        <div className="ml-[80px] w-full">
         <ReviewSlider />
-      </div>
+        </div>
+        
+      </section>
 
       {/* <Footer /> */}
       <Footer />

@@ -52,19 +52,18 @@ const CourseDetailsPage = () => {
 
   // console.log("course details response: ", response);
 
-  // Calculating Avg Review count
+  // rating and review
   const [avgReviewCount, setAvgReviewCount] = useState(0);
   useEffect(() => {
-    const count = GetAvgRating(response?.data?.courseDetails.ratingAndReviews);
+    const count = GetAvgRating(response?.data?.courseDetails?.ratingAndReview);
     setAvgReviewCount(count);
   }, [response]);
-  // console.log("avgReviewCount: ", avgReviewCount);
 
   // // Collapse all
   const [collapse, setCollapse] = useState("");
   const [isActive, setIsActive] = useState(Array(0));
+
   const handleActive = (id) => {
-    // console.log("called", id)
     setIsActive(
       !isActive.includes(id)
         ? isActive.concat([id])
@@ -125,7 +124,7 @@ const CourseDetailsPage = () => {
     price,
     whatYouWillLearn,
     courseContent,
-    ratingAndReviews,
+    ratingAndReview,
     instructor,
     studentsEnrolled,
     createdAt,
@@ -157,7 +156,7 @@ const CourseDetailsPage = () => {
               <div className="text-md flex flex-wrap items-center gap-2">
                 <span className="text-yellow-25">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews?.length} reviews)`}</span>
+                <span>{`(${ratingAndReview?.length} reviews)`}</span>
                 <span>{`${studentsEnrolled?.length} students enrolled`}</span>
               </div>
               <div>

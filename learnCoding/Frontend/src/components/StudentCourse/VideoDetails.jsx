@@ -4,7 +4,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { markLectureAsComplete } from "../../apiServices/apiHandler/courseDetailsAPI.js";
 import { updateCompletedLectures } from "../../store/slices/studentCourseSlice.js";
 import {
-  DurationDisplay,
   Player,
   LoadingSpinner,
   ControlBar,
@@ -13,16 +12,14 @@ import {
   BigPlayButton,
 } from "video-react";
 import "video-react/dist/video-react.css";
-import { AiFillPlayCircle } from "react-icons/ai";
-import IconBtn from "../common/IconBtn.jsx";
 import Button from "../common/Button.jsx";
+import CourseReviewModal from "./CourseReviewModal.jsx";
 
 const VideoDetails = () => {
   const { courseId, sectionId, subSectionId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const playerRef = useRef();
   const { token } = useSelector((state) => state.auth);
   const { courseSectionData, courseEntireData, completedLectures } =
     useSelector((state) => state.studentCourse);
@@ -38,12 +35,14 @@ const VideoDetails = () => {
       if (!courseId && !sectionId && !subSectionId) {
         navigate("/dashboard/enrolled-courses");
       } else {
+        // get first render section
         const sectionData = courseSectionData?.filter(
           (section) => section._id === sectionId
         );
 
         console.log("section data", sectionData);
 
+        // get subsection first video
         const subSectionVideo = sectionData?.[0].subSection?.filter(
           (subSec) => subSec._id === subSectionId
         );
@@ -57,14 +56,17 @@ const VideoDetails = () => {
 
   // first video check handler
   const isFirstVideo = () => {
+    // find current section ind from courseSectiondata
     const currentSectionIndex = courseSectionData?.findIndex(
       (section) => section._id === sectionId
     );
 
+    // find current sub section ind from courseSectiondata
     const currentSubSectionIndex = courseSectionData[
       currentSectionIndex
     ]?.subSection?.findIndex((subSec) => subSec._id === subSectionId);
 
+    // check and validate
     if (currentSectionIndex === 0 && currentSubSectionIndex === 0) {
       return true;
     } else {
@@ -98,28 +100,34 @@ const VideoDetails = () => {
   // go to next handler
   const goToNextVideo = () => {
     console.log("next btn clicked");
-    const currentSectionIndex = courseSectionData.findIndex(
+    // find current section index
+    const currentSectionIndex = courseSectionData?.findIndex(
       (section) => section._id === sectionId
     );
 
+    // get total sub sections
     const noOfSubSections =
       courseSectionData[currentSectionIndex].subSection?.length;
 
+    // find current sub section index
     const currentSubSectionIndex = courseSectionData[
       currentSectionIndex
     ].subSection.findIndex((subSec) => subSec._id === subSectionId);
 
+    // validate
     if (currentSubSectionIndex !== noOfSubSections - 1) {
-
+      // get next sub sectionid
       const nextSubSectionId =
         courseSectionData[currentSectionIndex].subSection[
           currentSectionIndex + 1
         ]._id;
 
+      // navigate the video
       navigate(
         `/view-course/${courseId}/section/${sectionId}/sub-section/${nextSubSectionId}`
       );
     } else {
+      // get next sub sectionid
       const nextSectionId = courseSectionData[currentSectionIndex + 1]._id;
       const nextSubSectionId =
         courseSectionData[currentSectionIndex + 1].subSection[0]._id;
@@ -133,19 +141,19 @@ const VideoDetails = () => {
   // go to previous video handler
   const goToPrevVideo = () => {
     console.log("prev btn clicked");
+    // find current section index
     const currentSectionIndex = courseSectionData.findIndex(
       (section) => section._id === sectionId
     );
 
-    const noOfSubSections =
-      courseSectionData[currentSectionIndex]?.subSection?.length;
-
+    // find current sub section index
     const currentSubSectionIndex = courseSectionData[
       currentSectionIndex
-    ]?.subSection.findIndex((subSection) => subSection._id === subSectionId);
+    ]?.subSection.findIndex((subSec) => subSec._id === subSectionId);
     console.log("currentSubSectionIndex", currentSubSectionIndex);
 
     if (currentSubSectionIndex != 0) {
+      // previous sub section id
       const prevSubSectionId =
         courseSectionData[currentSectionIndex].subSection[
           currentSubSectionIndex - 1
@@ -160,14 +168,20 @@ const VideoDetails = () => {
 
       console.log("currentSubSectionIndex", currentSubSectionIndex);
     } else {
+      // get previous section id
       const prevSectionId = courseSectionData[currentSectionIndex - 1]._id;
+
+      // get previous sub section length
       const prevSubSectionLength =
         courseSectionData[currentSectionIndex - 1].subSection?.length;
+
+      // get previous sub section id
       const prevSubSectionId =
         courseSectionData[currentSectionIndex - 1]?.subSection[
           prevSubSectionLength - 1
         ]._id;
 
+      // navigate the prev section to subsection
       navigate(
         `/view-course/${courseId}/section/${prevSectionId}/sub-section/${prevSubSectionId}`
       );
@@ -175,14 +189,12 @@ const VideoDetails = () => {
   };
 
   const handleLectureCompletion = async () => {
-    ///dummy code, baad me we will replace it witht the actual call
     setLoading(true);
-    //PENDING - > Course Progress PENDING
     const res = await markLectureAsComplete(
       { courseId: courseId, subSectionId: subSectionId },
       token
     );
-    //state update
+
     if (res) {
       dispatch(updateCompletedLectures(subSectionId));
     }
@@ -190,38 +202,9 @@ const VideoDetails = () => {
   };
 
   return (
-    <div className="text-white  w-[100%] h-auto">
-      {!videoData ? (
-        <div>No Data Found</div>
-      ) : (
-        <Player
-          ref={playerRef}
-          playsInline
-          aspectRatio="16:9"
-          onEnded={() => setVideoEnded(true)}
-          src={videoData?.videoUrl}
-        >
-          {/* play btn  */}
-          <BigPlayButton position="center" />
-
-          {/* loading spinner */}
-          <LoadingSpinner />
-
-          {/* forward bakcword  */}
-          <ControlBar autoHide={false}>
-            <ReplayControl seconds={5} />
-            <ForwardControl seconds={5} />
-          </ControlBar>
-        </Player>
-      )}
-
-      <div>
-        <h1>{videoData?.title}</h1>
-        <p>{videoData?.description}</p>
-      </div>
-
+    <div className="text-white relative  w-[100%] h-auto">
       {videoEnded && (
-        <div className=" w-[100%] my-2 mx-auto flex justify-around items-center">
+        <div className=" w-[100%] mb-2 mx-auto flex justify-around items-center">
           {!completedLectures?.includes(subSectionId) && (
             <div className="mx-10">
               <Button
@@ -255,6 +238,36 @@ const VideoDetails = () => {
           </div>
         </div>
       )}
+
+      {!videoData ? (
+        <div>No Data Found</div>
+      ) : (
+        <Player
+          // ref={playerRef}
+          autoPlay={true}
+          playsInline
+          aspectRatio="16:9"
+          onEnded={() => setVideoEnded(true)}
+          src={videoData?.videoUrl}
+        >
+          {/* play btn  */}
+          <BigPlayButton position="center" />
+
+          {/* loading spinner */}
+          <LoadingSpinner />
+
+          {/* forward bakcword  */}
+          <ControlBar autoHide={false}>
+            <ReplayControl seconds={5} />
+            <ForwardControl seconds={5} />
+          </ControlBar>
+        </Player>
+      )}
+
+      <div>
+        <h1>{videoData?.title}</h1>
+        <p>{videoData?.description}</p>
+      </div>
     </div>
   );
 };

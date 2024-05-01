@@ -6,7 +6,7 @@ import "swiper/css/pagination"
 import { Autoplay,FreeMode, Pagination}  from 'swiper/modules'
 import ReactStars from "react-rating-stars-component"
 import { apiConnector } from '../../apiServices/apiConnector'
-import { ratingsEndpoints } from '../../apiServices/apis'
+import { courseEndpoints } from '../../apiServices/apis'
 import { FaStar } from 'react-icons/fa'
 
 
@@ -18,14 +18,14 @@ const ReviewSlider = () => {
 
     useEffect(() => {
         const fetchAllReviews = async() => {
-            const {data} = await apiConnector("GET", ratingsEndpoints.REVIEWS_DETAILS_API)
+            const {data} = await apiConnector("GET", courseEndpoints.REVIEWS_DETAILS_API)
             console.log("Logging response in rating", data);
 
             if(data?.success) {
                 setReviews(data?.data);
             }
 
-            console.log("Printing Reviews", reviews);
+            // console.log("Rating and reviews", reviews);
 
         }
         fetchAllReviews();
@@ -33,10 +33,10 @@ const ReviewSlider = () => {
 
 
   return (
-    <div className='text-white'>
-        <div className='h-[190px] max-w-maxContent'>
+    <div className='text-white mt-4 mx-5'>
+        <div className='h-[220px] max-w-maxContent'>
              <Swiper
-            slidesPerView={1}
+            slidesPerView={3}
             spaceBetween={24}
             loop={true}
             freeMode={true}

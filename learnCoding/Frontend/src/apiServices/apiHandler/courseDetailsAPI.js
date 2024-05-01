@@ -365,7 +365,7 @@ export const getFullDetailsOfCourse = async (courseId, token) => {
 // mark a lecture as complete
 export const markLectureAsComplete = async (data, token) => {
   let result = null;
-  console.log("Mark complete data", data);
+  // console.log("Mark complete data", data);
   const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector("POST", LECTURE_COMPLETION_API, data, {
@@ -408,7 +408,7 @@ export const createRating = async (data, token) => {
   } catch (error) {
     success = false;
     console.log("Create Rating and Review Error......", error);
-    toast.error(error.message);
+    toast.error(error.response.data.message);
   }
   toast.dismiss(toastId);
   return success;

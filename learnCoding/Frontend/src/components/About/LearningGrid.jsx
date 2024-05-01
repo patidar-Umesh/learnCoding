@@ -46,7 +46,7 @@ const LearningGridArray = [
 
 const LearningGrid = () => {
   return (
-    <div className="grid mx-auto w-[350px] xl:w-fit grid-cols-1 xl:grid-cols-4 mb-12">
+    <div className="grid mx-auto w-[350px] lg:w-fit grid-cols-3 gap-4 lg:grid-col-4 mb-12">
       {LearningGridArray.map((card, i) => {
         return (
           <div
@@ -70,7 +70,7 @@ const LearningGrid = () => {
                 </p>
 
                 <div className="w-fit mt-2">
-                  <Button active={true} linkto={card.BtnLink} btnText={card.BtnText}/>
+                  <Button className='bg-yellow-50' linkto={card.BtnLink} btnText={card.BtnText}/>
                 </div>
                 
               </div>

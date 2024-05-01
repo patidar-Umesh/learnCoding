@@ -18,7 +18,7 @@ import { toast } from "react-hot-toast";
 
 const HomePage = () => {
   const [course, setCourse] = useState([]);
-  // console.log("courses", course);
+  console.log("courses", course);
 
   useEffect(() => {
     const getall = async () => {
@@ -119,7 +119,16 @@ const HomePage = () => {
               btnText: "learn more",
               linkto: "/login",
             }}
-            codeblock={`<<!DOCTYPE html>\n<html>\nhead><title>Example</title><linkrel="stylesheet"href="styles.css">\n/head>\n`}
+            codeblock={`<!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <title>LearnCoding</title>
+              <link rel="stylesheet" href="style.css">
+            </head>
+            <body>
+              <h1>LearnCoding</h1>
+            </body>
+            </html>`}
             codeColor={"text-yellow-25"}
           />
         </div>
@@ -151,7 +160,16 @@ const HomePage = () => {
               linkto: "/login",
               active: false,
             }}
-            codeblock={`<<!DOCTYPE html>\n<html>\nhead><title>Example</title><linkrel="stylesheet"href="styles.css">\n/head>\n`}
+            codeblock={`<!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <title>LearnCoding</title>
+              <link rel="stylesheet" href="style.css">
+            </head>
+            <body>
+              <h1>LearnCoding</h1>
+            </body>
+            </html>`}
             codeColor={"text-yellow-25"}
           />
         </div>
@@ -193,7 +211,11 @@ const HomePage = () => {
                 be a competitive specialist requires more than professional
                 skills.
               </div>
-              <Button  className="bg-yellow-50" linkto={"/signup"} btnText="Learn more" />
+              <Button
+                className="bg-yellow-50"
+                linkto={"/signup"}
+                btnText="Learn more"
+              />
             </div>
           </div>
           {/* time line */}
@@ -206,13 +228,15 @@ const HomePage = () => {
       {/*Section 3 */}
       <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white">
         {/* this is course slider herer */}
-        <CourseSlider Courses={course} nextPrevBtn='true' />
+       <div className=" " >
+       <CourseSlider Courses={course} nextPrevBtn="true" />
+       </div>
 
         {/* instructor section */}
         <InstructorSection />
 
         <h2 className="text-center text-4xl font-semobold mt-10">
-          review from Other Learners
+          Review from Other Learners
         </h2>
 
         {/* Review Slider here */}

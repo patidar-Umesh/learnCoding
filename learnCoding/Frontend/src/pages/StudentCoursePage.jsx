@@ -14,7 +14,7 @@ import CourseReviewModal from "../components/StudentCourse/CourseReviewModal.jsx
 const StudentCoursePage = () => {
   const { token } = useSelector((state) => state.auth);
   const { courseId } = useParams();
-  const [reviewModal, setReviewModal] = useState(false);
+  const [reviewModal, setReviewModal] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,18 +28,21 @@ const StudentCoursePage = () => {
       dispatch(setCompletedLectures(courseData?.completedVideos));
 
       // console.log('course data', courseData);
-      let lectures = 0;
-      courseData?.courseDetails?.courseContent?.forEach((sec) => {
-        lectures += sec.subSection?.length;
+      console.log("completed lectures", courseData?.completedVideos);
+      let totalNoOfLectures = 0;
+      courseData?.data?.courseDetails?.courseContent?.forEach((subSec) => {
+        totalNoOfLectures += subSec.subSection?.length;
       });
-      dispatch(setTotalNoOfLectures(lectures));
+
+      // console.log('no of lectures', totalNoOfLectures);
+      dispatch(setTotalNoOfLectures(totalNoOfLectures));
     };
     courseDetails();
   }, []);
 
   return (
     <>
-      <div className="w-[100%]  flex gap-x-3" >
+      <div className="w-[100%] relative flex gap-x-3">
         {/* sidebar  */}
 
         <div className="w-[25%]">
@@ -48,6 +51,8 @@ const StudentCoursePage = () => {
         <div className="w-[100%] p-8 flex justify-center items-center  bg-[gray]">
           <Outlet />
         </div>
+      </div>
+      <div className="absolute top-0 ">
         {reviewModal && <CourseReviewModal setReviewModal={setReviewModal} />}
       </div>
     </>
