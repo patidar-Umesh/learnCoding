@@ -6,8 +6,8 @@ import { SubSection } from "../models/subSection.model.js";
   try {
     // fetch courseid and subsectionid and userid
     const { courseId, subSectionId } = req.body;
-    console.log('hello ji', courseId, subSectionId)
     const userId = req.user.id;
+    console.log('hello ji', courseId, subSectionId, userId)
 
     // find subsectionbyid
     const subSection = await SubSection.findById(subSectionId);
@@ -20,8 +20,8 @@ import { SubSection } from "../models/subSection.model.js";
     console.log("SubSection Validation Done");
 
     let courseProgress = await CourseProgress.findOne({
-      courseID: courseId,
-      completedVideos: subSectionId
+      courseId: courseId,
+      userId: userId
     });
 
     if (!courseProgress) {

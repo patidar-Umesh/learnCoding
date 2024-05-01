@@ -27,6 +27,6 @@ const ratingAndReviewSchema = new mongoose.Schema({
 {timestamps: true});
 
 export const RatingAndReview = mongoose.model(
-  "RatingAndReviews",
+  "RatingAndReview",
   ratingAndReviewSchema
 );

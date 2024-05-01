@@ -28,13 +28,12 @@ import {
   allRatingReview,
   averageRating,
   createRating,
-} from "../controllers/ratingAndRevies.controller.js";
+} from "../controllers/ratingAndReview.controller.js";
 import {
   allCategory,
   createCategory,
   categoryCourses
 } from "../controllers/category.controller.js";
-import { upload } from "../middlewares/multer.middleware.js";
 import {updateCourseProgress} from '../controllers/courseProgress.controller.js'
 
 

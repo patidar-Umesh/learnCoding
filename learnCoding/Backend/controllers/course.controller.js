@@ -203,13 +203,13 @@ const editCourse = async (req, res) => {
       _id: courseId,
     })
       .populate({
-        path: "instructor",
+        path: "instructor", select: "-password",
         populate: {
           path: "additionalDetails",
         },
       })
       .populate("category")
-      // .populate("ratingAndReview")
+      .populate("ratingAndReview")
       .populate({
         path: "courseContent",
         populate: {
@@ -237,7 +237,7 @@ const editCourse = async (req, res) => {
 const allCourses = async (req, res) => {
   try {
     // fetch courses
-    const courses = await Course.find();
+    const courses = await Course.find().populate('ratingAndReview');
     // console.log(`all courses is ${courses}`);
 
     return res.status(200).json({
@@ -264,13 +264,13 @@ const getCourseDetails = async (req, res) => {
       _id: courseId,
     })
       .populate({
-        path: "instructor",
+        path: "instructor", select: '-password',
         populate: {
           path: "additionalDetails",
         },
       })
       .populate("category")
-      // .populate("ratingAndReviews")
+      .populate("ratingAndReview")
       .populate({
         path: "courseContent",
         populate: {
@@ -337,7 +337,7 @@ const getFullCourseDetails = async (req, res) => {
         },
       })
       .populate("category")
-      // .populate("ratingAndReviews")
+      .populate("ratingAndReview")
       .populate({
         path: "courseContent",
         populate: {
@@ -347,7 +347,7 @@ const getFullCourseDetails = async (req, res) => {
       .exec();
 
     let courseProgressCount = await CourseProgress.findOne({
-      courseID: courseId,
+      courseId: courseId,
       userId: userId,
     });
 
@@ -360,16 +360,16 @@ const getFullCourseDetails = async (req, res) => {
       });
     }
 
-    // if (courseDetails.status === "Draft") {
-    //   return res.status(403).json({
-    //     success: false,
-    //     message: `Accessing a draft course is forbidden`,
-    //   });
-    // }
+    if (courseDetails.status === "Draft") {
+      return res.status(403).json({
+        success: false,
+        message: `Accessing a draft course is forbidden`,
+      });
+    }
 
     let totalDurationInSeconds = 0;
-    courseDetails.courseContent.forEach((content) => {
-      content.subSection.forEach((subSection) => {
+    courseDetails.courseContent.forEach((section) => {
+      section.subSection.forEach((subSection) => {
         const timeDurationInSeconds = parseInt(subSection.timeDuration);
         totalDurationInSeconds += timeDurationInSeconds;
       });
@@ -473,6 +473,7 @@ const deleteCourse = async (req, res) => {
       });
     }
 
+    
     console.log(
       " Image deleted successfully from cloudinary",
       deletedImageFile

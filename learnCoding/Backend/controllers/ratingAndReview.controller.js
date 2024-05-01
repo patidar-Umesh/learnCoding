@@ -53,7 +53,7 @@ const createRating = async (req, res) => {
       { _id: courseId },
       {
         $push: {
-          ratingAndReviews: ratingReview._id,
+          ratingAndReview: ratingReview._id  
         },
       },
       { new: true }
@@ -64,7 +64,7 @@ const createRating = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Rating and Review created Successfully",
-      ratingReview,
+      data: updatedCourseDetails,
     });
   } catch (error) {
     console.log(error);

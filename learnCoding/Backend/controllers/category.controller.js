@@ -76,7 +76,7 @@ const categoryCourses = async (req, res) => {
       .populate({
         path: "courses",
         match: { status: "Published" },
-        // populate: "ratingAndReviews",
+        populate: "ratingAndReview",
       })
       .exec();
 
