@@ -1,9 +1,6 @@
 
-
-const BASE_URL = 'http://localhost:8000/api/v1'
-
-
-
+const BASE_URL = import.meta.env.VITE_BACKEND_URL
+console.log('base url', BASE_URL) 
 
 // **************************************** API ALL ENDPOINTS  **************************************** //
 
@@ -18,9 +15,9 @@ export const endpoints = {
 
 // profile 
 export const profileEndpoints = {
-  GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
+  GET_USER_DETAILS_API: BASE_URL + "/profile/get-user-details",
   GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/get-enrolled-courses",
-  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profile/instructorDashboard",
+  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profile/instructor-dashboard",
 }
 
 // student 

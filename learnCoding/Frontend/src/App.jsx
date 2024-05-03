@@ -12,7 +12,7 @@ import {
   SignupPage,
   UpdatePasswordPage,
   VerifyEmailPage,
-  StudentCoursePage
+  StudentCoursePage,
 } from "./pages/index.js";
 import Navbar from "./components/common/Navbar.jsx";
 import Settings from "./components/Profile/settings.jsx";
@@ -29,6 +29,7 @@ import AddCourse from "./components/Instructor/AddCourse/AddCourse.jsx";
 import MyCourses from "./components/Instructor/MyCourses.jsx";
 import EditCourse from "./components/Instructor/EditCourse/EditCourse.jsx";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const { user } = useSelector((state) => state.profile);
@@ -40,13 +41,22 @@ const App = () => {
 
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
+      <Toaster
+        toastOptions={{
+          duration: 2000,
+        }}
+      />
+      
       {/* Navbar */}
       <Navbar />
 
       {/* Routes */}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/category/:categoryName" element={<CategoryCoursePage />} />
+        <Route
+          path="/category/:categoryName"
+          element={<CategoryCoursePage />}
+        />
         <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
 
         <Route
@@ -102,7 +112,6 @@ const App = () => {
         </Route>
 
         <Route element={<PrivateRoute children={<StudentCoursePage />} />}>
-          
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
               <Route

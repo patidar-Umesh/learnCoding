@@ -118,7 +118,7 @@ const AboutPage = () => {
       </section>
 
       {/* contact form */}
-      <section className="mx-auto w-[50%]">
+      <section className="mx-auto w-full p-4 sm:w-[50%]">
         <AboutContactForm />
       </section>
 

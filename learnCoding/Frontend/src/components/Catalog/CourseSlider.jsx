@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -9,6 +9,12 @@ import { MdOutlineNavigateNext } from "react-icons/md";
 import { GrFormPrevious } from "react-icons/gr";
 
 const CourseSlider = ({ Courses, nextPrevBtn = false }) => {
+
+useEffect(()=>{
+console.log('Courses in slider',Courses);
+},[])
+
+
   return (
     <div className="mt-4">
       {Courses?.length ? (
@@ -32,8 +38,8 @@ const CourseSlider = ({ Courses, nextPrevBtn = false }) => {
           }}
           className="max-h-[30rem] "
         >
-          {Courses?.map((course, i) => (
-            <SwiperSlide key={i}>
+          {Courses?.map((course, index) => (
+            <SwiperSlide key={index}>
               <CourseCard  course={course} Height={"h-[250px]"} />
             </SwiperSlide>
           ))}

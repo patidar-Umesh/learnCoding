@@ -61,7 +61,7 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
           {/* buttons */}
           <div className="ml-4 mt-4 justify-between items-center flex">
             <Button
-              linkTo='/dashboard/enrolled-courses'
+              onClick={() => navigate('/dashboard/enrolled-courses')}
               btnText="Back"
               className="bg-yellow-50"
             />

@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 const Button = ({
   btnText,
@@ -7,12 +6,10 @@ const Button = ({
   disabled,
   className,
   children,
-  linkTo,
   onClick,
   ...props
 }) => {
   return (
-    <Link to={linkTo}>
       <button
         onClick={onClick}
         type={type}
@@ -24,7 +21,6 @@ const Button = ({
       >
         {btnText} {children}
       </button>
-    </Link>
   );
 };
 

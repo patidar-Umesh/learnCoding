@@ -15,16 +15,15 @@ const CodeBlocks = ({
 
 
   return (
-    <div className={`flex ${position} my-20 justify-between gap-10`}>
+    <div className={`flex ${position} w-full my-20 justify-between gap-10`}>
       {/*Section 1*/}
-      <div className="w-[50%] flex flex-col gap-8">
+      <div className="sm:w-[50%]  w-full flex flex-col gap-8">
         {heading}
         <div className="text-richblack-300 font-bold ">{subheading}</div>
 
         <div className="flex gap-7 mt-7">
           <Button
             className="bg-yellow-50 flex justify-center items-center text-black"
-            linkto={btn1.linkto}
             btnText={btn1.btnText}
           >
               <FaArrowRight className="mx-2" />
@@ -32,7 +31,6 @@ const CodeBlocks = ({
 
           <Button
             className="bg-richblack-200 text-black"
-            linkto={btn2.linkto}
             btnText={btn2.btnText}
           />
         </div>

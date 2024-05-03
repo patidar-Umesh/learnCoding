@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { NavbarLinks } from "../../data/navbar-links.js";
 import { useSelector } from "react-redux";
 import { AiOutlineShoppingCart } from "react-icons/ai";
@@ -7,6 +7,8 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import Button from "../common/Button.jsx";
 import UserProfileDropdown from "../Auth/UserProfileDropDown.jsx";
 import { fetchCourseCategories } from "../../apiServices/apiHandler/courseDetailsAPI.js";
+import { IoIosMenu } from "react-icons/io";
+import { RxCross1 } from "react-icons/rx";
 
 const Navbar = () => {
   const { token } = useSelector((state) => state.auth);
@@ -15,6 +17,8 @@ const Navbar = () => {
   const location = useLocation();
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [show, setShow] = useState(false);
 
   // make api calls for category
 
@@ -32,6 +36,10 @@ const Navbar = () => {
     getCategories();
   }, []);
 
+  const dropDown = () => {
+    setShow((prev) => !prev);
+  };
+
   return (
     <div className="flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700">
       <div className="flex w-11/12 max-w-maxContent items-center justify-between">
@@ -43,7 +51,7 @@ const Navbar = () => {
 
         {/* center links */}
         <nav>
-          <ul className="flex gap-x-6 text-richblack-25">
+          <ul className="sm:flex invisible sm:visible  gap-x-6 text-richblack-25">
             {NavbarLinks.map((link, index) => (
               <li key={index}>
                 {link.title === "Courses" ? (
@@ -96,7 +104,7 @@ const Navbar = () => {
 
         {/* Right-  Login/SignUp/Dashboard */}
 
-        <div className="flex gap-x-4 justify-center items-center">
+        <div className="sm:flex invisible sm:visible  gap-x-4 justify-center items-center">
           {user && user?.accountType !== "Instructor" && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-white text-[1.5rem]" />
@@ -113,20 +121,62 @@ const Navbar = () => {
               <Button
                 className="border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md"
                 btnText="Log in"
-                linkTo="/login"
+                onClick={() => navigate("/login")}
               />
 
               {/* signup button */}
               <Button
                 className="border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md"
                 btnText="Sign Up"
-                linkTo="/signup"
+                onClick={() => navigate("/signup")}
               />
             </>
           )}
 
           {token !== null && <UserProfileDropdown />}
         </div>
+
+        {/* Mobile screen menu */}
+        <div
+          className="sm:none z-[999] bg-[orange] relative text-[2rem] text-white block"
+          onClick={dropDown} 
+        >
+          {!show && !token ? <IoIosMenu  /> : <RxCross1 className="text-[1.8rem]" />}
+
+        </div>
+        {show && (
+            <div className="z-20 absolute top-1 -right-[12px] font-normal bg-[#868585]  divide-y divide-gray-100 rounded-lg shadow w-[100vw] overflow-hidden h-[50vh] dark:bg-gray-700 dark:divide-gray-600 text-white transition-all">
+              <ul onClick={dropDown}
+                class="py-2 text-[1.5rem] font-semibold flex-col flex justify-center items-center text-gray-700 dark:text-gray-400"
+              >
+                <Link to="/login">
+                  <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    Login
+                  </li>
+                </Link>
+                <Link to="/signup">
+                  <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    SingUp
+                  </li>
+                </Link>
+                <Link to="/#footer1">
+                  <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    Courses
+                  </li>
+                </Link>
+                <Link to="/about">
+                  <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    About Us
+                  </li>
+                </Link>
+                <Link to="/contact">
+                  <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                    Contact Us
+                  </li>
+                </Link>
+              </ul>
+            </div>
+          )}
       </div>
     </div>
   );

@@ -98,13 +98,12 @@ const HomePage = () => {
         </div>
 
         {/* Code Section 1 */}
-        <div>
+        <div className="">
           <CodeBlocks
-            position={"lg:flex-row"}
+            position={"lg:flex-row w-full flex-col"}
             heading={
-              <div className="text-4xl font-semibold">
-                Unlock Your
-                <HighlightText text={"coding potential"} />
+              <div className="sm:text-4xl w-full text-[2rem] font-semibold">
+                Unlock Your <HighlightText text={"coding potential "} />
                 with our online courses
               </div>
             }
@@ -136,12 +135,12 @@ const HomePage = () => {
         {/* Code Section 2 */}
         <div>
           <CodeBlocks
-            position={"lg:flex-row-reverse"}
+            position={"sm:flex-row-reverse w-full flex-col"}
             heading={
               <div className="text-4xl font-semibold ">
                 Unlock Your
                 <HighlightText
-                  text={"coding potential"}
+                  text={"coding potential "}
                   className="font-medium"
                 />
                 with our online courses
@@ -183,54 +182,53 @@ const HomePage = () => {
         <div className="homepage_bg h-[310px]">
           <div className="w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-5 mx-auto">
             <div className="flex flex-row gap-7 text-white ">
-              <Button linkto={"/signup"} btnText="Explore Full Catalog">
-                <div className="flex items-center gap-3">
-                  <FaArrowRight />
-                </div>
-              </Button>
-
-              <Button
-                className="bg-yellow-50"
-                linkto={"/signup"}
-                btnText="Learn more"
-              />
+              <Link to="/signup">
+                <Button btnText="Explore Full Catalog">
+                  <div className="flex items-center gap-3">
+                    <FaArrowRight />
+                  </div>
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="bg-yellow-50" btnText="Learn more" />
+              </Link>
             </div>
           </div>
         </div>
 
         <div className="mx-auto w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-7">
-          <div className="flex flex-row gap-5 mb-10 mt-[95px]">
-            <div className="text-4xl font-semibold w-[45%]">
+          <div className="flex flex-col sm:flex-row gap-1 sm:gap-5 mb-0 mt-0 sm:mb-10 sm:mt-[95px]">
+            <div className="text-4xl font-semibold w-[100%] sm:w-[45%]">
               Get the Skills you need for a
               <HighlightText text={"Job that is in demand"} />
             </div>
 
-            <div className="flex flex-col gap-10 w-[40%] items-start">
+            <div className="flex flex-col gap-10 w-[100%] sm:w-[40%] items-start">
               <div className="text-[16px]">
                 The modern learnCoding is the dictates its own terms. Today, to
                 be a competitive specialist requires more than professional
                 skills.
               </div>
-              <Button
-                className="bg-yellow-50"
-                linkto={"/signup"}
-                btnText="Learn more"
-              />
+              <Link to="/signup">
+                <Button className="bg-yellow-50" btnText="Learn more" />
+              </Link>
             </div>
           </div>
           {/* time line */}
           <TimelineSection />
           {/* learning section */}
-          <LearningLanguageSection />
+          <div className="sm:block hidden">
+            <LearningLanguageSection />
+          </div>{" "}
         </div>
       </div>
 
       {/*Section 3 */}
       <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white">
         {/* this is course slider herer */}
-       <div className=" " >
-       <CourseSlider Courses={course} nextPrevBtn="true" />
-       </div>
+        <div className="" id="courses">
+          <CourseSlider Courses={course} nextPrevBtn="true" />
+        </div>
 
         {/* instructor section */}
         <InstructorSection />
@@ -244,7 +242,7 @@ const HomePage = () => {
       </div>
 
       {/*Footer */}
-      <Footer />
+      <Footer id="footer1" />
     </div>
   );
 };

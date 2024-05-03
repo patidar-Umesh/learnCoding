@@ -6,7 +6,7 @@ import App from './App.jsx';
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux'
 import store from "./store/store.js";
-import  { Toaster } from 'react-hot-toast';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +14,6 @@ root.render(
     <Provider store={store}>
       <BrowserRouter>
     <App />
-    <Toaster/>
     </BrowserRouter>
   </Provider>
 

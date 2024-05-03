@@ -37,8 +37,8 @@ const CategoryCoursePage = () => {
     const getCategoryDetails = async () => {
       try {
         const res = await getCategoryPageData(categoryId);
-        console.log("courses page data", res);
         setCategoryPageData(res);
+        console.log("courses page data", categoryPageData?.data?.selectedCategory?.name);
       } catch (error) {
         console.log(error);
       }
@@ -63,20 +63,20 @@ const CategoryCoursePage = () => {
     <>
       {/* Hero Section */}
       <div className=" box-content bg-richblack-800 px-4">
-        <div className="mx-auto flex min-h-[260px] max-w-maxContentTab bg-[red] flex-col justify-center gap-4 lg:max-w-maxContent ">
+        <div className="mx-auto flex min-h-[260px] max-w-maxContentTab  flex-col justify-center gap-4 lg:max-w-maxContent ">
           <p className="text-sm text-richblack-300">
             {`Home / Category/ `}
             <span className="text-yellow-25">
-              {categoryPageData?.data?.selectedCategory?.name}
+              { categoryPageData?.data?.selectedCategory?.name}
             </span>
           </p>
 
-          <p className="text-3xl text-white"> hello
-            {categoryPageData?.data?.selectedCategory?.name}
+          <p className="text-3xl text-white">
+            { categoryPageData?.data?.selectedCategory?.name}
           </p>
 
-          <p className="max-w-[870px] text-white"> hello
-            {categoryPageData?.data?.data?.selectedCategory?.description}
+          <p className="max-w-[870px] text-white">
+            { categoryPageData?.data?.selectedCategory?.description}
           </p>
         </div>
       </div>
@@ -110,7 +110,7 @@ const CategoryCoursePage = () => {
         {/* Course slider */}
         <div>
           <CourseSlider
-            Courses={categoryPageData?.data?.selectedCategory}
+            Courses={categoryPageData?.data?.selectedCategory?.courses}
           />
         </div>
       </section>
@@ -124,8 +124,8 @@ const CategoryCoursePage = () => {
         {/* course slider */}
         <div className="py-8">
           <CourseSlider
-            nextPrevBtn='true'
-            Courses={categoryPageData?.data?.differentCategory?.courses}
+            nextPrevBtn={`${categoryPageData?.data?.differentCategory && 'true'}`}
+            Courses={categoryPageData?.data?.differentCategory}
           />
         </div>
       </section>
