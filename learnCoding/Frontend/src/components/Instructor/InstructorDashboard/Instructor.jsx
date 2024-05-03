@@ -101,6 +101,7 @@ const Instructor = () => {
             </div>
             <div className="flex bg-[]">
               {courses.slice(0, 3).map((course) => (
+                <Link to={`/courses/${course?._id}`}>
                 <div className="w-[300px] h-[300px]">
                   <img
                     className="h-[200px] w-[200px] object-cover"
@@ -115,6 +116,7 @@ const Instructor = () => {
                     </div>
                   </div>
                 </div>
+                </Link>
               ))}
             </div>
           </div>
