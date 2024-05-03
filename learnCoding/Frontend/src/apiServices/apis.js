@@ -1,6 +1,6 @@
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL
-console.log('base url', BASE_URL) 
+// console.log('base url', BASE_URL) 
 
 // **************************************** API ALL ENDPOINTS  **************************************** //
 
@@ -65,7 +65,6 @@ CREATE_RATING_API: BASE_URL + "/course/create-rating-review",
 
 
 }
-
 
 
 // category page
