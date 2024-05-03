@@ -72,7 +72,7 @@ const categoryCourses = async (req, res) => {
     console.log("category id is ", categoryId);
 
     // Get courses for the specified category
-    const selectedCategory = await Category.find({_id: categoryId})
+    const selectedCategory = await Category.findById({_id:categoryId})
       .populate({
         path: "courses",
         match: { status: "Published" },
@@ -80,7 +80,7 @@ const categoryCourses = async (req, res) => {
       })
       .exec();
 
-    console.log("courses is", selectedCategory)
+    // console.log("courses is", selectedCategory)
 
     // check selected category course is available or not
     if (!selectedCategory) {
@@ -94,7 +94,7 @@ const categoryCourses = async (req, res) => {
     // no course available based on selected category
     if (selectedCategory.courses?.length === 0) {
       console.log("No courses found for the selected category");
-      return res.status(404).json({
+       return res.status(404).json({
         success: false,
         message: "No courses found for the selected category",
       });
@@ -133,7 +133,7 @@ const categoryCourses = async (req, res) => {
     const mostSellingCourses = allCourses
       .sort((a, b) => b.sold - a.sold)
       .slice(0, 10);
-    console.log("mostSellingCourses COURSE", mostSellingCourses)
+    // console.log("mostSellingCourses COURSE", mostSellingCourses)
 
     res.status(200).json({
       success: true,

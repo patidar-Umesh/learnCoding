@@ -42,6 +42,7 @@ const userSchema = new Schema(
       type: String,
       trm: true
     },
+
     courses: [
       {
         type: Schema.Types.ObjectId,
@@ -64,6 +65,7 @@ const userSchema = new Schema(
         },
     ],
   },
+  
   { timestamps: true }
 );
 
