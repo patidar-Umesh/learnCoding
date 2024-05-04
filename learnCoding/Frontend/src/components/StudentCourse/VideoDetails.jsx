@@ -51,10 +51,10 @@ const VideoDetails = () => {
       }
     };
     videoDetails();
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, [courseSectionData, courseEntireData, location.pathname]);
+  }, [courseSectionData, courseEntireData, location.pathname, courseId, navigate, sectionId]);
 
   // first video check handler
   const isFirstVideo = () => {

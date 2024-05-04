@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -9,7 +9,6 @@ import { MdOutlineNavigateNext } from "react-icons/md";
 import { GrFormPrevious } from "react-icons/gr";
 
 const CourseSlider = ({ Courses, nextPrevBtn = false }) => {
-
 
 
   return (

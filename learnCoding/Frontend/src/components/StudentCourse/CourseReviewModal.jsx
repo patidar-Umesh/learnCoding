@@ -18,12 +18,12 @@ const CourseReviewModal = ({ setReviewModal }) => {
   } = useForm();
 
   useEffect(() => {
-    console.log("course data is", courseEntireData?.courseDetails?._id);
+    // console.log("course data is", courseEntireData?.courseDetails?._id);
     setValue("courseExperience", "");
     setValue("courseRating", 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, []);
+  }, [setValue]);
 
   const ratingChanged = (newRating) => {
     setValue("courseRating", newRating);

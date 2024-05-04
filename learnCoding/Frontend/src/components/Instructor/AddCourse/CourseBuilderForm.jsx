@@ -123,6 +123,7 @@ export default function CourseBuilderForm() {
         <div className="flex items-start gap-x-2">
           <Button
             type="submit"
+            disabled={loading}
             className='px-5 flex bg-yellow-50'
             onClick={handleSubmit(sectionUpdateHandler)}
             btnText={editSectionName ? "Edit Section Name" : "Create Section"}
