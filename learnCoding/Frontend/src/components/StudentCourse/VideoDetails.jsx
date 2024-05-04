@@ -54,7 +54,7 @@ const VideoDetails = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, [courseSectionData, courseEntireData, location.pathname, courseId, navigate, sectionId]);
+  }, [courseSectionData, courseEntireData, location.pathname, courseId, navigate, sectionId, subSectionId]);
 
   // first video check handler
   const isFirstVideo = () => {

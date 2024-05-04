@@ -31,7 +31,7 @@ const Instructor = () => {
     getCourseDataWithStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
-  }, []);
+  }, [tokan]);
 
   const totalAmount = instructorData?.reduce(
     (acc, curr) => acc + curr.totalAmountGenerated,
