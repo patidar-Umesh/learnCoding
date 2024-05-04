@@ -48,6 +48,7 @@ function LoginForm() {
           required
           type="email"
           name="email"
+          id="email"
           value={email}
           onChange={handleOnChange}
           placeholder="Enter email address"
@@ -61,6 +62,7 @@ function LoginForm() {
           required
           type={showPassword ? "text" : "password"}
           name="password"
+          id="password"
           value={password}
           onChange={handleOnChange}
           astrick='true'
