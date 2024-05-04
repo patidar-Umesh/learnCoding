@@ -138,7 +138,7 @@ const Navbar = () => {
 
         {/* Mobile screen menu */}
         <div
-          className="sm:none z-[999] bg-[orange] relative text-[2rem] text-white block"
+          className="sm:hidden z-[999] bg-[orange]  relative text-[2rem] text-white block"
           onClick={dropDown} 
         >
           {!show && !token ? <IoIosMenu  /> : <RxCross1 className="text-[1.8rem]" />}

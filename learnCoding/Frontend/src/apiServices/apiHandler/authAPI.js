@@ -118,7 +118,7 @@ export function login(email, password, navigate) {
       navigate("/dashboard/my-profile");
     } catch (error) {
       console.log("Login Api Error ", error);
-      toast.error(error.response.data.message);
+      toast.error('Something went wrong');
     }
     dispatch(setLoading(false));
     toast.dismiss(toastId);
