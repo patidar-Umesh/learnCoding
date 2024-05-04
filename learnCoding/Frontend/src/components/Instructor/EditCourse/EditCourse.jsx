@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   getFullDetailsOfCourse,
-} from "../../../apiServices/apiHandler/courseDetailsAPI";
-import { setCourse, setEditCourse } from "../../../store/slices/courseSlice";
-import RenderSteps from "../AddCourse/RenderSteps";
+} from "../../../apiServices/apiHandler/courseDetailsAPI.js";
+import { setCourse, setEditCourse } from "../../../store/slices/courseSlice.js";
+import RenderSteps from "../AddCourse/RenderSteps.jsx";
 
 export default function EditCourse() {
   const dispatch = useDispatch();
@@ -26,10 +26,10 @@ export default function EditCourse() {
         dispatch(setCourse(result.data?.courseDetails));
       }
       setLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
       
     })();
-
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

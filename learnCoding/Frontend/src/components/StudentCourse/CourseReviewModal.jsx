@@ -51,8 +51,8 @@ const CourseReviewModal = ({ setReviewModal }) => {
         <div className="text-white ">
           <div className="flex flex-col items-center justify-center">
             <img
+            alt=""
               src={user?.image}
-              alt="Image"
               className="aspect-square  w-[50px] rounded-full object-cover"
             />
             <div>

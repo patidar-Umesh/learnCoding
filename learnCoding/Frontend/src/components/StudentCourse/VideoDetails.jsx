@@ -51,6 +51,7 @@ const VideoDetails = () => {
       }
     };
     videoDetails();
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
   }, [courseSectionData, courseEntireData, location.pathname]);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
-import Button from "../common/Button";
+import Button from "../common/Button.jsx";
 
 const VideoDetailsSidebar = ({ setReviewModal }) => {
   const [activeStatus, setActiveStatus] = useState("");

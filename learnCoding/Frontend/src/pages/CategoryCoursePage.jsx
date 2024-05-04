@@ -47,6 +47,7 @@ const CategoryCoursePage = () => {
     if (categoryId) {
       getCategoryDetails();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
   if (loading || !categoryPageData) {

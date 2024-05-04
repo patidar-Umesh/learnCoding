@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { fetchInstructorCourses } from "../../../apiServices/apiHandler/courseDetailsAPI.js";
 import { getInstructorData } from "../../../apiServices/apiHandler/profileAPI.js";
-import InstructorChart from "./InstructorChart";
+import InstructorChart from "./InstructorChart.jsx";
 import { Link } from "react-router-dom";
 
 const Instructor = () => {
