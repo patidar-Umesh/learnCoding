@@ -53,6 +53,6 @@ app.use('/api/v1/payment', paymentRouter)
 
 
 // set port for server
-const Port = process.env.PORT || 5000
+const Port = process.env.PORT
 app.listen(Port, () => console.log(`Server running on ${Port}`))
 
