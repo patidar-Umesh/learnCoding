@@ -20,27 +20,10 @@ const {
   LECTURE_COMPLETION_API,
 } = courseEndpoints;
 
-// export const getAllCourses = async () => {
-//   const toastId = toast.loading("Loading...")
-//   let result = []
-//   try {
-//     const response = await apiConnector("GET", GET_ALL_COURSE_API)
-//     if (!response?.data?.success) {
-//       throw new Error("Could Not Fetch Course Categories")
-//     }
-//     result = response.data.data
-//     console.log('courses ', result = response?.data?.data);
-//   } catch (error) {
-//     console.log("Get Course api error", error)
-//     toast.error(error.message)
-//   }
-//   toast.dismiss(toastId)
-//   return result
-// }
 
 export const getCourseDetails = async (courseId) => {
   // const toastId = toast.loading("Loading...");
-  console.log("id 46 ", courseId);
+  // console.log("id 46 ", courseId);
   let result = null;
   try {
     const response = await apiConnector("POST", COURSE_DETAILS_API, {courseId});
@@ -51,7 +34,7 @@ export const getCourseDetails = async (courseId) => {
       throw new Error(response.data.message);
     }
     result = response.data;
-    console.log("result is", result);
+    // console.log("result is", result);
   } catch (error) {
     console.log("Course details api error", error);
     result = error.response.data;

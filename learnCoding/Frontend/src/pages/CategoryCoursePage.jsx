@@ -22,7 +22,7 @@ const CategoryCoursePage = () => {
   useEffect(() => {
     const getCategories = async () => {
       const res = await apiConnector("GET", courseEndpoints.COURSE_CATEGORIES_API);
-      console.log('categories', res);
+      // console.log('categories', res);
 
       const category_id = res?.data?.data?.filter(
         (cate) => cate.name.split(" ").join("-").toLowerCase() === categoryName
@@ -39,7 +39,7 @@ const CategoryCoursePage = () => {
       try {
         const res = await getCategoryPageData(categoryId);
         setCategoryPageData(res);
-        console.log("courses page data", categoryPageData?.data?.selectedCategory?.name);
+        // console.log("courses page data", categoryPageData?.data?.selectedCategory?.name);
       } catch (error) {
         console.log(error);
       }
