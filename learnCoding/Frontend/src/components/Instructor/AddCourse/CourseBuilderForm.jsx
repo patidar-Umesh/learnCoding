@@ -28,7 +28,7 @@ export default function CourseBuilderForm() {
   const { course } = useSelector((state) => state.course);
   const { token } = useSelector((state) => state.auth);
 
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [editSectionName, setEditSectionName] = useState(null);
   const dispatch = useDispatch();
 

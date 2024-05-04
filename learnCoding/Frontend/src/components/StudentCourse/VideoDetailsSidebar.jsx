@@ -21,7 +21,7 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
   } = useSelector((state) => state.studentCourse);
 
   useEffect(() => {
-    console.log("entire data", active);
+    // console.log("entire data", active);
 
     const setActiveFlags = () => {
       if (!courseSectionData?.length) return;
@@ -42,7 +42,7 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
     };
     setActiveFlags();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courseSectionData, courseEntireData, location.pathname, active]);
+  }, [courseSectionData, courseEntireData, location.pathname]);
 
   // add review handler
   const handleAddReview = () => {
