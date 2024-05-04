@@ -1,5 +1,5 @@
 import { apiConnector } from "../apiConnector.js"
-import { profileEndpoints } from "../apis"
+import { profileEndpoints } from "../apis.js"
 import { logout } from "../apiHandler/authAPI.js"
 import { toast } from "react-hot-toast"
 import { setLoading, setUser } from "../../store/slices/profileSlice.js"

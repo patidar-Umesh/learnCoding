@@ -1,7 +1,6 @@
 import { toast } from "react-hot-toast";
-import { studentEndpoints } from "../apis";
+import { studentEndpoints } from "../apis.js";
 import { apiConnector } from "../apiConnector.js";
-// import rzpLogo from "../../assets/Logo/rzp_logo.png"
 import { setPaymentLoading } from "../../store/slices/courseSlice.js";
 import { resetCart } from "../../store/slices/cartSlice.js";
 
@@ -66,7 +65,7 @@ export async function buyCourse(
 
     //options
     const options = {
-      key: `${import.meta.env.VITE_RAZORPAY_KEY_ID}`,
+      key: `${process.env.REACT_RAZORPAY_KEY_ID}`,
       currency: orderResponse.data.data.currency,
       amount: `${orderResponse.data.data.amount}`,
       order_id: orderResponse.data.data.id,

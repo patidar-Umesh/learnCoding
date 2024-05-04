@@ -30,14 +30,11 @@ import MyCourses from "./components/Instructor/MyCourses.jsx";
 import EditCourse from "./components/Instructor/EditCourse/EditCourse.jsx";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+// import {config} from 'dotenv'
 
 const App = () => {
   const { user } = useSelector((state) => state.profile);
-  useEffect(() => {
-    window.process = {
-      ...window.process,
-    };
-  }, []);
+  // config()
 
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">

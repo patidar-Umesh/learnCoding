@@ -89,7 +89,7 @@ const CourseDetailsPage = () => {
     );
   }
   if (!response.success) {
-    return <Error />;
+    return <ErrorPage />;
   }
 
   const handleBuyCourse = () => {
