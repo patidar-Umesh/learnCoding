@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { MdNavigateNext } from "react-icons/md";
-import IconBtn from "../../common/IconBtn.jsx";
 import NestedView from "./NestedView";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,7 +28,7 @@ export default function CourseBuilderForm() {
   const { course } = useSelector((state) => state.course);
   const { token } = useSelector((state) => state.auth);
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [editSectionName, setEditSectionName] = useState(null);
   const dispatch = useDispatch();
 

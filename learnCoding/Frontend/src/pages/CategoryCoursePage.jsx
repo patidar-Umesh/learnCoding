@@ -30,6 +30,7 @@ const CategoryCoursePage = () => {
       setCategoryId(category_id);
     };
     getCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryName]);
 
 

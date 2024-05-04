@@ -7,7 +7,7 @@ import Button from "../common/Button";
 const VideoDetailsSidebar = ({ setReviewModal }) => {
   const [activeStatus, setActiveStatus] = useState("");
   const [videoBarActive, setVideoBarActive] = useState("");
-  const [active, setActive] = useState(true);
+  // const [active, setActive] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,6 +41,7 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
       setVideoBarActive(activeSubSectionId);
     };
     setActiveFlags();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseSectionData, courseEntireData, location.pathname, active]);
 
   // add review handler

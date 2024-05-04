@@ -5,9 +5,7 @@ import { toast } from "react-hot-toast"
 import { setLoading, setUser } from "../../store/slices/profileSlice.js"
 
 
-
 const { GET_USER_DETAILS_API, GET_USER_ENROLLED_COURSES_API, GET_INSTRUCTOR_DATA_API } = profileEndpoints
-
 
 // get user details
 export function getUserDetails(token, navigate) {
@@ -28,7 +26,7 @@ export function getUserDetails(token, navigate) {
         : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`
 
       dispatch(setUser({ ...response.data }))
-      // console.log('user', response.data.data);
+      console.log('user', userImage);
     } catch (error) {
       dispatch(logout(navigate))
       console.log("User api error", error)

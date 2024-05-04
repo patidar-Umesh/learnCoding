@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import IconBtn from "../../common/IconBtn"
 import { buyCourse } from "../../../apiServices/apiHandler/studentFeaturesAPI"
 import Button from "../../common/Button"
 

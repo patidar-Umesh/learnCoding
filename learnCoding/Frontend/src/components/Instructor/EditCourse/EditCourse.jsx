@@ -26,6 +26,8 @@ export default function EditCourse() {
         dispatch(setCourse(result.data?.courseDetails));
       }
       setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+      
     })();
 
   }, []);

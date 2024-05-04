@@ -16,6 +16,7 @@ const VerifyEmailPage = () => {
     if (!signupData) {
       navigate("/signup");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleVerifyAndSignup = (e) => {

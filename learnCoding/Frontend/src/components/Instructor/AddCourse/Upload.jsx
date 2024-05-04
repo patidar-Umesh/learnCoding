@@ -16,7 +16,6 @@ export default function Upload({
   viewData = null,
   editData = null,
 }) {
-  const { course } = useSelector((state) => state.course)
   const [selectedFile, setSelectedFile] = useState(null)
   const [previewSource, setPreviewSource] = useState(
     viewData ? viewData : editData ? editData : ""
@@ -57,7 +56,7 @@ export default function Upload({
 
   useEffect(() => {
     setValue(name, selectedFile)
-  }, [selectedFile, setValue])
+  }, [selectedFile, setValue,name])
 
   return (
     <div className="flex flex-col space-y-2">

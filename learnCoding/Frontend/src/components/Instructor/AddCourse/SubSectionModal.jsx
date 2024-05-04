@@ -3,13 +3,11 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { RxCross2 } from "react-icons/rx"
 import { useDispatch, useSelector } from "react-redux"
-
 import {
   createSubSection,
   updateSubSection,
 } from "../../../apiServices/apiHandler/courseDetailsAPI"
 import { setCourse } from "../../../store/slices/courseSlice"
-import IconBtn from "../../common/IconBtn"
 import Upload from "./Upload"
 import Input from "../../common/Input"
 import Button from "../../common/Button"
@@ -45,6 +43,7 @@ export default function SubSectionModal({
       setValue("lectureDesc", modalData.description)
       setValue("lectureVideo", modalData.videoUrl)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // detect whether form is updated or not

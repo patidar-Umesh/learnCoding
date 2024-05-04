@@ -1,15 +1,14 @@
-import { useEffect, useRef, useState } from "react"
-import { AiOutlineDown } from "react-icons/ai"
-import CourseSubSectionAccordion from "./CourseSubSectionAccordion"
+import { useEffect, useState } from "react";
+import { AiOutlineDown } from "react-icons/ai";
+import CourseSubSectionAccordion from "./CourseSubSectionAccordion";
 
 export default function CourseAccordionBar({ course, isActive, handleActive }) {
-
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
-    setActive(isActive?.includes(course._id))
-  }, [isActive])
-
+    setActive(isActive?.includes(course._id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActive]);
 
   return (
     <div className="overflow-hidden select-none border border-solid border-richblack-600 bg-richblack-700 text-richblack-5 last:mb-0">
@@ -17,7 +16,7 @@ export default function CourseAccordionBar({ course, isActive, handleActive }) {
         <div
           className={`flex cursor-pointer items-start justify-between bg-opacity-20 px-7  py-6 transition-[0.3s]`}
           onClick={() => {
-            handleActive(course._id)
+            handleActive(course._id);
           }}
         >
           <div className="flex items-center gap-2">
@@ -37,18 +36,19 @@ export default function CourseAccordionBar({ course, isActive, handleActive }) {
           </div>
         </div>
       </div>
-      {active && 
-      <div
-      className={`relative bg-[gray] overflow-hidden ${active ? 'h-auto transition-all' : 'h-0'}`}
-      
-    >
-      <div className="text-textHead flex flex-col gap-2 px-7 py-6 font-semibold">
-        {course?.subSection?.map((subSec, i) => {
-          return <CourseSubSectionAccordion subSec={subSec} key={i} />
-        })}
-      </div>
-    </div> }
-      
+      {active && (
+        <div
+          className={`relative bg-[gray] overflow-hidden ${
+            active ? "h-auto transition-all" : "h-0"
+          }`}
+        >
+          <div className="text-textHead flex flex-col gap-2 px-7 py-6 font-semibold">
+            {course?.subSection?.map((subSec, i) => {
+              return <CourseSubSectionAccordion subSec={subSec} key={i} />;
+            })}
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }

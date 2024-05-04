@@ -21,6 +21,8 @@ const CourseReviewModal = ({ setReviewModal }) => {
     console.log("course data is", courseEntireData?.courseDetails?._id);
     setValue("courseExperience", "");
     setValue("courseRating", 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   const ratingChanged = (newRating) => {
@@ -50,7 +52,7 @@ const CourseReviewModal = ({ setReviewModal }) => {
           <div className="flex flex-col items-center justify-center">
             <img
               src={user?.image}
-              alt="user Image"
+              alt="Image"
               className="aspect-square  w-[50px] rounded-full object-cover"
             />
             <div>

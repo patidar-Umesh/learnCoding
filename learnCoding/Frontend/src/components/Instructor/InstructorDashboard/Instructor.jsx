@@ -29,6 +29,8 @@ const Instructor = () => {
       setLoading(false);
     };
     getCourseDataWithStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   const totalAmount = instructorData?.reduce(
@@ -104,6 +106,7 @@ const Instructor = () => {
                 <Link to={`/courses/${course?._id}`}>
                 <div className="w-[300px] h-[300px]">
                   <img
+                  alt="img"
                     className="h-[200px] w-[200px] object-cover"
                     src={course.image}
                   />

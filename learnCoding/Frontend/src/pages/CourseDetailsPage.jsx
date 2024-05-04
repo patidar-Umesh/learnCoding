@@ -14,9 +14,6 @@ import { getCourseDetails } from "../apiServices/apiHandler/courseDetailsAPI.js"
 import { buyCourse } from "../apiServices/apiHandler/studentFeaturesAPI.js";
 import GetAvgRating from "../utils/avgRating.js";
 import ErrorPage from "./ErrorPage.jsx";
-import { apiConnector } from "../apiServices/apiConnector.js";
-import { courseEndpoints } from "../apiServices/apis.js";
-import Button from "../components/common/Button.jsx";
 
 const CourseDetailsPage = () => {
   const { user } = useSelector((state) => state.profile);
@@ -48,6 +45,7 @@ const CourseDetailsPage = () => {
 
   useEffect(() => {
     fetchCourse();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseId]);
 
   // console.log("course details response: ", response);
@@ -57,17 +55,18 @@ const CourseDetailsPage = () => {
   useEffect(() => {
     const count = GetAvgRating(response?.data?.courseDetails?.ratingAndReview);
     setAvgReviewCount(count);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [response]);
 
   // // Collapse all
-  const [collapse, setCollapse] = useState("");
+  // const [collapse, setCollapse] = useState("");
   const [isActive, setIsActive] = useState(Array(0));
 
   const handleActive = (id) => {
     setIsActive(
       !isActive.includes(id)
         ? isActive.concat([id])
-        : isActive.filter((e) => e != id)
+        : isActive.filter((e) => e !== id)
     );
   };
 
@@ -121,7 +120,6 @@ const CourseDetailsPage = () => {
     courseName,
     courseDescription,
     thumbnail,
-    price,
     whatYouWillLearn,
     courseContent,
     ratingAndReview,

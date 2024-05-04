@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -32,9 +31,8 @@ export default function UpdatePassword() {
     }
 
     try {
-      const result = await changePassword(formData, token);
+       await changePassword(formData, token);
       
-
     } catch (error) {
       console.log("Password not changed", error.message);
     }

@@ -1,27 +1,28 @@
-import { useEffect, useState } from "react"
-import { BiDotsVerticalRounded } from "react-icons/bi"
-import { useSelector } from "react-redux"
-import ProgressBar from "@ramonak/react-progress-bar"
-import { useNavigate } from "react-router-dom"
-import { getUserEnrolledCourses } from "../../apiServices/apiHandler/profileAPI"
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import ProgressBar from "@ramonak/react-progress-bar";
+import { useNavigate } from "react-router-dom";
+import { getUserEnrolledCourses } from "../../apiServices/apiHandler/profileAPI";
 
 export default function EnrolledCourses() {
-  const { token } = useSelector((state) => state.auth)
-  const navigate = useNavigate()
+  const { token } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
-  const [enrolledCourses, setEnrolledCourses] = useState(null)
+  const [enrolledCourses, setEnrolledCourses] = useState(null);
   const getEnrolledCourses = async () => {
     try {
       const res = await getUserEnrolledCourses(token);
 
       setEnrolledCourses(res);
     } catch (error) {
-      console.log("Could not fetch enrolled courses.")
+      console.log("Could not fetch enrolled courses.");
     }
   };
+
   useEffect(() => {
     getEnrolledCourses();
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // console.log('Enrolled courses', enrolledCourses);
 
   return (
@@ -56,7 +57,7 @@ export default function EnrolledCourses() {
                 onClick={() => {
                   navigate(
                     `/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
-                  )
+                  );
                 }}
               >
                 <img
@@ -73,7 +74,7 @@ export default function EnrolledCourses() {
                   </p>
                 </div>
               </div>
-              
+
               <div className="w-1/4 px-2 py-3">{course?.totalDuration}</div>
               <div className="flex w-1/5 flex-col gap-2 px-2 py-3">
                 <p>Progress: {course.progressPercentage || 0}%</p>
@@ -88,5 +89,5 @@ export default function EnrolledCourses() {
         </div>
       )}
     </>
-  )
+  );
 }

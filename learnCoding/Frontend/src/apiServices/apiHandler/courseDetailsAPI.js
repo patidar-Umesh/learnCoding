@@ -1,12 +1,10 @@
 import { toast } from "react-hot-toast";
-import { setLoading } from "../../store/slices/profileSlice.js";
 import { apiConnector } from "../apiConnector.js";
 import { courseEndpoints } from "../apis.js";
 
 const {
   COURSE_DETAILS_API,
   COURSE_CATEGORIES_API,
-  GET_ALL_COURSE_API,
   CREATE_COURSE_API,
   EDIT_COURSE_API,
   CREATE_SECTION_API,

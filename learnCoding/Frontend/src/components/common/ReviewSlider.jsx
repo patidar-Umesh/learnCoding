@@ -13,7 +13,6 @@ import { FaStar } from 'react-icons/fa'
 const ReviewSlider = () => {
 
     const [reviews, setReviews] = useState([]);
-    const truncateWords = 15;
 
 
     useEffect(() => {

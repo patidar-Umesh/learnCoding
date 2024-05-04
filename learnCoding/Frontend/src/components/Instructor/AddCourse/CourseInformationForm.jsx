@@ -54,6 +54,7 @@ export default function CourseInformationForm() {
       setValue("image", course.image);
     }
     getCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isFormUpdated = () => {
@@ -155,9 +156,7 @@ export default function CourseInformationForm() {
     setLoading(false);
   };
 
-  const goNext = () => {
-    dispatch(setStep(2));
-  };
+ 
 
   return (
     <form

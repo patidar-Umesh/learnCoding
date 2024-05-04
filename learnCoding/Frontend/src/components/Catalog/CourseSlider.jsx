@@ -10,9 +10,6 @@ import { GrFormPrevious } from "react-icons/gr";
 
 const CourseSlider = ({ Courses, nextPrevBtn = false }) => {
 
-useEffect(()=>{
-console.log('Courses in slider',Courses);
-},[])
 
 
   return (

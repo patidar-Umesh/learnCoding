@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { sendOtp } from "../../apiServices/apiHandler/authAPI";
 import { setSignupData } from "../../store/slices/authSlice";
 import { ACCOUNT_TYPE } from "../../utils/constants.js";

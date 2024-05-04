@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Input from "../../common/Input";
 import Button from "../../common/Button";
 
 export default function RequirementsField({
   name,
   label,
-  register,
   setValue,
   errors,
-  getValues,
 }) {
   const { editCourse, course } = useSelector((state) => state.course);
   const [requirement, setRequirement] = useState("");
   const [requirementsList, setRequirementsList] = useState([]);
-const[error, setError] = useState(false)
 
   useEffect(() => {
     if (editCourse) {

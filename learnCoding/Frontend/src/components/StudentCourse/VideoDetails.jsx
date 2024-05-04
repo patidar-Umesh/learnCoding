@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect,  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { markLectureAsComplete } from "../../apiServices/apiHandler/courseDetailsAPI.js";
@@ -13,7 +13,6 @@ import {
 } from "video-react";
 import "video-react/dist/video-react.css";
 import Button from "../common/Button.jsx";
-import CourseReviewModal from "./CourseReviewModal.jsx";
 
 const VideoDetails = () => {
   const { courseId, sectionId, subSectionId } = useParams();
@@ -52,6 +51,8 @@ const VideoDetails = () => {
       }
     };
     videoDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [courseSectionData, courseEntireData, location.pathname]);
 
   // first video check handler
@@ -152,7 +153,7 @@ const VideoDetails = () => {
     ]?.subSection.findIndex((subSec) => subSec._id === subSectionId);
     console.log("currentSubSectionIndex", currentSubSectionIndex);
 
-    if (currentSubSectionIndex != 0) {
+    if (currentSubSectionIndex !== 0) {
       // previous sub section id
       const prevSubSectionId =
         courseSectionData[currentSectionIndex].subSection[

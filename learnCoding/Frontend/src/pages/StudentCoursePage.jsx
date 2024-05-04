@@ -38,6 +38,7 @@ const StudentCoursePage = () => {
       dispatch(setTotalNoOfLectures(totalNoOfLectures));
     };
     courseDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
