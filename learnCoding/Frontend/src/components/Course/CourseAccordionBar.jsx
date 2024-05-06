@@ -1,33 +1,22 @@
-import { useEffect, useRef, useState } from "react"
-import { AiOutlineDown } from "react-icons/ai"
-import CourseSubSectionAccordion from "./CourseSubSectionAccordion"
+import { useEffect, useState } from "react";
+import { AiOutlineDown } from "react-icons/ai";
+import CourseSubSectionAccordion from "./CourseSubSectionAccordion";
 
 export default function CourseAccordionBar({ course, isActive, handleActive }) {
-  const contentEl = useRef(null)
+  const [active, setActive] = useState(false);
 
-
-
-  
-
-  const [active, setActive] = useState(false)
   useEffect(() => {
-    setActive(isActive?.includes(course._id))
-  }, [isActive])
-
-  const [sectionHeight, setSectionHeight] = useState(0)
-  
-  useEffect(() => {
-    console.log('course in acco', course);
-    setSectionHeight(active ? contentEl.current.scrollHeight : 0)
-  }, [active])
+    setActive(isActive?.includes(course._id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isActive]);
 
   return (
-    <div className="overflow-hidden border border-solid border-richblack-600 bg-richblack-700 text-richblack-5 last:mb-0">
+    <div className="overflow-hidden select-none border border-solid border-richblack-600 bg-richblack-700 text-richblack-5 last:mb-0">
       <div>
         <div
           className={`flex cursor-pointer items-start justify-between bg-opacity-20 px-7  py-6 transition-[0.3s]`}
           onClick={() => {
-            handleActive(course._id)
+            handleActive(course._id);
           }}
         >
           <div className="flex items-center gap-2">
@@ -38,28 +27,28 @@ export default function CourseAccordionBar({ course, isActive, handleActive }) {
             >
               <AiOutlineDown />
             </i>
-            <p>{course?.sectionName} hello</p>
+            <p>{course?.sectionName}</p>
           </div>
           <div className="space-x-4">
             <span className="text-yellow-25">
-              {/* {`${course.subSection.length || 0} lecture(s)`} */}
+              {`${course.subSection.length || 0} lecture(s)`}
             </span>
           </div>
         </div>
       </div>
-      <div
-        ref={contentEl}
-        className={`relative h-0 overflow-hidden bg-richblack-900 transition-[height] duration-[0.35s] ease-[ease]`}
-        style={{
-          height: sectionHeight,
-        }}
-      >
-        <div className="text-textHead flex flex-col gap-2 px-7 py-6 font-semibold">
-          {course?.subSection?.map((subSec, i) => {
-            return <CourseSubSectionAccordion subSec={subSec} key={i} />
-          })}
+      {active && (
+        <div
+          className={`relative bg-[gray] overflow-hidden ${
+            active ? "h-auto transition-all" : "h-0"
+          }`}
+        >
+          <div className="text-textHead flex flex-col gap-2 px-7 py-6 font-semibold">
+            {course?.subSection?.map((subSec, i) => {
+              return <CourseSubSectionAccordion subSec={subSec} key={i} />;
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
-  )
+  );
 }

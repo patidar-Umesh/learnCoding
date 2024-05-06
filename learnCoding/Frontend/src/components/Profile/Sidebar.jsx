@@ -2,7 +2,6 @@ import { useState } from "react"
 import { VscSignOut } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-
 import { sidebarLinks } from "../../data/dashboard-links"
 import { logout } from "../../apiServices/apiHandler/authAPI"
 import ConfirmationModal from "../common/ConfirmationModal"
@@ -20,7 +19,7 @@ export default function Sidebar() {
 
   if (profileLoading || authLoading) {
     return (
-      <div className="grid h-[calc(100vh-3.5rem)] min-w-[220px] items-center border-r-[1px] border-r-richblack-700 bg-richblack-800">
+      <div className="grid h-[calc(100vh-3.5rem)]  min-w-[220px] items-center border-r-[1px] border-r-richblack-700 bg-richblack-800">
         <div className="spinner"></div>
       </div>
     )
@@ -28,8 +27,9 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
-        <div className="flex flex-col">
+      <div className="flex h-[80px] sm:h-[calc(100vh-3.5rem)] sm:order-[0] order-2 min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 sm:bg-richblack-800 py-10">
+
+        <div className="flex flex-row sm:flex-col">
           {sidebarLinks.map((link) => {
             if (link.type && user?.accountType !== link.type) return null
             return (
@@ -37,12 +37,15 @@ export default function Sidebar() {
             )
           })}
         </div>
+
         <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
-        <div className="flex flex-col">
+
+        <div className="sm:flex hidden  sm:flex-col">
           <SidebarLink
             link={{ name: "Settings", path: "/dashboard/settings" }}
             iconName="VscSettingsGear"
           />
+
           <button
             onClick={() =>
               setConfirmationModal({
@@ -61,6 +64,7 @@ export default function Sidebar() {
               <span>Logout</span>
             </div>
           </button>
+
         </div>
       </div>
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}

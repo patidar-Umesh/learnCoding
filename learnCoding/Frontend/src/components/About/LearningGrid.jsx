@@ -1,6 +1,7 @@
 import React from "react";
 import HighlightText from "../home/HighlightText";
 import Button from "../common/Button";
+import { useNavigate } from "react-router-dom";
 
 const LearningGridArray = [
   {
@@ -45,8 +46,9 @@ const LearningGridArray = [
 ];
 
 const LearningGrid = () => {
+  const navigate = useNavigate()
   return (
-    <div className="grid mx-auto w-[350px] xl:w-fit grid-cols-1 xl:grid-cols-4 mb-12">
+    <div className="grid mx-auto w-[350px] lg:w-fit grid-cols-1 sm:grid-cols-3 gap-4 lg:grid-col-4 mb-12">
       {LearningGridArray.map((card, i) => {
         return (
           <div
@@ -58,7 +60,7 @@ const LearningGrid = () => {
                 ? "bg-richblack-800 h-[294px]"
                 : "bg-transparent"
             } ${card.order === 3 && "xl:col-start-2"}  `}
-          >
+          > 
             {card.order < 0 ? (
               <div className="xl:w-[90%] flex flex-col gap-3 pb-10 xl:pb-0">
                 <div className="text-4xl font-semibold ">
@@ -70,7 +72,7 @@ const LearningGrid = () => {
                 </p>
 
                 <div className="w-fit mt-2">
-                  <Button active={true} linkto={card.BtnLink} btnText={card.BtnText}/>
+                  <Button className='bg-yellow-50' onClick={()=> navigate(card.BtnLink)} btnText={card.BtnText}/>
                 </div>
                 
               </div>

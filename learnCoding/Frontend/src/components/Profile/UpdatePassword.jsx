@@ -1,52 +1,60 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/common/Input";
 import { changePassword } from "../../apiServices/apiHandler/SettingsAPI";
-import IconBtn from "../common/IconBtn";
+import Button from "../common/Button";
 
 export default function UpdatePassword() {
   const { token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
-
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    oldPassword: "",
+    newPassword: "",
+  });
+  const [error, setError] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const getValue = async (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log("password Data - ", formData);
+  };
 
-  const submitPasswordForm = async (data) => {
-    console.log("password Data - ", data);
+  const changePasswordHandler = async (e) => {
+    console.log("btn clicked");
+    e.preventDefault();
+    if (formData.newPassword === "" || formData.oldPassword === "") {
+      setError(true);
+      return;
+    }
+
     try {
-      await changePassword(token, data);
+       await changePassword(formData, token);
+      
     } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message);
+      console.log("Password not changed", error.message);
     }
   };
 
   return (
     <>
-      <form onSubmit={handleSubmit(submitPasswordForm)}>
+      <form>
         <div className="my-10 flex flex-col gap-y-6 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
           <h2 className="text-lg font-semibold text-richblack-5">Password</h2>
           <div className="flex flex-col gap-5 lg:flex-row">
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
-              <label htmlFor="oldPassword" className="lable-style">
-                Current Password
-              </label>
-              <input
+              <Input
+                label="Current Password"
                 type={showOldPassword ? "text" : "password"}
                 name="oldPassword"
                 id="oldPassword"
+                onChange={getValue}
                 placeholder="Enter Current Password"
-                className="form-style"
-                {...register("oldPassword", { required: true })}
+                error={error && "Please enter your New Password."}
               />
+
               <span
                 onClick={() => setShowOldPassword((prev) => !prev)}
                 className="absolute right-3 top-[38px] z-[10] cursor-pointer"
@@ -57,12 +65,6 @@ export default function UpdatePassword() {
                   <AiOutlineEye fontSize={24} fill="#AFB2BF" />
                 )}
               </span>
-
-              {errors.oldPassword && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
-                  Please enter your Current Password.
-                </span>
-              )}
             </div>
 
             <div className="relative flex flex-col gap-2 lg:w-[48%]">
@@ -71,12 +73,12 @@ export default function UpdatePassword() {
                 type={showNewPassword ? "text" : "password"}
                 name="newPassword"
                 id="newPassword"
+                onChange={getValue}
                 placeholder="Enter New Password"
-                register={{ ...register("newPassword", { required: true }) }}
-                error={errors.newPassword && "Please enter your New Password."}
+                error={error && "Please enter your New Password."}
               />
               <span
-                onClick={() => setShowPassword((prev) => !prev)}
+                onClick={() => setShowNewPassword((prev) => !prev)}
                 className="absolute right-3 top-[38px] z-[10] cursor-pointer"
               >
                 {showNewPassword ? (
@@ -89,15 +91,18 @@ export default function UpdatePassword() {
           </div>
         </div>
         <div className="flex justify-end gap-2">
-          <button
-            onClick={() => {
-              navigate("/dashboard/my-profile");
-            }}
-            className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
-          >
-            Cancel
-          </button>
-          <IconBtn type="submit" text="Update" />
+          <Button
+            btnText="Cancel"
+            type="button"
+            onClick={() => navigate("/dashboard/my-profile")}
+          />
+
+          <Button
+            onClick={changePasswordHandler}
+            type="submit"
+            btnText="Update"
+            className="bg-yellow-50"
+          />
         </div>
       </form>
     </>

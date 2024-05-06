@@ -2,25 +2,30 @@ import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { BiArrowBack } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link,  useNavigate, useParams } from "react-router-dom";
 import { resetPassword } from "../apiServices/apiHandler/authAPI";
+import Input from "../components/common/Input";
+import Button from "../components/common/Button";
+import toast from "react-hot-toast";
 
 const UpdatePasswordPage = () => {
+  const { loading } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const location = useLocation();
-  const { loading } = useSelector((state) => state.auth);
-  
-  const [formData, setFormData] = useState({
-    password: "",
-    confirmPassword: "",
-  });
+  const params = useParams();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [formData, setFormData] = useState({
+    password: "",
+    confirmPassword: "",
+  });
   const { password, confirmPassword } = formData;
+  
+  // console.log("token is", params.token);
 
+  // onchage handler
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -28,9 +33,17 @@ const UpdatePasswordPage = () => {
     }));
   };
 
-  const handleOnSubmit = (e) => {
+  // reset password handler
+  const resetPassHandler = (e) => {
     e.preventDefault();
-    const token = location.pathname.split("/").at(-1);
+    
+    if (formData.password !== formData.confirmPassword) {
+      toast.error("Password and confirmPassword should be same");
+      return;
+    }
+
+    // get token from params
+    const token = params.token;
     dispatch(resetPassword(password, confirmPassword, token, navigate));
   };
 
@@ -46,63 +59,60 @@ const UpdatePasswordPage = () => {
           <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
             Almost done. Enter your new password and youre all set.
           </p>
-          <form onSubmit={handleOnSubmit}>
-            <label className="relative">
-              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-                New Password <sup className="text-pink-200">*</sup>
-              </p>
-              <input
-                required
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={password}
-                onChange={handleOnChange}
-                placeholder="Enter Password"
-                className="form-style w-full !pr-10"
-              />
-              <span
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
-              >
-                {showPassword ? (
-                  <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-                ) : (
-                  <AiOutlineEye fontSize={24} fill="#AFB2BF" />
-                )}
-              </span>
-            </label>
-            <label className="relative mt-3 block">
-              <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-                Confirm New Password <sup className="text-pink-200">*</sup>
-              </p>
-              <input
-                required
-                type={showConfirmPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={confirmPassword}
-                onChange={handleOnChange}
-                placeholder="Confirm Password"
-                className="form-style w-full !pr-10"
-              />
-              <span
-                onClick={() => setShowConfirmPassword((prev) => !prev)}
-                className="absolute right-3 top-[38px] z-[10] cursor-pointer"
-              >
-                {showConfirmPassword ? (
-                  <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
-                ) : (
-                  <AiOutlineEye fontSize={24} fill="#AFB2BF" />
-                )}
-              </span>
-            </label>
 
-            <button
-              type="submit"
-              className="mt-6 w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900"
+          <form>
+            <Input
+              label="New Password"
+              required
+              type={showPassword ? "text" : "password"}
+              name="password"
+              value={password}
+              onChange={handleOnChange}
+              placeholder="Enter Password"
+              astrick="true"
+              className="relative"
+            />
+            <span
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-[38px] z-[10] cursor-pointer"
             >
-              Reset Password
-            </button>
+              {showPassword ? (
+                <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
+              ) : (
+                <AiOutlineEye fontSize={24} fill="#AFB2BF" />
+              )}
+            </span>
+
+            <Input
+              label="Confirm New Password"
+              required
+              type={showConfirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={handleOnChange}
+              placeholder="Confirm Password"
+              astrick="true"
+            />
+
+            <span
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              className="absolute right-3 top-[38px] z-[10] cursor-pointer"
+            >
+              {showConfirmPassword ? (
+                <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
+              ) : (
+                <AiOutlineEye fontSize={24} fill="#AFB2BF" />
+              )}
+            </span>
+
+            <Button
+              type="submit"
+              onClick={resetPassHandler}
+              className="mt-6 w-full  bg-yellow-50 "
+              btnText="Reset Password"
+            />
           </form>
+
           <div className="mt-6 flex items-center justify-between">
             <Link to="/login">
               <p className="flex items-center gap-x-2 text-richblack-5">

@@ -1,96 +1,100 @@
-import React, { useEffect, useState } from "react"
-import { BiInfoCircle } from "react-icons/bi"
-import { HiOutlineGlobeAlt } from "react-icons/hi"
-import  ReactMarkdown  from "react-markdown"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
-import ConfirmationModal from "../components/common/ConfirmationModal"
-import Footer from "../components/common/Footer"
-import RatingStars from "../components/common/RatingStars"
-import CourseAccordionBar from "../components/Course/CourseAccordionBar"
-import CourseDetailsCard from "../components/Course/CourseDetailsCard"
-import { formatDate } from "../apiServices/formatDate.js"
-import { fetchCourseDetails } from "../apiServices/apiHandler/courseDetailsAPI.js"
-import { buyCourse } from "../apiServices/apiHandler/studentFeaturesAPI.js"
-import GetAvgRating from "../utils/avgRating.js"
-import ErrorPage from './ErrorPage.jsx'
+import React, { useEffect, useState } from "react";
+import { BiInfoCircle } from "react-icons/bi";
+import { HiOutlineGlobeAlt } from "react-icons/hi";
+import ReactMarkdown from "react-markdown";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import ConfirmationModal from "../components/common/ConfirmationModal";
+import Footer from "../components/common/Footer";
+import RatingStars from "../components/common/RatingStars";
+import CourseAccordionBar from "../components/Course/CourseAccordionBar";
+import CourseDetailsCard from "../components/Course/CourseDetailsCard";
+import { formatDate } from "../apiServices/formatDate.js";
+import { getCourseDetails } from "../apiServices/apiHandler/courseDetailsAPI.js";
+import { buyCourse } from "../apiServices/apiHandler/studentFeaturesAPI.js";
+import GetAvgRating from "../utils/avgRating.js";
+import ErrorPage from "./ErrorPage.jsx";
 
+const CourseDetailsPage = () => {
+  const { user } = useSelector((state) => state.profile);
+  const { token } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.profile);
+  const { paymentLoading } = useSelector((state) => state.course);
 
-const CourseDetailsPage = () =>  {
-  const { user } = useSelector((state) => state.profile)
-  const { token } = useSelector((state) => state.auth)
-  const { loading } = useSelector((state) => state.profile)
-  const { paymentLoading } = useSelector((state) => state.course)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const { courseId } = useParams()
-  const [course, setCourse] = useState(null)
+  const { courseId } = useParams();
+  const [response, setResponse] = useState(null);
+  const [confirmationModal, setConfirmationModal] = useState(null);
 
-  const [confirmationModal, setConfirmationModal] = useState(null)
-  
+  const fetchCourse = async () => {
+    // console.log("course details response: ");
+    try {
+      const res = await getCourseDetails(courseId);
+
+      // console.log("Course details api res", res);
+
+      setResponse(res);
+      // console.log("result is", res);
+      // console.log("response is", response);
+    } catch (error) {
+      console.log("Course details api error", error);
+    }
+  };
+
   useEffect(() => {
-    ;(async () => {
-      try {
-        const res = await fetchCourseDetails(courseId)
-        setCourse(res)
+    fetchCourse();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [courseId]);
 
-      } catch (error) {
-        console.log("Could not fetch Course Details")
-      }
-    })()
-  }, [courseId])
+  // console.log("course details response: ", response);
 
-  // console.log("response: ", response)
-
-  // Calculating Avg Review count
-  // const [avgReviewCount, setAvgReviewCount] = useState(0)
-  // useEffect(() => {
-  //   const count = GetAvgRating(course?.data?.courseDetails.ratingAndReviews)
-  //   setAvgReviewCount(count)
-  // }, [course])
-  // console.log("avgReviewCount: ", avgReviewCount)
+  // rating and review
+  const [avgReviewCount, setAvgReviewCount] = useState(0);
+  useEffect(() => {
+    const count = GetAvgRating(response?.data?.courseDetails?.ratingAndReview);
+    setAvgReviewCount(count);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [response]);
 
   // // Collapse all
-  // const [collapse, setCollapse] = useState("")
+  // const [collapse, setCollapse] = useState("");
+  const [isActive, setIsActive] = useState(Array(0));
 
-  const [isActive, setIsActive] = useState(Array(0))
   const handleActive = (id) => {
-    // console.log("called", id)
     setIsActive(
       !isActive.includes(id)
         ? isActive.concat([id])
-        : isActive.filter((e) => e != id)
-    )
-  }
+        : isActive.filter((e) => e !== id)
+    );
+  };
 
   // Total number of lectures
-  const [totalNoOfLectures, setTotalNoOfLectures] = useState(0)
+  const [totalNoOfLectures, setTotalNoOfLectures] = useState(0);
   useEffect(() => {
-    let lectures = 0
-    course?.data?.courseDetails?.courseContent?.forEach((sec) => {
-      lectures += sec.subSection.length || 0
-    })
-    setTotalNoOfLectures(lectures)
-  }, [course])
+    let lectures = 0;
+    response?.data?.courseDetails?.courseContent?.forEach((sec) => {
+      lectures += sec.subSection.length || 0;
+    });
+    setTotalNoOfLectures(lectures);
+  }, [response]);
 
-  if (loading || !course) {
+  if (loading || !response) {
     return (
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="spinner"></div>
       </div>
-    )
+    );
   }
-  if (!course.success) {
-    return <ErrorPage />
+  if (!response.success) {
+    return <ErrorPage />;
   }
-
-  
 
   const handleBuyCourse = () => {
     if (token) {
-      buyCourse(token, [courseId], user, navigate, dispatch)
-      return
+      buyCourse(token, [courseId], user, navigate, dispatch);
+      return;
     }
     setConfirmationModal({
       text1: "You are not logged in!",
@@ -99,8 +103,8 @@ const CourseDetailsPage = () =>  {
       btn2Text: "Cancel",
       btn1Handler: () => navigate("/login"),
       btn2Handler: () => setConfirmationModal(null),
-    })
-  }
+    });
+  };
 
   if (paymentLoading) {
     // console.log("payment loading")
@@ -108,11 +112,21 @@ const CourseDetailsPage = () =>  {
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="spinner"></div>
       </div>
-    )
+    );
   }
 
-  // console.log(course.data?.price);
-
+  const {
+    // _id: courseId,
+    courseName,
+    courseDescription,
+    thumbnail,
+    whatYouWillLearn,
+    courseContent,
+    ratingAndReview,
+    instructor,
+    studentsEnrolled,
+    createdAt,
+  } = response.data?.courseDetails;
 
   return (
     <>
@@ -123,7 +137,7 @@ const CourseDetailsPage = () =>  {
             <div className="relative block max-h-[30rem] lg:hidden">
               <div className="absolute bottom-0 left-0 h-full w-full shadow-[#161D29_0px_-64px_36px_-28px_inset]"></div>
               <img
-                src={course.data.image}
+                src={thumbnail}
                 alt="course thumbnail"
                 className="aspect-auto w-full"
               />
@@ -133,25 +147,25 @@ const CourseDetailsPage = () =>  {
             >
               <div>
                 <p className="text-4xl font-bold text-richblack-5 sm:text-[42px]">
-                  {course.data?.courseName}
+                  {courseName}
                 </p>
               </div>
-              <p className={`text-richblack-200`}>{course.data?.courseDescription}</p>
+              <p className={`text-richblack-200`}>{courseDescription}</p>
               <div className="text-md flex flex-wrap items-center gap-2">
-                {/* <span className="text-yellow-25">{avgReviewCount}</span> */}
-                {/* <RatingStars Review_Count={avgReviewCount} Star_Size={24} /> */}
-                {/* <span>{`(${ratingAndReviews.length} reviews)`}</span> */}
-                {/* <span>{`${studentsEnrolled.length} students enrolled`}</span> */}
+                <span className="text-yellow-25">{avgReviewCount}</span>
+                <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
+                <span>{`(${ratingAndReview?.length} reviews)`}</span>
+                <span>{`${studentsEnrolled?.length} students enrolled`}</span>
               </div>
               <div>
                 <p className="">
-                  Created By {`${course.data?.instructor.firstName} ${course.data?.instructor.lastName}`}
+                  Created By {`${instructor?.firstName} ${instructor?.lastName}`}
                 </p>
               </div>
               <div className="flex flex-wrap gap-5 text-lg">
                 <p className="flex items-center gap-2">
                   {" "}
-                  <BiInfoCircle /> Created at {formatDate(course.data?.createdAt)}
+                  <BiInfoCircle /> Created at {formatDate(createdAt)}
                 </p>
                 <p className="flex items-center gap-2">
                   {" "}
@@ -159,34 +173,26 @@ const CourseDetailsPage = () =>  {
                 </p>
               </div>
             </div>
-            <div className="flex w-full flex-col gap-4 border-y border-y-richblack-500 py-4 lg:hidden">
-              <p className="space-x-3 pb-4 text-3xl font-semibold text-richblack-5">
-                Rs. {course.data?.price}
-              </p>
-              <button className="yellowButton" onClick={handleBuyCourse}>
-                Buy Now
-              </button>
-              <button className="blackButton">Add to Cart</button>
-            </div>
           </div>
 
           {/* Courses Card */}
           <div className="right-[1rem] top-[60px] mx-auto hidden min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0 lg:absolute  lg:block">
             <CourseDetailsCard
-              course={course.data}
+              course={response?.data?.courseDetails}
               setConfirmationModal={setConfirmationModal}
               handleBuyCourse={handleBuyCourse}
             />
           </div>
         </div>
       </div>
+
       <div className="mx-auto box-content px-4 text-start text-richblack-5 lg:w-[1260px]">
         <div className="mx-auto max-w-maxContentTab lg:mx-0 xl:max-w-[810px]">
           {/* What will you learn section */}
           <div className="my-8 border border-richblack-600 p-8">
             <p className="text-3xl font-semibold">What you'll learn</p>
             <div className="mt-5">
-              <ReactMarkdown>{course.data?.whatYouWillLearn}</ReactMarkdown>
+              <ReactMarkdown>{whatYouWillLearn}</ReactMarkdown>
             </div>
           </div>
 
@@ -197,12 +203,12 @@ const CourseDetailsPage = () =>  {
               <div className="flex flex-wrap justify-between gap-2">
                 <div className="flex gap-2">
                   <span>
-                    {course?.courseContent?.length} {`section(s)`}
+                    {courseContent?.length} {`section(s)`}
                   </span>
                   <span>
-                    {/* {totalNoOfLectures} {`lecture(s)`} */}
+                    {totalNoOfLectures} {`lecture(s)`}
                   </span>
-                  {/* <span>{response.data?.totalDuration} total length</span> */}
+                  <span>{response.data?.totalDuration} total length</span>
                 </div>
                 <div>
                   <button
@@ -217,42 +223,47 @@ const CourseDetailsPage = () =>  {
 
             {/* Course Details Accordion */}
             <div className="py-4">
-               {course?.courseContent?.map((course, index) => (
+              {courseContent?.map((course, index) => (
                 <CourseAccordionBar
                   course={course}
                   key={index}
                   isActive={isActive}
                   handleActive={handleActive}
                 />
-              ))} 
+              ))}
             </div>
 
             {/* Author Details */}
             <div className="mb-12 py-4">
               <p className="text-[28px] font-semibold">Author</p>
+
               <div className="flex items-center gap-4 py-4">
                 <img
                   src={
-                    course.data?.instructor.image
-                      ? course.data?.instructor.image
-                      : `https://api.dicebear.com/5.x/initials/svg?seed=${course.data?.instructor.firstName} ${course.data?.instructor.lastName}`
+                    instructor.image
+                      ? instructor.image
+                      : `https://api.dicebear.com/5.x/initials/svg?seed=${instructor?.firstName} ${instructor?.lastName}`
                   }
                   alt="Author"
                   className="h-14 w-14 rounded-full object-cover"
                 />
-                <p className="text-lg">{`${course.data?.instructor.firstName} ${course.data?.instructor.lastName}`}</p>
+                <p className="text-lg">{`${instructor?.firstName} ${instructor?.lastName}`}</p>
               </div>
+
               <p className="text-richblack-50">
-                {course.data?.instructor?.additionalDetails?.about}
+                {instructor?.additionalDetails?.about}
               </p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* footer components */}
       <Footer />
+
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>
-  )
-}
+  );
+};
 
-export default CourseDetailsPage
+export default CourseDetailsPage;

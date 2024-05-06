@@ -7,7 +7,7 @@ import Button from '../common/Button'
 
 const LearningLanguageSection = () => {
   return (
-    <div className='mt-[130px] mb-32'>
+    <div className='sm:mt-[130px] sm:mb-32'>
       <div className='flex flex-col gap-5 items-center'>
 
             <div className='text-4xl font-semibold text-center'>
@@ -43,7 +43,7 @@ const LearningLanguageSection = () => {
             </div>
 
             <div className='w-fit'>
-                <Button btnText='Learn more' active={true} linkto={"/signup"}/>
+                <Button btnText='Learn more'  className="bg-yellow-50" linkto={"/signup"}/>
             </div>
 
       </div>

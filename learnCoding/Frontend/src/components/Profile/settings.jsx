@@ -11,10 +11,13 @@ export default function Settings() {
       </h1>
       {/* Change Profile Picture */}
       <ChangeProfilePicture />
-      {/* Profile */}
+
+      {/* Profile edit */}
       <EditProfile />
-      {/* Password */}
+
+      {/* Password update */}
       <UpdatePassword />
+
       {/* Delete Account */}
       <DeleteAccount />
     </>

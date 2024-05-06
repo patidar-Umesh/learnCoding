@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { editCourseDetails } from "../../../../apiServices/apiHandler/courseDetailsAPI"
-import { resetCourseState, setStep } from "../../../../store/slices/courseSlice"
-import { COURSE_STATUS } from "../../../../utils/constants"
-import IconBtn from "../../../common/IconBtn"
+import { editCourseDetails } from "../../../apiServices/apiHandler/courseDetailsAPI"
+import { resetCourseState, setStep } from "../../../store/slices/courseSlice"
+import { COURSE_STATUS } from "../../../utils/constants"
+import IconBtn from "../../common/IconBtn"
 
 export default function PublishCourse() {
   const { register, handleSubmit, setValue, getValues } = useForm()
@@ -20,6 +20,7 @@ export default function PublishCourse() {
     if (course?.status === COURSE_STATUS.PUBLISHED) {
       setValue("public", true)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const goBack = () => {
@@ -32,24 +33,25 @@ export default function PublishCourse() {
   }
 
   const handleCoursePublish = async () => {
-    // check if form has been updated or not
     if (
       (course?.status === COURSE_STATUS.PUBLISHED &&
         getValues("public") === true) ||
       (course?.status === COURSE_STATUS.DRAFT && getValues("public") === false)
     ) {
-      // form has not been updated
-      // no need to make api call
       goToCourses()
       return
     }
+
     const formData = new FormData()
     formData.append("courseId", course._id)
+
     const courseStatus = getValues("public")
       ? COURSE_STATUS.PUBLISHED
       : COURSE_STATUS.DRAFT
+
     formData.append("status", courseStatus)
     setLoading(true)
+
     const result = await editCourseDetails(formData, token)
     if (result) {
       goToCourses()
@@ -57,8 +59,7 @@ export default function PublishCourse() {
     setLoading(false)
   }
 
-  const onSubmit = (data) => {
-    // console.log(data)
+  const publishHandle = () => {
     handleCoursePublish()
   }
 
@@ -67,7 +68,7 @@ export default function PublishCourse() {
       <p className="text-2xl font-semibold text-richblack-5">
         Publish Settings
       </p>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(publishHandle)}>
         {/* Checkbox */}
         <div className="my-6 mb-8">
           <label htmlFor="public" className="inline-flex items-center text-lg">

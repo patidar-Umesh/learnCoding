@@ -3,32 +3,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   getFullDetailsOfCourse,
-} from "../../../apiServices/apiHandler/courseDetailsAPI";
-import { setCourse, setEditCourse } from "../../../store/slices/courseSlice";
-import RenderSteps from "../AddCourse/RenderSteps";
-
+} from "../../../apiServices/apiHandler/courseDetailsAPI.js";
+import { setCourse, setEditCourse } from "../../../store/slices/courseSlice.js";
+import RenderSteps from "../AddCourse/RenderSteps.jsx";
 
 export default function EditCourse() {
   const dispatch = useDispatch();
   const { courseId } = useParams();
   const { course } = useSelector((state) => state.course);
-  const [loading, setLoading] = useState(false);
   const { token } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       const result = await getFullDetailsOfCourse(courseId, token);
 
-      console.log('edit course',result?.courseDetails);
+      console.log('edit course',result.data?.courseDetails);
 
-      if (result?.courseDetails) {
+      if (result.data?.courseDetails) {
         dispatch(setEditCourse(true));
-        dispatch(setCourse(result?.courseDetails));
+        dispatch(setCourse(result.data?.courseDetails));
       }
       setLoading(false);
+      
     })();
-
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

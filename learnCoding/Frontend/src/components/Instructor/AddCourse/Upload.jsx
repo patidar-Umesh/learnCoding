@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { FiUploadCloud } from "react-icons/fi"
-import { useSelector } from "react-redux"
-
 import "video-react/dist/video-react.css"
 import { Player } from "video-react"
 
@@ -16,7 +14,6 @@ export default function Upload({
   viewData = null,
   editData = null,
 }) {
-  const { course } = useSelector((state) => state.course)
   const [selectedFile, setSelectedFile] = useState(null)
   const [previewSource, setPreviewSource] = useState(
     viewData ? viewData : editData ? editData : ""
@@ -57,14 +54,15 @@ export default function Upload({
 
   useEffect(() => {
     setValue(name, selectedFile)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedFile, setValue])
+  }, [selectedFile, setValue,name])
 
   return (
     <div className="flex flex-col space-y-2">
+
       <label className="text-sm text-richblack-5" htmlFor={name}>
         {label} {!viewData && <sup className="text-pink-200">*</sup>}
       </label>
+
       <div
         className={`${
           isDragActive ? "bg-richblack-600" : "bg-richblack-700"
@@ -96,11 +94,13 @@ export default function Upload({
             )}
           </div>
         ) : (
+          
           <div
             className="flex w-full flex-col items-center p-6"
             {...getRootProps()}
           >
             <input {...getInputProps()} ref={inputRef} />
+
             <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
               <FiUploadCloud className="text-2xl text-yellow-50" />
             </div>
@@ -119,11 +119,13 @@ export default function Upload({
           </div>
         )}
       </div>
+
       {errors[name] && (
         <span className="ml-2 text-xs tracking-wide text-pink-200">
           {label} is required
         </span>
       )}
+
     </div>
   )
 }

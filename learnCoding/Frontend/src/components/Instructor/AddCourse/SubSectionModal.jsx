@@ -3,14 +3,14 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { RxCross2 } from "react-icons/rx"
 import { useDispatch, useSelector } from "react-redux"
-
 import {
   createSubSection,
   updateSubSection,
-} from "../../../../apiServices/apiHandler/courseDetailsAPI"
-import { setCourse } from "../../../../store/slices/courseSlice"
-import IconBtn from "../../../common/IconBtn"
-import Upload from "../Upload"
+} from "../../../apiServices/apiHandler/courseDetailsAPI"
+import { setCourse } from "../../../store/slices/courseSlice"
+import Upload from "./Upload"
+import Input from "../../common/Input"
+import Button from "../../common/Button"
 
 export default function SubSectionModal({
   modalData,
@@ -27,9 +27,9 @@ export default function SubSectionModal({
     getValues,
   } = useForm()
 
-  // console.log("view", view)
-  // console.log("edit", edit)
-  // console.log("add", add)
+  console.log("view", modalData.videoUrl)
+  console.log("edit", edit)
+  console.log("add", add)
 
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
@@ -38,11 +38,12 @@ export default function SubSectionModal({
 
   useEffect(() => {
     if (view || edit) {
-      // console.log("modalData", modalData)
+      console.log("modalData", modalData.videoUrl)
       setValue("lectureTitle", modalData.title)
       setValue("lectureDesc", modalData.description)
       setValue("lectureVideo", modalData.videoUrl)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // detect whether form is updated or not
@@ -65,8 +66,10 @@ export default function SubSectionModal({
     // console.log("changes after editing form values:", currentValues)
     const formData = new FormData()
     // console.log("Values After Editing form values:", currentValues)
+
     formData.append("sectionId", modalData.sectionId)
     formData.append("subSectionId", modalData._id)
+
     if (currentValues.lectureTitle !== modalData.title) {
       formData.append("title", currentValues.lectureTitle)
     }
@@ -76,8 +79,10 @@ export default function SubSectionModal({
     if (currentValues.lectureVideo !== modalData.videoUrl) {
       formData.append("video", currentValues.lectureVideo)
     }
+
     setLoading(true)
     const result = await updateSubSection(formData, token)
+    
     if (result) {
       // console.log("result", result)
       // update the structure of course
@@ -91,7 +96,7 @@ export default function SubSectionModal({
     setLoading(false)
   }
 
-  const onSubmit = async (data) => {
+  const subSectionCreateHandler = async (data) => {
     // console.log(data)
     if (view) return
 
@@ -110,6 +115,8 @@ export default function SubSectionModal({
     formData.append("description", data.lectureDesc)
     formData.append("video", data.lectureVideo)
     setLoading(true)
+    
+    
     const result = await createSubSection(formData, token)
     if (result) {
       // update the structure of course
@@ -137,7 +144,6 @@ export default function SubSectionModal({
         </div>
         {/* Modal Form */}
         <form
-          onSubmit={handleSubmit(onSubmit)}
           className="space-y-8 px-8 py-10"
         >
           {/* Lecture Video Upload */}
@@ -153,22 +159,16 @@ export default function SubSectionModal({
           />
           {/* Lecture Title */}
           <div className="flex flex-col space-y-2">
-            <label className="text-sm text-richblack-5" htmlFor="lectureTitle">
-              Lecture Title {!view && <sup className="text-pink-200">*</sup>}
-            </label>
-            <input
-              disabled={view || loading}
+            <Input
+              label='Lecture Title'
+              astrick={`${!view && 'ture'}`}
               id="lectureTitle"
               placeholder="Enter Lecture Title"
-              {...register("lectureTitle", { required: true })}
-              className="form-style w-full"
+              register={{...register("lectureTitle", { required: true })}}
+              error={errors.lectureTitle && 'Lecture title is required'}
             />
-            {errors.lectureTitle && (
-              <span className="ml-2 text-xs tracking-wide text-pink-200">
-                Lecture title is required
-              </span>
-            )}
           </div>
+
           {/* Lecture Description */}
           <div className="flex flex-col space-y-2">
             <label className="text-sm text-richblack-5" htmlFor="lectureDesc">
@@ -180,7 +180,7 @@ export default function SubSectionModal({
               id="lectureDesc"
               placeholder="Enter Lecture Description"
               {...register("lectureDesc", { required: true })}
-              className="form-style resize-x-none min-h-[130px] w-full"
+              className="rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 w-full  placeholder:text-richblack-400  focus:outline-none resize-x-none min-h-[130px] "
             />
             {errors.lectureDesc && (
               <span className="ml-2 text-xs tracking-wide text-pink-200">
@@ -188,11 +188,11 @@ export default function SubSectionModal({
               </span>
             )}
           </div>
+
           {!view && (
             <div className="flex justify-end">
-              <IconBtn
-                disabled={loading}
-                text={loading ? "Loading.." : edit ? "Save Changes" : "Save"}
+              <Button className='bg-yellow-50' onClick={handleSubmit(subSectionCreateHandler)}
+                btnText={loading ? "Loading.." : edit ? "Save Changes" : "Save"}
               />
             </div>
           )}

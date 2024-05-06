@@ -1,13 +1,11 @@
 import { apiConnector } from "../apiConnector.js"
-import { profileEndpoints } from "../apis"
+import { profileEndpoints } from "../apis.js"
 import { logout } from "../apiHandler/authAPI.js"
 import { toast } from "react-hot-toast"
 import { setLoading, setUser } from "../../store/slices/profileSlice.js"
 
 
-
 const { GET_USER_DETAILS_API, GET_USER_ENROLLED_COURSES_API, GET_INSTRUCTOR_DATA_API } = profileEndpoints
-
 
 // get user details
 export function getUserDetails(token, navigate) {
@@ -23,11 +21,12 @@ export function getUserDetails(token, navigate) {
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
-      // const userImage = response.data.data.image
-      //   ? response.data.data.image
-      //   : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`
+      const userImage = response.data.data.image
+        ? response.data.data.image
+        : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`
+
       dispatch(setUser({ ...response.data }))
-      console.log('user', response.data.data);
+      console.log('user', userImage);
     } catch (error) {
       dispatch(logout(navigate))
       console.log("User api error", error)
@@ -39,8 +38,7 @@ export function getUserDetails(token, navigate) {
 }
 
 
-// get buy courses
-
+// get buy courses of student
 export async function getUserEnrolledCourses(token) {
   const toastId = toast.loading("Loading...")
   let result = []
@@ -53,7 +51,7 @@ export async function getUserEnrolledCourses(token) {
         Authorization: `Bearer ${token}`,
       }
     )
-    console.log("response is", response);
+    // console.log("response is", response);
     
     if (!response.data.success) {
       throw new Error(response.data.message)
