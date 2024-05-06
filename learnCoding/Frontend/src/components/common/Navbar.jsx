@@ -40,6 +40,7 @@ const Navbar = () => {
 
   
   return (
+    <div className="fixed top-0 left-0 w-full z-50 bg-richblack-700 shadow-lg">
     <div className='flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700'>
       <div className='flex w-11/12 max-w-maxContent items-center justify-between'>
 
@@ -142,6 +143,7 @@ const Navbar = () => {
 
 
       </div>
+    </div>
     </div>
   )
 }

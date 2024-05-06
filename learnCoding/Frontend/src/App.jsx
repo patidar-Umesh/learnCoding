@@ -39,7 +39,8 @@ const App = () => {
       <Navbar />
 
       {/* Routes */}
-      <Routes>
+     <div className="mt-[50px]">
+     <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/catalog/:catalogName" element={<CatalogPage />} />
         <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
@@ -144,6 +145,7 @@ const App = () => {
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
+     </div>
     </div>
   );
 };
