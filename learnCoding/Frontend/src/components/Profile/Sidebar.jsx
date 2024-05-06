@@ -2,6 +2,7 @@ import { useState } from "react"
 import { VscSignOut } from "react-icons/vsc"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+
 import { sidebarLinks } from "../../data/dashboard-links"
 import { logout } from "../../apiServices/apiHandler/authAPI"
 import ConfirmationModal from "../common/ConfirmationModal"
@@ -28,7 +29,6 @@ export default function Sidebar() {
   return (
     <>
       <div className="flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
-
         <div className="flex flex-col">
           {sidebarLinks.map((link) => {
             if (link.type && user?.accountType !== link.type) return null
@@ -37,15 +37,12 @@ export default function Sidebar() {
             )
           })}
         </div>
-
         <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
-
         <div className="flex flex-col">
           <SidebarLink
             link={{ name: "Settings", path: "/dashboard/settings" }}
             iconName="VscSettingsGear"
           />
-
           <button
             onClick={() =>
               setConfirmationModal({
@@ -64,7 +61,6 @@ export default function Sidebar() {
               <span>Logout</span>
             </div>
           </button>
-
         </div>
       </div>
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}

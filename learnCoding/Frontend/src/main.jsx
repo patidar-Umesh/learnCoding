@@ -1,17 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import App from "./App";
 import "./index.css";
-import "./App.css";
-import App from "./App.js";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./store/store.js";
+import { Provider } from 'react-redux'
+import store from "./store/store";
+import  { Toaster } from 'react-hot-toast';
+
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Provider store={store}>
-    <BrowserRouter>
+  <React.StrictMode>
+
+  <Provider store={store} >
+  <BrowserRouter>
       <App />
+      <Toaster/>
     </BrowserRouter>
   </Provider>
+  
+  </React.StrictMode>
 );

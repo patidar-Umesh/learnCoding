@@ -2,19 +2,21 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { HiOutlineCurrencyRupee } from "react-icons/hi";
+import { MdNavigateNext } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+// import Input from "../../../common/Input.jsx";
 import {
   addCourseDetails,
   editCourseDetails,
   fetchCourseCategories,
-} from "../../../apiServices/apiHandler/courseDetailsAPI";
-import { setCourse, setStep } from "../../../store/slices/courseSlice";
-import { COURSE_STATUS } from "../../../utils/constants";
-import Upload from "./Upload";
+} from "../../../../apiServices/apiHandler/courseDetailsAPI";
+import { setCourse, setStep } from "../../../../store/slices/courseSlice";
+import { COURSE_STATUS } from "../../../../utils/constants";
+import Upload from "../Upload";
+import ChipInput from "./ChipInput";
 import RequirementsField from "./RequirementField";
-import Button from "../../common/Button";
-import Input from "../../common/Input";
-import TagInput from "./TagInput";
+import Button from "../../../common/Button";
+import Input from "../../../common/Input";
 
 export default function CourseInformationForm() {
   const {
@@ -37,7 +39,7 @@ export default function CourseInformationForm() {
       setLoading(true);
       const categories = await fetchCourseCategories();
 
-      if (categories?.length > 0) {
+      if (categories.length > 0) {
         setCourseCategories(categories);
       }
       setLoading(false);
@@ -54,38 +56,37 @@ export default function CourseInformationForm() {
       setValue("image", course.image);
     }
     getCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isFormUpdated = () => {
-    const currentValues = getValues();
+  // const isFormUpdated = () => {
+  //   const currentValues = getValues();
 
-    if (
-      currentValues.courseTitle !== course.courseTitle ||
-      currentValues.courseShortDesc !== course.courseDescription ||
-      currentValues.coursePrice !== course.price ||
-      currentValues.courseTags.toString() !== course.tag.toString() ||
-      currentValues.courseBenefits !== course.whatYouWillLearn ||
-      currentValues.courseCategory?._id !== course.category?._id ||
-      currentValues.courseRequirements.toString() !==
-        course.instructions.toString() ||
-      currentValues.image !== course.image
-    ) {
-      return true;
-    }
-    return false;
-  };
+  //   if (
+  //     currentValues.courseTitle !== course.courseTitle ||
+  //     currentValues.courseShortDesc !== course.courseDescription ||
+  //     currentValues.coursePrice !== course.price ||
+  //     currentValues.courseTags.toString() !== course.tag.toString() ||
+  //     currentValues.courseBenefits !== course.whatYouWillLearn ||
+  //     currentValues.courseCategory._id !== course.category._id ||
+  //     currentValues.courseRequirements.toString() !==
+  //       course.instructions.toString() ||
+  //     currentValues.image !== course.image
+  //   ) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   // handler
   const onSubmit = async (data) => {
     console.log("data", data);
 
     if (editCourse) {
-      if (isFormUpdated()) {
+      // if (isFormUpdated()) {
         const currentValues = getValues();
         const formData = new FormData();
 
-        formData.append("courseId", course?._id);
+        formData.append("courseId", course._id);
 
         if (currentValues.courseTitle !== course.courseName) {
           formData.append("courseTitle", data.courseTitle);
@@ -102,7 +103,7 @@ export default function CourseInformationForm() {
         if (currentValues.courseBenefits !== course.whatYouWillLearn) {
           formData.append("whatYouWillLearn", data.courseBenefits);
         }
-        if (currentValues.courseCategory?._id !== course.category?._id) {
+        if (currentValues.courseCategory._id !== course.category._id) {
           formData.append("category", data.courseCategory);
         }
         if (
@@ -130,8 +131,8 @@ export default function CourseInformationForm() {
       } else {
         toast.error("No changes made to the form");
       }
-      return;
-    }
+      // return;
+    // }
 
     // create new course
     const formData = new FormData();
@@ -156,21 +157,23 @@ export default function CourseInformationForm() {
     setLoading(false);
   };
 
- 
+  const goNext = () => {
+    dispatch(setStep(2));
+  };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-8 rounded-md border-[1px] w-full border-richblack-700 bg-richblack-800 p-6"
+      className="space-y-8 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-6"
     >
       {/* Course Title */}
       <div className="flex flex-col space-y-2">
         <Input
           label="Course Title"
-          type="text"
           astrick="true"
           id="courseTitle"
           name="courseTitle"
+          value={course?.courseTitle}
           placeholder="Enter Course Title"
           register={{ ...register("courseTitle", { required: true }) }}
           error={errors.courseTitle && "Course title is required"}
@@ -203,7 +206,8 @@ export default function CourseInformationForm() {
           label="Course Price"
           name="coursePrice"
           id="coursePrice"
-          className=""
+          placeholder="Enter Course Price"
+          className="placeholder:ml-4"
           register={{
             ...register("coursePrice", {
               required: true,
@@ -215,7 +219,7 @@ export default function CourseInformationForm() {
           }}
           error={errors.coursePrice && "Course Price is required"}
         />
-       <p><HiOutlineCurrencyRupee className="absolute mr-5 left-3 top-[55px] inline-block -translate-y-1/2 text-2xl text-richblack-400" /></p>
+        <HiOutlineCurrencyRupee className="absolute left-3 top-[40px] inline-block -translate-y-1/2 text-2xl text-richblack-400" />
       </div>
 
       {/* Course Category */}
@@ -233,8 +237,8 @@ export default function CourseInformationForm() {
             Choose a Category
           </option>
           {!loading &&
-            courseCategories?.map((category, index) => (
-              <option key={index} value={category?._id}>
+            courseCategories?.map((category, indx) => (
+              <option key={indx} value={category?._id}>
                 {category?.name}
               </option>
             ))}
@@ -247,11 +251,11 @@ export default function CourseInformationForm() {
       </div>
 
       {/* Course Tags */}
-      <TagInput
+      <ChipInput
         label="Tags"
         name="courseTags"
         placeholder="Enter Tags and press Enter"
-        register={{ ...register("courseTags", { required: true }) }}
+        register={register}
         errors={errors}
         setValue={setValue}
         getValues={getValues}
@@ -299,21 +303,28 @@ export default function CourseInformationForm() {
       {/* Next Button */}
       <div className="flex justify-end gap-x-2">
         {editCourse && (
-          <Button
+          <button
             onClick={() => dispatch(setStep(2))}
             disabled={loading}
-            className=""
-            btnText="Continue Wihout Saving"
-          />
+            className={`flex cursor-pointer items-center gap-x-2 rounded-md bg-richblack-300 py-[8px] px-[20px] font-semibold text-richblack-900`}
+          >
+            Continue Wihout Saving
+          </button>
         )}
-
-        <Button
-          className="bg-yellow-50"
-          onClick={handleSubmit(onSubmit)}
+        <button
+          className="text-white"
+          onClick={() => handleSubmit(onSubmit)}
           type="submit"
-          btnText={`${!editCourse ? "Next" : "Save Changes"}`}
-        />
+          // btnText={`${!editCourse ? "Next" : "Save Changes"}`}
+          // active="true"
+        >
+          save
+        </button>
       </div>
+
+      <button className="text-white" onClick={goNext}>
+        next
+      </button>
     </form>
   );
 }

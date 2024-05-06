@@ -13,6 +13,7 @@ const VerifyEmailPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Only allow access of this route when user has filled the signup form
     if (!signupData) {
       navigate("/signup");
     }
@@ -58,7 +59,6 @@ const VerifyEmailPage = () => {
           <p className="text-[1.125rem] leading-[1.625rem] my-4 text-richblack-100">
             A verification code has been sent to you. Enter the code below
           </p>
-
           <form onSubmit={handleVerifyAndSignup}>
             <OtpInput
               value={otp}
@@ -86,7 +86,6 @@ const VerifyEmailPage = () => {
               Verify Email
             </button>
           </form>
-
           <div className="mt-6 flex items-center justify-between">
             <Link to="/signup">
               <p className="text-richblack-5 flex items-center gap-x-2">
@@ -98,10 +97,9 @@ const VerifyEmailPage = () => {
               onClick={() => dispatch(sendOtp(signupData.email))}
             >
               <RxCountdownTimer />
-              Resend OTP
+              Resend it
             </button>
           </div>
-
         </div>
       )}
     </div>

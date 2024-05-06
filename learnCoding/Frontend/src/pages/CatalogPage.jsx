@@ -3,43 +3,40 @@ import Footer from "../components/common/Footer.jsx";
 import { useParams } from "react-router-dom";
 import { apiConnector } from "../apiServices/apiConnector.js";
 import { courseEndpoints } from "../apiServices/apis.js";
-import { getCategoryPageData } from "../apiServices/apiHandler/pageAndComponentData.js";
-import CourseCard from "../components/Catalog/CourseCard.jsx";
+import { getCatalogaPageData } from "../apiServices/apiHandler/pageAndComponentData.js";
+import Course_Card from "../components/Catalog/CourseCard.jsx";
 import CourseSlider from "../components/Catalog/CourseSlider.jsx";
 import { useSelector } from "react-redux";
 import ErrorPage from './ErrorPage.jsx'
 
 
 
-const CategoryCoursePage = () => {
+const CatalogPage = () => {
   const { loading } = useSelector((state) => state.profile);
-  const { categoryName } = useParams();
+  const { catalogName } = useParams();
   const [active, setActive] = useState(1);
-  const [categoryPageData, setCategoryPageData] = useState(null);
+  const [catalogPageData, setCatalogPageData] = useState(null);
   const [categoryId, setCategoryId] = useState("");
 
   //Fetch all categories
   useEffect(() => {
     const getCategories = async () => {
       const res = await apiConnector("GET", courseEndpoints.COURSE_CATEGORIES_API);
-      // console.log('categories', res);
-
+      console.log('categories', res.data.data);
       const category_id = res?.data?.data?.filter(
-        (cate) => cate.name.split(" ").join("-").toLowerCase() === categoryName
+        (ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName
       )[0]._id;
       setCategoryId(category_id);
     };
     getCategories();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryName]);
-
+  }, [catalogName]);
 
   useEffect(() => {
     const getCategoryDetails = async () => {
       try {
-        const res = await getCategoryPageData(categoryId);
-        setCategoryPageData(res);
-        // console.log("courses page data", categoryPageData?.data?.selectedCategory?.name);
+        const res = await getCatalogaPageData(categoryId);
+        console.log("PRinting res: ", res);
+        setCatalogPageData(res);
       } catch (error) {
         console.log(error);
       }
@@ -47,17 +44,16 @@ const CategoryCoursePage = () => {
     if (categoryId) {
       getCategoryDetails();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
-  if (loading || !categoryPageData) {
+  if (loading || !catalogPageData) {
     return (
       <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
         <div className="spinner"></div>
       </div>
     );
   }
-  if (!loading && !categoryPageData.success) {
+  if (!loading && !catalogPageData.success) {
     return <ErrorPage />;
   }
 
@@ -65,27 +61,25 @@ const CategoryCoursePage = () => {
     <>
       {/* Hero Section */}
       <div className=" box-content bg-richblack-800 px-4">
-        <div className="mx-auto flex min-h-[260px] max-w-maxContentTab  flex-col justify-center gap-4 lg:max-w-maxContent ">
+        <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
           <p className="text-sm text-richblack-300">
-            {`Home / Category/ `}
+            {`Home / Catalog / `}
             <span className="text-yellow-25">
-              { categoryPageData?.data?.selectedCategory?.name}
+              {catalogPageData?.data?.selectedCategory?.name}
             </span>
           </p>
-
-          <p className="text-3xl text-white">
-            { categoryPageData?.data?.selectedCategory?.name}
+          <p className="text-3xl text-richblack-5">
+            {catalogPageData?.data?.selectedCategory?.name}
           </p>
-
-          <p className="max-w-[870px] text-white">
-            { categoryPageData?.data?.selectedCategory?.description}
+          <p className="max-w-[870px] text-richblack-200">
+            {catalogPageData?.data?.selectedCategory?.description}
           </p>
         </div>
       </div>
 
-      {/* Section 1 (Most popular) */}
-      <section className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-        <div className="text-white">Courses to get you started</div>
+      {/* Section 1 */}
+      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+        <div className="section_heading">Courses to get you started</div>
         <div className="my-4 flex border-b border-b-richblack-600 text-sm">
           <p
             className={`px-4 py-2 ${
@@ -108,49 +102,40 @@ const CategoryCoursePage = () => {
             New
           </p>
         </div>
-
-        {/* Course slider */}
         <div>
           <CourseSlider
-            Courses={categoryPageData?.data?.selectedCategory?.courses}
+            Courses={catalogPageData?.data?.selectedCategory?.courses}
           />
         </div>
-      </section>
-
-      {/* Section 2 (Top courses) */}
-      <section className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-        <div className="text-white">
-          Top courses in {categoryPageData?.data?.differentCategory?.name}
+      </div>
+      {/* Section 2 */}
+      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+        <div className="section_heading">
+          Top courses in {catalogPageData?.data?.differentCategory?.name}
         </div>
-
-        {/* course slider */}
         <div className="py-8">
           <CourseSlider
-            nextPrevBtn={`${categoryPageData?.data?.differentCategory && 'true'}`}
-            Courses={categoryPageData?.data?.differentCategory}
+            Courses={catalogPageData?.data?.differentCategory?.courses}
           />
         </div>
-      </section>
+      </div>
 
-      {/* Section 3 (Frequently Bought) */}
-      <section className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-        <div className=" text-white">Frequently Bought</div>
+      {/* Section 3 */}
+      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+        <div className="section_heading">Frequently Bought</div>
         <div className="py-8">
-          <div className="flex flex-wrap gap-8">
-            {/* course card without slider */}
-            {categoryPageData?.data?.mostSellingCourses
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {catalogPageData?.data?.mostSellingCourses
               ?.slice(0, 4)
               .map((course, i) => (
-                <CourseCard course={course} key={i} />
+                <Course_Card course={course} key={i} Height={"h-[400px]"} />
               ))}
           </div>
         </div>
-      </section>
-
-      {/* footer  */}
+      </div>
       <Footer />
     </>
   );
 };
 
-export default CategoryCoursePage;
+export default CatalogPage;

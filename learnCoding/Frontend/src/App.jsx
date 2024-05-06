@@ -1,7 +1,8 @@
+// import 'globalthis/auto'
 import { Route, Routes } from "react-router-dom";
 import {
   AboutPage,
-  CategoryCoursePage,
+  CatalogPage,
   ContactPage,
   CourseDetailsPage,
   DashboardPage,
@@ -12,72 +13,91 @@ import {
   SignupPage,
   UpdatePasswordPage,
   VerifyEmailPage,
-  StudentCoursePage,
+  ViewCoursePage,
 } from "./pages/index.js";
-import Navbar from "./components/common/Navbar.jsx";
+import Navbar from "./components/common/Navbar";
 import Settings from "./components/Profile/settings.jsx";
 import MyProfile from "./components/Profile/MyProfile.jsx";
 import EnrolledCourses from "./components/Profile/EnrolledCourses.jsx";
-import VideoDetails from "./components/StudentCourse/VideoDetails.jsx";
-import OpenRoute from "./components/Auth/OpenRoute.jsx";
-import PrivateRoute from "./components/Auth/PrivateRoute.jsx";
-import { useSelector } from "react-redux";
-import { ACCOUNT_TYPE } from "./utils/constants.js";
+import VideoDetails from "./components/ViewCourse/VideoDetails.jsx";
+import OpenRoute from './components/Auth/OpenRoute.jsx'
+import PrivateRoute from './components/Auth/PrivateRoute.jsx'
+import {useSelector} from 'react-redux'
+import {ACCOUNT_TYPE} from './utils/constants.js'
 import Cart from "./components/Instructor/Cart/Cart.jsx";
 import Instructor from "./components/Instructor/InstructorDashboard/Instructor.jsx";
 import AddCourse from "./components/Instructor/AddCourse/AddCourse.jsx";
-import MyCourses from "./components/Instructor/MyCourses.jsx";
-import EditCourse from "./components/Instructor/EditCourse/EditCourse.jsx";
-import { Toaster } from "react-hot-toast";
+import MyCourses from './components/Instructor/MyCourses.jsx'
+import EditCourse from './components/Instructor/EditCourse/EditCourse.jsx'
 
 const App = () => {
-  const { user } = useSelector((state) => state.profile);
+  const { user } = useSelector((state) => state.profile)
 
   return (
     <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
-      <Toaster
-        toastOptions={{
-          duration: 2000,
-        }}
-      />
-      
       {/* Navbar */}
       <Navbar />
 
       {/* Routes */}
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route
-          path="/category/:categoryName"
-          element={<CategoryCoursePage />}
-        />
+        <Route path="/catalog/:catalogName" element={<CatalogPage />} />
         <Route path="/courses/:courseId" element={<CourseDetailsPage />} />
 
         <Route
           path="/signup"
-          element={<OpenRoute children={<SignupPage />} />}
+          element={
+            <OpenRoute>
+              <SignupPage />
+             </OpenRoute>
+          }
         />
-        <Route path="/login" element={<OpenRoute children={<LoginPage />} />} />
+        <Route
+          path="/login"
+          element={
+             <OpenRoute>
+              <LoginPage />
+             </OpenRoute>
+          }
+        />
 
         <Route
           path="/forgot-password"
-          element={<OpenRoute children={<ForgotPasswordPage />} />}
+          element={
+            <OpenRoute>
+              <ForgotPasswordPage />
+            </OpenRoute>
+          }
         />
 
         <Route
           path="/verify-email"
-          element={<OpenRoute children={<VerifyEmailPage />} />}
+          element={
+            <OpenRoute>
+              <VerifyEmailPage />
+            </OpenRoute>
+          }
         />
 
         <Route
-          path="/reset-password/:token"
-          element={<OpenRoute children={<UpdatePasswordPage />} />}
+          path="/update-password/:id"
+          element={
+            <OpenRoute>
+              <UpdatePasswordPage />
+            </OpenRoute>
+          }
         />
 
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
 
-        <Route element={<PrivateRoute children={<DashboardPage />} />}>
+        <Route
+          element={
+            <PrivateRoute>
+              <DashboardPage  />
+            </PrivateRoute>
+          }
+        >
           <Route path="/dashboard/my-profile" element={<MyProfile />} />
 
           <Route path="/dashboard/Settings" element={<Settings />} />
@@ -105,7 +125,13 @@ const App = () => {
           )}
         </Route>
 
-        <Route element={<PrivateRoute children={<StudentCoursePage />} />}>
+        <Route
+          element={
+            <PrivateRoute>
+              <ViewCoursePage />
+            </PrivateRoute>
+          }
+        >
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
               <Route

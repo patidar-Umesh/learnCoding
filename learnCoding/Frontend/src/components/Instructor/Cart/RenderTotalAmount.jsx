@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import IconBtn from "../../common/IconBtn"
 import { buyCourse } from "../../../apiServices/apiHandler/studentFeaturesAPI"
 import Button from "../../common/Button"
 
@@ -11,7 +12,6 @@ export default function RenderTotalAmount() {
   const dispatch = useDispatch()
 
   const handleBuyCourse = () => {
-    console.log('kya hal chal hai');
     const courses = cart.map((course) => course._id)
     buyCourse(token, courses, user, navigate, dispatch)
   }
@@ -22,8 +22,9 @@ export default function RenderTotalAmount() {
       <p className="mb-6 text-3xl justify-center items-center font-medium text-yellow-100">₹ {total}</p>
       <Button
         btnText='Buy Now'
-        className='text-[1rem] bg-yellow-50'
-        onClick={handleBuyCourse}
+        className='text-[1rem]'
+        onclick={handleBuyCourse}
+        active='true'
       />
     </div>
   )

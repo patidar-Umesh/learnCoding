@@ -15,7 +15,6 @@ export default function SidebarLink({ link, iconName }) {
   }
 
   return (
-
     <NavLink
       to={link.path}
       onClick={() => dispatch(resetCourseState())}
@@ -30,12 +29,10 @@ export default function SidebarLink({ link, iconName }) {
           matchRoute(link.path) ? "opacity-100" : "opacity-0"
         }`}
       ></span>
-      
       <div className="flex items-center gap-x-2">
         <Icon className="text-lg" />
         <span>{link.name}</span>
       </div>
-
     </NavLink>
   )
 }

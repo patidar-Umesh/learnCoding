@@ -8,16 +8,14 @@ import { removeFromCart } from "../../../store/slices/cartSlice"
 export default function RenderCartCourses() {
   const { cart } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
-
-
   return (
     <div className="flex flex-1 flex-col">
-      {cart.map((course, index) => (
+      {cart.map((course, indx) => (
         <div
           key={course._id}
           className={`flex w-full flex-wrap items-start justify-between gap-6 ${
-            index !== cart.length - 1 && "border-b border-b-richblack-400 pb-6"
-          } ${index !== 0 && "mt-6"} `}
+            indx !== cart.length - 1 && "border-b border-b-richblack-400 pb-6"
+          } ${indx !== 0 && "mt-6"} `}
         >
           <div className="flex flex-1 flex-col gap-4 xl:flex-row">
             <img
@@ -36,7 +34,7 @@ export default function RenderCartCourses() {
                 <span className="text-yellow-5">4.5</span>
                 <ReactStars
                   count={5}
-                  value={course?.ratingAndReview?.length}
+                  value={course?.ratingAndReviews?.length}
                   size={20}
                   edit={false}
                   activeColor="#ffd700"
@@ -44,7 +42,7 @@ export default function RenderCartCourses() {
                   fullIcon={<FaStar />}
                 />
                 <span className="text-richblack-400">
-                  {course?.ratingAndReview?.length} Ratings
+                  {course?.ratingAndReviews?.length} Ratings
                 </span>
               </div>
             </div>

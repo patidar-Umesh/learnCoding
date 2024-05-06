@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillCaretDown } from "react-icons/ai";
 import { FaPlus } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
@@ -8,14 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteSection,
   deleteSubSection,
-} from "../../../apiServices/apiHandler/courseDetailsAPI";
-import { setCourse } from "../../../store/slices/courseSlice";
-import ConfirmationModal from "../../common/ConfirmationModal";
+} from "../../../../apiServices/apiHandler/courseDetailsAPI";
+import { setCourse } from "../../../../store/slices/courseSlice";
+import ConfirmationModal from "../../../common/ConfirmationModal";
 import SubSectionModal from "./SubSectionModal";
 
 export default function NestedView({ handleChangeEditSectionName }) {
   const { course } = useSelector((state) => state.course);
   const { token } = useSelector((state) => state.auth);
+
 
   const dispatch = useDispatch();
 
@@ -25,16 +26,13 @@ export default function NestedView({ handleChangeEditSectionName }) {
 
   const [confirmationModal, setConfirmationModal] = useState(null);
 
-  // console.log("updated course ", viewSubSection);
-  // console.log("updated course ", course);
-
   const handleDeleleSection = async (sectionId) => {
     const result = await deleteSection(
       {
         sectionId,
         courseId: course._id,
       },
-      token
+       token 
     );
 
     if (result) {
@@ -43,18 +41,11 @@ export default function NestedView({ handleChangeEditSectionName }) {
     setConfirmationModal(null);
   };
 
-  const courseId = course._id;
-
   const handleDeleteSubSection = async (subSectionId, sectionId) => {
-    // console.log("courseId",subSectionId, sectionId );
-    
-    const result = await deleteSubSection(
-      { subSectionId, sectionId, courseId },
-      token
-    );
-
+    const result = await deleteSubSection({ subSectionId, sectionId, token });
     if (result) {
-      const updatedCourseContent = course.courseContent?.map((section) =>
+      // update the structure of course
+      const updatedCourseContent = course.courseContent.map((section) =>
         section._id === sectionId ? result : section
       );
       const updatedCourse = { ...course, courseContent: updatedCourseContent };
@@ -63,15 +54,18 @@ export default function NestedView({ handleChangeEditSectionName }) {
     setConfirmationModal(null);
   };
 
- 
+  useEffect(() => {
+    console.log("course", course);
+  });
 
   return (
     <>
       <div
         className="rounded-lg bg-richblack-700 p-6 px-8"
-        // id="nestedViewContainer"
+        id="nestedViewContainer"
       >
-        {course.courseContent?.map((section) => (
+        {course.courseContent.map((section) => (
+          // Section Dropdown
           <details key={section._id} open>
             {/* Section Dropdown Content */}
             <summary className="flex cursor-pointer items-center justify-between border-b-2 border-b-richblack-600 py-2">
@@ -115,7 +109,7 @@ export default function NestedView({ handleChangeEditSectionName }) {
 
             <div className="px-6 pb-4">
               {/* Render All Sub Sections Within a Section */}
-              {section?.subSection?.map((data) => (
+              {section.subSection.map((data) => (
                 <div
                   key={data?._id}
                   onClick={() => setViewSubSection(data)}
@@ -138,9 +132,8 @@ export default function NestedView({ handleChangeEditSectionName }) {
                     >
                       <MdEdit className="text-xl text-richblack-300" />
                     </button>
-
                     <button
-                      onClick={() => 
+                      onClick={() =>
                         setConfirmationModal({
                           text1: "Delete this Sub-Section?",
                           text2: "This lecture will be deleted",
@@ -157,7 +150,6 @@ export default function NestedView({ handleChangeEditSectionName }) {
                   </div>
                 </div>
               ))}
-
               {/* Add New Lecture to Section */}
               <button
                 onClick={() => setAddSubsection(section._id)}
@@ -170,7 +162,6 @@ export default function NestedView({ handleChangeEditSectionName }) {
           </details>
         ))}
       </div>
-
       {/* Modal Display */}
       {addSubSection ? (
         <SubSectionModal
@@ -193,14 +184,12 @@ export default function NestedView({ handleChangeEditSectionName }) {
       ) : (
         <></>
       )}
-
       {/* Confirmation Modal */}
       {confirmationModal ? (
         <ConfirmationModal modalData={confirmationModal} />
       ) : (
         <></>
       )}
-      
     </>
   );
 }

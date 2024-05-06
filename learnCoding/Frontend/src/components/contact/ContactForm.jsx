@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Input from "../common/Input";
 import { useForm } from "react-hook-form";
 import CountryCode from "../../data/countrycode.json";
 import Button from "../common/Button";
-import { apiConnector } from "../../apiServices/apiConnector";
-import { contactusEndpoint } from "../../apiServices/apis";
-import toast from "react-hot-toast";
 
 const ContactForm = () => {
   const [loading, setLoading] = useState(false);
@@ -17,8 +14,7 @@ const ContactForm = () => {
   } = useForm();
 
   const submitContactForm = async (data) => {
-    console.log("btn clicked");
-    console.log("Form Data - ", data);
+    // console.log("Form Data - ", data)
     try {
       setLoading(true);
       const res = await apiConnector(
@@ -26,8 +22,7 @@ const ContactForm = () => {
         contactusEndpoint.CONTACT_US_API,
         data
       );
-      console.log("Email Res - ", res);
-      toast.success('Email Sent Successfully')
+      // console.log("Email Res - ", res)
       setLoading(false);
     } catch (error) {
       console.log("ERROR MESSAGE - ", error.message);
@@ -35,21 +30,21 @@ const ContactForm = () => {
     }
   };
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset({
-        email: "",
-        firstname: "",
-        lastname: "",
-        message: "",
-        phoneNo: "",
-      });
-    }
-  }, [reset, isSubmitSuccessful]);
+  // useEffect(() => {
+  //   if (isSubmitSuccessful) {
+  //     reset({
+  //       email: "",
+  //       firstname: "",
+  //       lastname: "",
+  //       message: "",
+  //       phoneNo: "",
+  //     })
+  //   }
+  // }, [reset, isSubmitSuccessful])
 
   return (
-    <div className="border  border-richblack-600 text-richblack-300 rounded-xl p-6 lg:p-14 flex gap-3 flex-col">
-      <h1 className="sm:text-4xl text-[1.5rem] sm:leading-10 font-semibold text-richblack-5">
+    <div className="border border-richblack-600 text-richblack-300 rounded-xl p-7 lg:p-14 flex gap-3 flex-col">
+      <h1 className="text-4xl leading-10 font-semibold text-richblack-5">
         Got a Idea? We&apos;ve got the skills. Let&apos;s team up
       </h1>
       <p className="">
@@ -58,7 +53,10 @@ const ContactForm = () => {
 
       {/* contact from */}
       <div className="mt-7">
-        <form className="flex flex-col ">
+        <form
+          className="flex flex-col "
+          onSubmit={handleSubmit(submitContactForm)}
+        >
           <div className="flex flex-col bg-red-500 flex-wrap gap-5 lg:flex-row">
             {/* First name */}
             <div className="flex flex-col gap-2 lg:w-[48%]">
@@ -68,9 +66,13 @@ const ContactForm = () => {
                 name="firstname"
                 id="firstname"
                 placeholder="Enter your First naem"
-                register={{...register("firstname", { required: true })}}
-                error={errors.firstname && "   Please enter your firstname."}
+                {...register("firstname", { required: true })}
               />
+              {errors.firstname && (
+                <span className="-mt-1 text-[12px] text-yellow-100">
+                  Please enter your name.
+                </span>
+              )}
             </div>
 
             {/* last name */}
@@ -82,9 +84,13 @@ const ContactForm = () => {
                 id="lastname"
                 placeholder="Enter last  your  name"
                 className=""
-                register={{...register("lastname", { required: true })}}
-                error={errors.lastname && "   Please enter your last name."}
+                {...register("lastname", { required: true })}
               />
+              {errors.firstname && (
+                <span className="-mt-1 text-[12px] text-yellow-100">
+                  Please enter your last name.
+                </span>
+              )}
             </div>
 
             {/* email  */}
@@ -96,9 +102,13 @@ const ContactForm = () => {
                 id="email"
                 placeholder="Enter your email "
                 className=""
-                register={{ ...register("email", { required: true }) }}
-                error={errors.email && "  Please enter your email name."}
+                {...register("email", { required: true })}
               />
+              {errors.firstname && (
+                <span className="-mt-1 text-[12px] text-yellow-100">
+                  Please enter your email name.
+                </span>
+              )}
             </div>
 
             {/* phone number */}
@@ -114,9 +124,9 @@ const ContactForm = () => {
                   className="rounded-lg  bg-richblack-700 lg:w-[75%] p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none"
                   {...register("countrycode", { required: true })}
                 >
-                  {CountryCode?.map((code, index) => {
+                  {CountryCode.map((code, index) => {
                     return (
-                      <option key={index} defaultValue="+91" value={code.code}>
+                      <option key={index} value={code.code}>
                         {code.code} -{code.country}
                       </option>
                     );
@@ -130,27 +140,26 @@ const ContactForm = () => {
                   id="phonenumber"
                   className="mt-5"
                   placeholder="12345 67890"
-                  register={{
-                    ...register("phonenumber", {
-                      required: {
-                        value: true,
-                        message: "Please enter your Phone Number.",
-                      },
-                      maxLength: { value: 12, message: "Invalid Phone Number" },
-                      minLength: { value: 10, message: "Invalid Phone Number" },
-                    }),
-                  }}
-                  error={errors.phoneNo && `${errors.phonenumber.message}`}
+                  {...register("phonenumber", {
+                    required: {
+                      value: true,
+                      message: "Please enter your Phone Number.",
+                    },
+                    maxLength: { value: 12, message: "Invalid Phone Number" },
+                    minLength: { value: 10, message: "Invalid Phone Number" },
+                  })}
                 />
               </div>
             </div>
+            {errors.phoneNo && (
+              <span className="-mt-1 text-[12px] text-yellow-100">
+                {errors.phoneNo.message}
+              </span>
+            )}
 
             {/* text area */}
             <div className="flex flex-col lg:w-full gap-2">
-              <label
-                htmlFor="message"
-                className="font-[500] text-white text-[1.2rem]"
-              >
+              <label htmlFor="message" className="font-[500] text-white text-[1.2rem]">
                 Message
               </label>
               <textarea
@@ -171,16 +180,16 @@ const ContactForm = () => {
 
             {/* submit btn */}
             <div className="w-full">
-              <Button
-                type="submit"
-                onClick={handleSubmit(submitContactForm)}
-                className={`rounded-md bg-yellow-50 px-6 py-3 lg:w-full text-center text-[13px] font-bold text-black w-full shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] 
+            <Button
+              disabled={loading}
+              type="submit"
+              className={`rounded-md bg-yellow-50 px-6 py-3 lg:w-[100%] text-center text-[13px] font-bold text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] 
          ${
            !loading &&
            "transition-all duration-200 hover:scale-95 hover:shadow-none"
          }  disabled:bg-richblack-500 sm:text-[16px] `}
-                btnText="Send Message"
-              />
+              btnText="Send Message"
+            />
             </div>
           </div>
         </form>

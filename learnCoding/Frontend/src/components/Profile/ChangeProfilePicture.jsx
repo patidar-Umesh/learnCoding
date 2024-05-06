@@ -1,63 +1,65 @@
-import { useEffect, useRef, useState } from "react";
-import { FiUpload } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
-import { updateDisplayPicture } from "../../apiServices/apiHandler/SettingsAPI";
-import Button from "../common/Button";
+import { useEffect, useRef, useState } from "react"
+import { FiUpload } from "react-icons/fi"
+import { useDispatch, useSelector } from "react-redux"
+
+import { updateDisplayPicture } from "../../apiServices/apiHandler/SettingsAPI"
+import IconBtn from "../common/IconBtn"
 
 export default function ChangeProfilePicture() {
-  const { token } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.profile);
-  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth)
+  const { user } = useSelector((state) => state.profile)
+  const dispatch = useDispatch()
 
-  const [loading, setLoading] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
-  const [previewSource, setPreviewSource] = useState(null);
+  const [loading, setLoading] = useState(false)
+  const [imageFile, setImageFile] = useState(null)
+  const [previewSource, setPreviewSource] = useState(null)
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef(null)
 
   const handleClick = () => {
-    fileInputRef.current.click();
-  };
+    fileInputRef.current.click()
+  }
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    console.log("imageFile", imageFile);
-    console.log(file);
+    const file = e.target.files[0]
+    console.log('imageFile',imageFile)
+    console.log(file)
     if (file) {
-      setImageFile(file);
-      previewFile(file);
+      setImageFile(file)
+      previewFile(file)
     }
-  };
+  }
 
   const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
     reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    };
-  };
+      setPreviewSource(reader.result)
+    }
+  }
 
   const handleFileUpload = () => {
-    console.log("uploading...");
     try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("image", imageFile);
+      console.log("uploading...")
+      setLoading(true)
+      const formData = new FormData()
+      formData.append("image", imageFile)
 
-      // console.log("formdata", formData);
+      console.log("formdata", formData)
       dispatch(updateDisplayPicture(token, formData)).then(() => {
-        setLoading(false);
-      });
+        setLoading(false)
+      })
     } catch (error) {
-      console.log("Profile image not updated", error.message);
+      console.log("ERROR MESSAGE - ", error.message)
     }
-  };
+  }
 
   useEffect(() => {
     if (imageFile) {
-      previewFile(imageFile);
+      previewFile(imageFile)
     }
-  }, [imageFile, user]);
+    // handleFileUpload()
+  }, [imageFile ,user])
 
   return (
     <>
@@ -68,10 +70,8 @@ export default function ChangeProfilePicture() {
             alt={`profile-${user?.firstName}`}
             className="aspect-square w-[78px] rounded-full object-cover"
           />
-
           <div className="space-y-2">
             <p>Change Profile Picture</p>
-
             <div className="flex flex-row gap-3">
               <input
                 type="file"
@@ -81,29 +81,25 @@ export default function ChangeProfilePicture() {
                 name="image"
                 accept="image/png, image/gif, image/jpeg"
               />
-
-              <Button
+              <button
                 onClick={handleClick}
                 disabled={loading}
-                btnText="Select"
                 className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
-              />
-
-              <Button
-                type="submit"
-                btnText={loading ? "Uploading..." : "Upload"}
-                className="flex gap-x-2 bg-yellow-50 items-center justify-center"
-                onClick={handleFileUpload}
-                children={
-                  !loading && (
-                    <FiUpload className="text-lg text-richblack-900" />
-                  )
-                }
-              />
+              >
+                Select
+              </button>
+              <IconBtn
+                text={loading ? "Uploading..." : "Upload"}
+                onclick={handleFileUpload}
+              >
+                {!loading && (
+                  <FiUpload className="text-lg text-richblack-900" />
+                )}
+              </IconBtn>
             </div>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,10 +1,10 @@
 
-const BASE_URL = process.env.REACT_APP_BACKEND_URL
-console.log('base url', ) 
 
-// **************************************** API ALL ENDPOINTS  **************************************** //
+const BASE_URL = 'http://localhost:8000/api/v1'
 
-// auth endporint
+
+
+// AUTH ENDPOINTS
 export const endpoints = {
   SENDOTP_API: BASE_URL + "/user/sendotp",
   SIGNUP_API: BASE_URL + "/user/signUp",
@@ -13,21 +13,21 @@ export const endpoints = {
   RESETPASSWORD_API: BASE_URL + "/user/reset-password",
 }
 
-// profile 
+// PROFILE ENDPOINTS
 export const profileEndpoints = {
-  GET_USER_DETAILS_API: BASE_URL + "/profile/get-user-details",
-  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/get-enrolled-courses",
-  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profile/instructor-dashboard",
+  GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
+  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourses",
+  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profile/instructorDashboard",
 }
 
-// student 
+// STUDENTS ENDPOINTS
 export const studentEndpoints = {
   COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
-  COURSE_VERIFY_API: BASE_URL + "/payment/verifySignature",
+  COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",
   SEND_PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
 }
 
-// course 
+// COURSE ENDPOINTS
 export const courseEndpoints = {
     // course
   GET_ALL_COURSE_API: BASE_URL + "/course/all-courses",
@@ -48,39 +48,42 @@ export const courseEndpoints = {
   DELETE_SUBSECTION_API: BASE_URL + "/course/delete-subSection",
   UPDATE_SUBSECTION_API: BASE_URL + "/course/update-subSection",
 
-  // instructor all courses
+
   GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/course/get-instructor-courses",
 
-  // get full details of course 
   GET_FULL_COURSE_DETAILS_AUTHENTICATED:
     BASE_URL + "/course/get-full-course-details",
 
-    // update course progress
-  LECTURE_COMPLETION_API: BASE_URL + "/course/update-courseProgress",
-
-// rating and reviews
-
-REVIEWS_DETAILS_API: BASE_URL + "/course/all-rating",
-CREATE_RATING_API: BASE_URL + "/course/create-rating-review",
+  LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
 
 
 }
 
+// RATINGS AND REVIEWS
+export const ratingsEndpoints = {
+  REVIEWS_DETAILS_API: BASE_URL + "/all-rating",
+  CREATE_RATING_API: BASE_URL + "/create-rating-review",
 
-// category page
+}
+
+// // CATAGORIES API
+// export const categories = {
+
+// }
+
+// CATALOG PAGE DATA
 export const catalogData = {
-  CATALOGPAGEDATA_API: BASE_URL + "/course/category-courses",
+  CATALOGPAGEDATA_API: BASE_URL + "/course/getCategoryPageDetails",
 }
-
-// contact us api
+// CONTACT-US API
 export const contactusEndpoint = {
-  CONTACT_US_API: BASE_URL + "/contact",
+  CONTACT_US_API: BASE_URL + "/reach/contact",
 }
 
-// dashboard setting 
+// SETTINGS PAGE API
 export const settingsEndpoints = {
   UPDATE_DISPLAY_PICTURE_API: BASE_URL + "/profile/update-display-picture",
   UPDATE_PROFILE_API: BASE_URL + "/profile/update-profile",
-  CHANGE_PASSWORD_API: BASE_URL + "/user/change-password",
+  CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/delete-profile",
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { sendOtp } from "../../apiServices/apiHandler/authAPI";
 import { setSignupData } from "../../store/slices/authSlice";
 import { ACCOUNT_TYPE } from "../../utils/constants.js";
@@ -27,6 +27,7 @@ function SignupForm() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true)
   const { firstName, lastName, email, password, confirmPassword } = formData;
 
   const handleOnChange = (e) => {
@@ -55,7 +56,7 @@ function SignupForm() {
       accountType
     };
 
-    // setIsDisabled(false)
+    setIsDisabled(false)
     dispatch(setSignupData(signupData));
     dispatch(sendOtp(formData.email, navigate));
     setFormData({
@@ -86,7 +87,7 @@ function SignupForm() {
     <div>
       <Tab tabData={tabData} field={accountType} setField={setAccountType} />
       {/* Form */}
-      <form onSubmit={handleOnSubmit}  className="flex  w-full flex-col gap-y-4">
+      <form onSubmit={handleOnSubmit}  className="flex w-full flex-col gap-y-4">
         <div className="flex  flex-wrap gap-5 ">
           {/* First name */}
           <div className="flex flex-col gap-2 lg:w-[45%]">
@@ -119,7 +120,7 @@ function SignupForm() {
           </div>
 
           {/* email */}
-          <div className="lg:w-[95%]">
+          <div className="lg:w-[100%]">
             <Input
               label="Email Addrees"
               required
@@ -148,7 +149,7 @@ function SignupForm() {
             />
             <span
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-3 top-[45px] z-[10] cursor-pointer"
+              className="absolute right-3 top-[38px] z-[10] cursor-pointer"
             >
               {showPassword ? (
                 <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -174,7 +175,7 @@ function SignupForm() {
             />
             <span
               onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className="absolute right-3 top-[45px] z-[10] cursor-pointer"
+              className="absolute right-3 top-[38px] z-[10] cursor-pointer"
             >
               {showConfirmPassword ? (
                 <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -189,7 +190,7 @@ function SignupForm() {
             <Button
             onClick={handleOnSubmit}
               type="submit"
-              className="w-full text-[1rem] bg-yellow-50"
+              className="w-full text-[1rem]"
               btnText="Create Account"
               active="true"
               // disabled={isDisabled ? 'disabled' : '' }

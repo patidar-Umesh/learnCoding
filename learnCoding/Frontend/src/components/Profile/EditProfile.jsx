@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { updateProfile } from "../../apiServices/apiHandler/SettingsAPI";
+// import IconBtn from "../common/IconBtn"
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 
@@ -21,9 +22,10 @@ export default function EditProfile() {
 
   const submitProfileForm = async (data) => {
     console.log("data is", data);
+    // console.log("Form Data - ", data)
     try {
       dispatch(updateProfile(token, data));
-      navigate("/dashboard/my-profile");
+      navigate("/dashboard/my-profile")
     } catch (error) {
       console.log("ERROR MESSAGE - ", error.message);
     }
@@ -88,10 +90,7 @@ export default function EditProfile() {
             </div>
 
             <div className="flex flex-col gap-2 lg:w-[48%]">
-              <label
-                htmlFor="gender"
-                className="font-[500] text-white text-[.9rem] mb-1"
-              >
+              <label htmlFor="gender" className="font-[500] text-white text-[.9rem] mb-1">
                 Gender
               </label>
               <select
@@ -127,16 +126,14 @@ export default function EditProfile() {
                 id="contactNumber"
                 placeholder="Enter Contact Number"
                 className="form-style"
-                register={{
-                  ...register("contactNumber", {
-                    required: {
-                      value: true,
-                      message: "Please enter your Contact Number.",
-                    },
-                    maxLength: { value: 12, message: "Invalid Contact Number" },
-                    minLength: { value: 10, message: "Invalid Contact Number" },
-                  }),
-                }}
+                register={{...register("contactNumber", {
+                  required: {
+                    value: true,
+                    message: "Please enter your Contact Number.",
+                  },
+                  maxLength: { value: 12, message: "Invalid Contact Number" },
+                  minLength: { value: 10, message: "Invalid Contact Number" },
+                })}}
                 defaultValue={user?.additionalDetails?.contactNumber}
                 error={
                   errors.contactNumber && `${errors.contactNumber.message}`
@@ -151,7 +148,7 @@ export default function EditProfile() {
                 id="about"
                 placeholder="Enter Bio Details"
                 className="form-style"
-                register={{ ...register("about", { required: true }) }}
+                register={{...register("about", { required: true })}}
                 defaultValue={user?.additionalDetails?.about}
                 error={errors.about && " Please enter your About."}
               />
@@ -160,17 +157,19 @@ export default function EditProfile() {
         </div>
 
         <div className="flex justify-end gap-2">
-          <Link to="/dashboard/my-profile">
-            <Button btnText="Cancel" />
-          </Link>
-          <Link to='/dashboard/my-profile"'>
-            <Button
-              btnText="Save"
-              type="submit"
-              className="bg-yellow-50"
-              onClick={handleSubmit(submitProfileForm)}
-            />
-          </Link>
+          <Button
+            btnText="Cancel"
+            linkTo="/dashboard/my-profile"
+            className="text-white"
+          />
+
+          <Button
+            btnText="Save"
+            linkTo="/dashboard/my-profile"
+            type="submit"
+            onClick={handleSubmit(submitProfileForm)}
+            active="true"
+          />
         </div>
       </form>
     </>

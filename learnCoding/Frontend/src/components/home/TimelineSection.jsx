@@ -31,17 +31,17 @@ const timeline = [
 const TimelineSection = () => {
   return (
     <div>
-      <div className='flex w-[100%] flex-col sm:flex-row justify-between items-center'>
+      <div className='flex flex-row gap-15 items-center'>
 
 {/* left section */}
-        <div className='w-[100%] sm:w-[45%]  flex flex-col gap-5'>
+        <div className='w-[45%] flex flex-col gap-5'>
             {
                 timeline.map( (element, index) => {
                     return (
-                        <div className='flex flex-col flex-wrap sm:flex-row sm:gap-6' key={index}>
+                        <div className='flex flex-row gap-6' key={index}>
 
                             <div className='w-[50px] h-[50px] bg-white flex items-center'>
-                                <img src={element.Logo} alt=''/>
+                                <img src={element.Logo} />
                             </div>
 
                             <div>
@@ -56,15 +56,14 @@ const TimelineSection = () => {
         </div>
 
         {/* right section */}
-        <div className='w-full relative mt-[120px] sm:mt-0 flex items-center justify-center flex-col shadow-blue-200'>
-          <div className='hidden  sm:block'>
-          <img  src={timelineImage}
-            alt="timelineImage"
-            className='shadow-white  object-cover h-fit'
-            />
-          </div>
+        <div className='relative shadow-blue-200'>
 
-            <div className='absolute bg-caribbeangreen-700 mb-5 flex flex-row -bottom-[105px] text-white uppercase py-7
+            <img  src={timelineImage}
+            alt="timelineImage"
+            className='shadow-white object-cover h-fit'
+            />
+
+            <div className='absolute bg-caribbeangreen-700 flex flex-row text-white uppercase py-7
                             left-[50%] translate-x-[-50%] translate-y-[-50%]'>
                 <div className='flex flex-row gap-5 items-center border-r border-caribbeangreen-300 px-7'>
                     <p className='text-3xl font-bold'>10</p>
@@ -77,6 +76,7 @@ const TimelineSection = () => {
                 </div>
 
             </div>
+
         </div>
 
       </div>

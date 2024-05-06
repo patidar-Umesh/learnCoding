@@ -48,7 +48,6 @@ function LoginForm() {
           required
           type="email"
           name="email"
-          id="email"
           value={email}
           onChange={handleOnChange}
           placeholder="Enter email address"
@@ -62,7 +61,6 @@ function LoginForm() {
           required
           type={showPassword ? "text" : "password"}
           name="password"
-          id="password"
           value={password}
           onChange={handleOnChange}
           astrick='true'
@@ -70,7 +68,7 @@ function LoginForm() {
         />
         <span
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-3 top-[45px] z-[10] cursor-pointer"
+          className="absolute right-3 top-[38px] z-[10] cursor-pointer"
         >
           {showPassword ? (
             <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
@@ -87,7 +85,7 @@ function LoginForm() {
       </div>
 
       <div className="w-[100%]">
-        <Button type="submit"  onClick={handleOnSubmit} className='w-full bg-yellow-50 text-[1rem]'  btnText="Sign In" />
+        <Button type="submit" onClick={handleOnSubmit} className='w-full text-[1rem]'  btnText="Sign In" active="true" />
       </div>
     </form>
   );

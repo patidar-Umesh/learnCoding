@@ -15,21 +15,18 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // console.log("image is", course);
+  // console.log("image is", course.image);
 
-  // copy link handler
   const handleShare = () => {
     copy(window.location.href);
     toast.success("Link copied to clipboard");
   };
 
-  // add to cart handler
   const handleAddToCart = () => {
     if (user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
       toast.error("You are an Instructor. You can't buy a course.");
       return;
     }
-
     if (token) {
       dispatch(addToCart(course));
       return;
@@ -63,21 +60,22 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
 
           <div className="flex flex-col justify-center items-center gap-4">
             <Button
+              active="true"
               onClick={
-                user &&
-                course?.studentsEnrolled.includes(user?._id) ? navigate("/dashboard/enrolled-courses") :
-                handleBuyCourse
+                user && course?.studentsEnrolled.includes(user?._id)
+                  ? () => navigate("/dashboard/enrolled-courses")
+                  : handleBuyCourse
               }
               btnText={
                 user && course?.studentsEnrolled.includes(user?._id)
                   ? "Go to Course"
                   : "Buy Now"
               }
-              className="bg-yellow-50"
             />
 
             {(!user || !course?.studentsEnrolled.includes(user?._id)) && (
-              <Button onClick={handleAddToCart} btnText="Add to Cart" />
+              <Button onClick={handleAddToCart} btnText='Add to Cart'
+              />
             )}
           </div>
 
@@ -102,8 +100,6 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
               })}
             </div>
           </div>
-
-          {/* share btn */}
           <div className="text-center">
             <button
               className="mx-auto flex items-center gap-2 py-6 text-yellow-100 "

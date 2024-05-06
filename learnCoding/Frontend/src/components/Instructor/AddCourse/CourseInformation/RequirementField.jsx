@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Button from "../../common/Button";
+import Input from "../../../common/Input";
 
 export default function RequirementsField({
   name,
   label,
+  register,
   setValue,
   errors,
+  getValues,
 }) {
   const { editCourse, course } = useSelector((state) => state.course);
   const [requirement, setRequirement] = useState("");
@@ -14,20 +16,21 @@ export default function RequirementsField({
 
   useEffect(() => {
     if (editCourse) {
-      setRequirementsList(course?.instructions || []); 
-      
+      setRequirementsList(course?.instructions);
     }
-  }, [editCourse, course?.instructions]); 
+    register(name, { required: true, validate: (value) => value.length > 0 });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setValue(name, requirementsList);
-  }, [setValue, name, requirementsList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [requirementsList]);
 
   const handleAddRequirement = () => {
-
-    if (requirement.trim() !== "") { 
+    if (requirement) {
       setRequirementsList([...requirementsList, requirement]);
-      setRequirement(""); 
+      setRequirement("");
     }
   };
 
@@ -41,39 +44,33 @@ export default function RequirementsField({
     <div className="flex flex-col space-y-2">
       <div className="flex flex-col items-start space-y-2">
 
-      <label className="text-sm text-richblack-5" htmlFor={name}>
-        {label} <sup className="text-pink-200">*</sup>
-      </label>
-        <input
+        <Input
           type="text"
-          name={name}
           value={requirement}
           onChange={(e) => setRequirement(e.target.value)}
           id={name}
           label={label}
-          className=" rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 w-full  placeholder:text-richblack-400  focus:outline-none"
+          astrick="true"
+          error={errors[name] && `${label} is required`}
         />
 
-        <span className="ml-2 text-xs tracking-wide text-pink-200">
-            {errors[name] && 'Requirement cannot be empty'}
-          </span>
-
-        <Button 
+        <button
           type="button"
           onClick={handleAddRequirement}
-          className="font-semibold "
-          btnText="Add"
-        />
+          className="font-semibold text-yellow-50"
+        >
+          Add
+        </button>
       </div>
 
-      {requirementsList?.length > 0 && (
+      {requirementsList.length > 0 && (
         <ul className="mt-2 list-inside list-disc">
           {requirementsList.map((requirement, index) => (
             <li key={index} className="flex items-center text-richblack-5">
               <span>{requirement}</span>
               <button
                 type="button"
-                className="ml-2 text-xs text-pure-greys-300"
+                className="ml-2 text-xs text-pure-greys-300 "
                 onClick={() => handleRemoveRequirement(index)}
               >
                 clear

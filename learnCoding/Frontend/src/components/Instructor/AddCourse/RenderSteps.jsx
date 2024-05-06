@@ -1,8 +1,8 @@
 import { FaCheck } from "react-icons/fa"
 import { useSelector } from "react-redux"
-import CourseBuilderForm from "./CourseBuilderForm.jsx"
-import CourseInformationForm from "./CourseInformationForm.jsx"
-import PublishCourse from "./PublishCourse.jsx"
+import CourseBuilderForm from "./CourseBuilder/CourseBuilderForm.jsx"
+import CourseInformationForm from "./CourseInformation/CourseInformationForm.jsx"
+import PublishCourse from "./PublishCourse/PublishCourse.jsx"
 
 
 export default function RenderSteps() {
