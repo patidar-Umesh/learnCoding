@@ -5,7 +5,7 @@ const createCategory = async (req, res) => {
   try {
     // fetch data
     const { name, description } = req.body;
-    console.log("Data is", name, description);
+    // console.log("Data is", name, description);
 
     // validation
     if (!name || !description) {
@@ -20,7 +20,7 @@ const createCategory = async (req, res) => {
       name: name,
       description: description,
     });
-    console.log(`Category info ${categoryInfo}`);
+    // console.log(`Category info ${categoryInfo}`);
 
     // response
     return res.status(400).json({
@@ -69,7 +69,7 @@ const getRandomInt = (max) => {
 const categoryCourses = async (req, res) => {
   try {
     const { categoryId } = req.body;
-    console.log("category id is ", categoryId);
+    // console.log("category id is ", categoryId);
 
     // Get courses for the specified category
     const selectedCategory = await Category.findById({_id:categoryId})

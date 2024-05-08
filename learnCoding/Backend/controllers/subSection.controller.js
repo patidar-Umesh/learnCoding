@@ -13,11 +13,11 @@ const createSubSection = async (req, res) => {
   try {
     // fetch data
     const { sectionId, title, description } = req.body;
-    console.log(`data is`, sectionId, title, description);
+    // console.log(`data is`, sectionId, title, description);
 
     let videoFile = req.files.video;
 
-    console.log(`video file is ${videoFile}`);
+    // console.log(`video file is ${videoFile}`);
 
     // validate all fields
     if (!sectionId || !title || !description) {
@@ -33,7 +33,7 @@ const createSubSection = async (req, res) => {
       process.env.CLOUDINARY_VIDEO_FOLDER
     );
 
-    console.log(`uploaded video file is ${uploadedVideoFile}`);
+    // console.log(`uploaded video file is ${uploadedVideoFile}`);
 
     if (!uploadedVideoFile) {
       return res.status(400).json({
@@ -49,7 +49,6 @@ const createSubSection = async (req, res) => {
       description,
       videoUrl: uploadedVideoFile?.secure_url,
     });
-    console.log(`updated section is `);
 
     // insert sub Section id in section
     const updatedSection = await Section.findByIdAndUpdate(
@@ -64,7 +63,7 @@ const createSubSection = async (req, res) => {
       .populate("subSection")
       .exec();
 
-    console.log(`updated section is ${updatedSection}`);
+    // console.log(`updated section is ${updatedSection}`);
 
     return res.status(200).json({
       success: true,

@@ -8,7 +8,7 @@ const createSection = async (req, res) => {
   try {
     // fetch data
     const { sectionName, courseId } = req.body;
-    console.log("section name and id", sectionName, courseId);
+    // console.log("section name and id", sectionName, courseId);
 
     if (!sectionName || !courseId) {
       return res.status(400).json({
@@ -19,13 +19,13 @@ const createSection = async (req, res) => {
 
     // save  section name in db
     const savedSection = await Section.create({ sectionName: sectionName });
-    console.log("savedSection", savedSection);
+    // console.log("savedSection", savedSection);
 
     const course = await Course.findById(courseId).populate({
       path: "courseContent",
       populate: { path: "subSection" },
     });
-    console.log("savedSection", course);
+    // console.log("savedSection", course);
 
     // update courseContent in Course schema
     const upadatCourse = await Course.findByIdAndUpdate(
@@ -45,8 +45,8 @@ const createSection = async (req, res) => {
       })
       .exec();
 
-    console.log(`upadated course is ${upadatCourse.courseContent}`);
-    console.log("hello ji");
+    // console.log(`upadated course is ${upadatCourse.courseContent}`);
+    // console.log("hello ji");
 
     return res.status(200).json({
       success: true,

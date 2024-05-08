@@ -28,7 +28,7 @@ const creatCourse = async (req, res) => {
 
     const tag = JSON.parse(_tag);
     const instructions = JSON.parse(_instructions);
-    console.log("type", tag, instructions);
+    // console.log("type", tag, instructions);
 
     console.log(
       courseTitle,
@@ -125,10 +125,10 @@ const creatCourse = async (req, res) => {
       }
     );
 
-    console.log("created course", course);
+    // console.log("created course", course);
 
     // save course id in user schema
-    const user = await User.findByIdAndUpdate(
+    await User.findByIdAndUpdate(
       { _id: instructorDetails._id },
       {
         $push: { courses: course._id },
@@ -203,7 +203,8 @@ const editCourse = async (req, res) => {
       _id: courseId,
     })
       .populate({
-        path: "instructor", select: "-password",
+        path: "instructor",
+        select: "-password",
         populate: {
           path: "additionalDetails",
         },
@@ -237,7 +238,7 @@ const editCourse = async (req, res) => {
 const allCourses = async (req, res) => {
   try {
     // fetch courses
-    const courses = await Course.find().populate('ratingAndReview');
+    const courses = await Course.find().populate("ratingAndReview");
     // console.log(`all courses is ${courses}`);
 
     return res.status(200).json({
@@ -264,7 +265,8 @@ const getCourseDetails = async (req, res) => {
       _id: courseId,
     })
       .populate({
-        path: "instructor", select: '-password',
+        path: "instructor",
+        select: "-password",
         populate: {
           path: "additionalDetails",
         },
@@ -331,7 +333,8 @@ const getFullCourseDetails = async (req, res) => {
       _id: courseId,
     })
       .populate({
-        path: "instructor", select: '-password',
+        path: "instructor",
+        select: "-password",
         populate: {
           path: "additionalDetails",
         },
@@ -379,7 +382,7 @@ const getFullCourseDetails = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: {courseDetails},
+      data: { courseDetails },
       totalDuration,
       completedVideos: courseProgressCount?.completedVideos
         ? courseProgressCount?.completedVideos
@@ -473,7 +476,6 @@ const deleteCourse = async (req, res) => {
       });
     }
 
-    
     console.log(
       " Image deleted successfully from cloudinary",
       deletedImageFile

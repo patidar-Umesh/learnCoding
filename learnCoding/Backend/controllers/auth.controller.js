@@ -118,7 +118,7 @@ const signUp = async (req, res) => {
 
     // check user in db
     const existedUser = await User.findOne({ email: email });
-    console.log(`existedUser is ${existedUser}`);
+    // console.log(`existing User is ${existedUser}`);
 
     if (existedUser) {
       return res.status(400).json({
@@ -330,6 +330,6 @@ const changePassword = async (req, res) => {
   }
 };
 
-// export all functions
+// export all controllers
 
 export { sendOTP, signUp, login, changePassword };

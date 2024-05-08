@@ -7,7 +7,7 @@ import { SubSection } from "../models/subSection.model.js";
     // fetch courseid and subsectionid and userid
     const { courseId, subSectionId } = req.body;
     const userId = req.user.id;
-    console.log('hello ji', courseId, subSectionId, userId)
+    // console.log('course subsection user ids', courseId, subSectionId, userId)
 
     // find subsectionbyid
     const subSection = await SubSection.findById(subSectionId);
@@ -17,7 +17,7 @@ import { SubSection } from "../models/subSection.model.js";
       return res.status(404).json({ error: "Invalid SUbSection" });
     }
 
-    console.log("SubSection Validation Done");
+    // console.log("SubSection Validation Done");
 
     let courseProgress = await CourseProgress.findOne({
       courseId: courseId,
@@ -30,7 +30,7 @@ import { SubSection } from "../models/subSection.model.js";
         message: "Course Progress does not exist",
       });
     } else {
-      console.log("Course Progress Validation Done");
+      // console.log("Course Progress Validation Done");
     }
       if (courseProgress.completedVideos.includes(subSectionId)) {
         return res.status(400).json({
@@ -39,11 +39,9 @@ import { SubSection } from "../models/subSection.model.js";
       }
 
       courseProgress.completedVideos.push(subSectionId);
-      console.log("Copurse Progress Push Done");
-    
 
     await courseProgress.save();
-    console.log("Course Progress Save call Done");
+    // console.log("save successfully");
 
     return res.status(200).json({
       success: true,
