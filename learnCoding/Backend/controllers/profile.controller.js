@@ -136,13 +136,31 @@ const updateProfilePicture = async (req, res) => {
 
     // delete before upload image
     const deletedImage = await deleteFromCloudinary(user?.image)
-    console.log('deleted image', deletedImage);
+    // console.log('deleted image', deletedImage);
+
+    if (deletedImage?.result !== 'ok') {
+      return res.status(404).json({
+        success: false,
+        message: "Getting error from Cloudinary delete api",
+      });
+    }
 
     // upload profile image on clodinary
-    // const savedImg = await uploadOnCloudinary(image, process.env.FOLDER_NAME);
+    const savedImg = await uploadOnCloudinary(image, process.env.FOLDER_NAME);
+
+    
+    if (savedImg?.result !== 'ok') {
+      return res.status(404).json({
+        success: false,
+        message: "Getting error from Cloudinary upload api",
+      });
+    }
 
     //  update in user details
-    console.log('image is', user.email)
+    user.image = savedImg?.secureUrl
+    await user.save()
+
+    // console.log('image is', user)
 
     return res.send({
       success: true,
