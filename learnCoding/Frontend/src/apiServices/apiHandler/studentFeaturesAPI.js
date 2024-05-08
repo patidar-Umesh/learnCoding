@@ -65,7 +65,7 @@ export async function buyCourse(
 
     //options
     const options = {
-      key: `${process.env.REACT_RAZORPAY_KEY_ID}`,
+      key: `${import.meta.env.VITE_RAZORPAY_KEY_ID}`,
       currency: orderResponse.data.data.currency,
       amount: `${orderResponse.data.data.amount}`,
       order_id: orderResponse.data.data.id,

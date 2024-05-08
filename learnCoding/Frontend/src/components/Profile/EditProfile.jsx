@@ -161,7 +161,7 @@ export default function EditProfile() {
 
         <div className="flex justify-end gap-2">
           <Link to="/dashboard/my-profile">
-            <Button btnText="Cancel" className='bg-[gray]' />
+            <Button btnText="Cancel" className='!bg-[gray]' />
           </Link>
           <Link to='/dashboard/my-profile"'>
             <Button

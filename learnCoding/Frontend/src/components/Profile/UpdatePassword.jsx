@@ -94,7 +94,7 @@ export default function UpdatePassword() {
             <Button
               btnText="Cancel"
               type="button"
-              className="bg-[gray]"
+              className="!bg-[gray]"
             />
           </Link>
 

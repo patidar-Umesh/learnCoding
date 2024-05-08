@@ -61,12 +61,12 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
               <Button
                 onClick={() => navigate("/dashboard/enrolled-courses")}
                 btnText="Back"
-                className="bg-yellow-50 text-[.5rem]"
+                className="bg-yellow-50 text-[8px]  px-[6px]" 
               />
               <div>
                 <Button
                   btnText="Add Review"
-                  className="bg-yellow-50  px-1 flex text-[.5rem]"
+                  className="bg-yellow-50 text-[8px]  px-[6px]"
                   onClick={() => handleAddReview()}
                 />
               </div>
@@ -127,7 +127,7 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
                           checked={completedLectures?.includes(subSec?._id)}
                           onChange={() => {}}
                         />
-                        <span>{subSec.title}</span>
+                        <span className="w-full items-center overflow-x-hidden ">{subSec.title}</span>
                       </div>
                     ))}
                   </div>

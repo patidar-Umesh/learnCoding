@@ -27,9 +27,9 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="flex h-[80px] sm:h-[calc(100vh-3.5rem)] sm:order-[0] order-2 w-full min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 sm:bg-richblack-800 py-10">
-
-        <div className="flex flex-row justify-center items-center sm:flex-col">
+      <div className="flex h-[40px]  fixed  sm:relative bottom-0  sm:h-[calc(100vh-3.5rem)] sm:order-[0] order-2 w-full min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-700 sm:bg-richblack-800 sm:py-10">
+     
+        <div className="flex flex-row justify-center items-center sm:justify-start sm:items-start sm:flex-col">
           {sidebarLinks.map((link) => {
             if (link.type && user?.accountType !== link.type) return null
             return (

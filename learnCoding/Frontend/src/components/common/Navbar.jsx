@@ -141,7 +141,7 @@ const Navbar = () => {
 
           {/* Mobile screen menu */}
           <div
-            className="sm:hidden z-[999] bg-[orange]  relative text-[2rem] text-white block"
+            className="sm:hidden z-[999] bottom-0 relative text-[2rem] text-white block"
             onClick={dropDown}
           >
             {!show ? (
@@ -151,10 +151,10 @@ const Navbar = () => {
             )}
           </div>
           {show && (
-            <div className="z-20 absolute top-1 -right-[12px] font-normal bg-[#868585]  divide-y divide-gray-100 rounded-lg shadow w-[100vw] overflow-hidden h-[50vh] dark:bg-gray-700 dark:divide-gray-600 text-white transition-all">
+            <div className="z-20 absolute w-full top-1 -right-[12px] font-normal bg-richblack-700  divide-y divide-gray-100 rounded-lg shadow  overflow-scroll h-[50vh] dark:bg-gray-700 dark:divide-gray-600 text-white transition-all">
               <ul
                 onClick={dropDown}
-                class="py-2 text-[1.5rem] font-semibold flex-col flex justify-center items-center text-gray-700 dark:text-gray-400"
+                class="py-2 text-[1rem] font-semibold flex-col flex justify-center items-center text-gray-700 dark:text-gray-400"
               >
                 {token ? (<>
                   <Link onClick={() => dispatch(logout(navigate))}>
@@ -182,6 +182,11 @@ const Navbar = () => {
                     </Link>
                   </>
                 )}
+                 <Link to="/dashboard/cart">
+                      <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                        Cart
+                      </li>
+                    </Link>
                 <Link to="/#footer1">
                   <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                     Courses

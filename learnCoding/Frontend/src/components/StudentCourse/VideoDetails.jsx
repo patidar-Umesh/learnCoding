@@ -252,6 +252,7 @@ const VideoDetails = () => {
       {!videoData ? (
         <div>No Data Found</div>
       ) : (
+        <div className="relative aspect-w-[16] aspect-h-[9]">
         <Player
           // ref={playerRef}
           autoPlay={true}
@@ -267,12 +268,13 @@ const VideoDetails = () => {
           <LoadingSpinner />
 
           {/* forward bakcword  */}
-          <ControlBar  autoHide={false}>
-            <ReplayControl  seconds={5} />
-            <ForwardControl seconds={5} />
-            <PlaybackRateMenuButton rates={[0.5, 1, 1.5, 2]} order={7.1} />
+          <ControlBar  autoHide={false} className=" bg-[orange] " >
+            <ReplayControl  seconds={5} className='text-[.5rem]' />
+            <ForwardControl seconds={5}  className='text-[.5rem]'/>
+            <PlaybackRateMenuButton rates={[0.5, 1, 1.5, 2]} order={7.1} className='text-[.5rem]' />
           </ControlBar>
         </Player>
+        </div>
       )}
 
       <div className="sm:text-[1rem] text-[.5rem]">

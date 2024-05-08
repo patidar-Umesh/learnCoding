@@ -16,10 +16,12 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="relative flex-col sm:flex-row flex min-h-[calc(100vh-3.5rem)]">
+    <div className="relative flex flex-col sm:flex-row min-h-[calc(100vh-3.5rem)]">
+      <div>
       <Sidebar />
+      </div>
       <div className="sm:h-[calc(100vh-3.5rem)] h-[50vh] sm:order-[0] order-1 flex-1 overflow-auto">
-        <div className="mx-auto w-11/12  h-[500px] max-w-[1000px] py-10">
+        <div className="mx-auto h-[500px] sm:p-4  p-0 max-w-[1000px] py-10">
           <Outlet />
         </div>
       </div>

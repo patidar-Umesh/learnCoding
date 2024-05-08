@@ -9,34 +9,44 @@ import { MdOutlineNavigateNext } from "react-icons/md";
 import { GrFormPrevious } from "react-icons/gr";
 
 const CourseSlider = ({ Courses, nextPrevBtn = false }) => {
-
-
   return (
-    <div className="mt-4">
+    <div className="mt-14 ">
       {Courses?.length ? (
         <Swiper
-          slidesPerView={4}
-          spaceBetween={25}
+          slidesPerView={1}
+          spaceBetween={100}
           loop={true}
           autoplay={{
             delay: 2000,
             disableOnInteraction: false,
           }}
           modules={[Autoplay, Navigation]}
-          breakpoints={{
-            1024: {
-              slidesPerView: 4,
-            },
-          }}
           navigation={{
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
           }}
-          className="max-h-[30rem] "
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              // spaceBetween: 100,
+            },
+            768: {
+              slidesPerView: 3,
+              // spaceBetween: 100,
+            },
+            1024: {
+              slidesPerView: 3,
+              // spaceBetween: 100,
+            },
+          }}
         >
           {Courses?.map((course, index) => (
-            <SwiperSlide key={index}>
-              <CourseCard  course={course} Height={"h-[250px]"} />
+            <SwiperSlide
+              key={index}
+            >
+              <div className="h-full  flex items-center justify-center">
+                <CourseCard course={course} Height={"h-[250px]"} />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -45,7 +55,7 @@ const CourseSlider = ({ Courses, nextPrevBtn = false }) => {
       )}
 
       {nextPrevBtn && (
-        <div className="flex justify-center mt-2 items-center gap-10">
+        <div className="flex justify-center  mt-2 items-center gap-10">
           <button className="text-white  swiper-button-prev">
             <GrFormPrevious className="text-[3rem]" />
           </button>

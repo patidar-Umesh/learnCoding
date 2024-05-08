@@ -52,12 +52,12 @@ const StudentCoursePage = () => {
 
   return (
     <>
-      <div className="w-[100%]  bg-[orange]  justify-between flex ">
+      <div className="w-[100%]  bg-[gray] relative justify-between flex ">
         {/* sidebar  */}
 
        <div
-          className={`text-white bg-[gray] w-[25%] z-30  h-[100vh] absolute  ${
-            active ? "-left-[260px]" : "  left-[0]"
+          className={`text-white bg-[gray] z-30  h-[100vh]  relative ${
+            active ? "-left-[260px] w-[0] " : " w-[25%] left-[0]"
           } transition-all duration-300 ease-linear `}
         >
           <button type='button'
@@ -69,7 +69,7 @@ const StudentCoursePage = () => {
           <VideoDetailsSidebar setReviewModal={setReviewModal} />
         </div>
 
-        <div className={`${active && 'w-[100%]'} p-8 sm:w-[75%]  justify-center items-center  bg-[gray]`}>
+        <div className={`${active ? 'w-[100%]': 'w-[70%]'} p-8 sm:w-[75%]  justify-center items-center  bg-[gray]`}>
           <Outlet />
         </div>
        </div>

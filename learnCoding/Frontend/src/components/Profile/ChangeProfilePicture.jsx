@@ -86,7 +86,7 @@ export default function ChangeProfilePicture() {
                 onClick={handleClick}
                 disabled={loading}
                 btnText="Select"
-                className="bg-[white]"
+                className="!bg-[white]"
               />
 
               <Button

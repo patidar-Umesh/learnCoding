@@ -46,14 +46,14 @@ const CourseReviewModal = ({ setReviewModal }) => {
   return (
     <div className="fixed inset-0 z-[1000] !mt-0 flex justify-center items-center overflow-auto bg-white bg-opacity-10 backdrop-blur-sm">
         { setReviewModal &&
-      <div className="bg-[gray] p-4 rounded-lg">
+      <div className="bg-[gray] h-[220px] w-[200px] sm:h-auto sm:w-auto p-4 rounded-lg">
         {/* Modal Body */}
         <div className="text-white ">
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex text-[.6rem] sm:text-[1rem] flex-col items-center justify-center">
             <img
             alt=""
               src={user?.image}
-              className="aspect-square  w-[50px] rounded-full object-cover"
+              className="aspect-square w-[25px] sm:w-[50px] rounded-full object-cover"
             />
             <div>
               <p>
@@ -65,7 +65,7 @@ const CourseReviewModal = ({ setReviewModal }) => {
 
           <form
             // onSubmit={handleSubmit(ratingAndReviewHandler)}
-            className="mt-6 flex flex-col items-center"
+            className="sm:mt-6 mt-1 sm:text-[1rem] text-[.6rem] flex flex-col items-center"
           >
             <ReactStars
               count={5}
@@ -81,14 +81,14 @@ const CourseReviewModal = ({ setReviewModal }) => {
                 id="courseExperience"
                 placeholder="Add Your Experience here"
                 {...register("courseExperience", { required: true })}
-                className={` rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 w-full  placeholder:text-richblack-400  `}
+                className={` rounded-lg bg-richblack-700 p-3 text-[.6rem] sm:text-[16px] leading-[10px] sm:leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 w-full  placeholder:text-richblack-400  `}
               />
               {errors.courseExperience && (
                 <span>Please add your experience</span>
               )}
             </div>
             {/* Cancel and Save button */}
-            <div className="flex justify-around w-full mb-3">
+            <div className="flex justify-around w-full mb-4">
               <Button onClick={ ()=>setReviewModal(false)} btnText="Cancel"  className='bg-yellow-200' />
               <Button btnText="save" type="submit" onClick={handleSubmit(ratingAndReviewHandler)} className='bg-yellow-200' />
             </div>
