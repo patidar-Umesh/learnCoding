@@ -124,30 +124,26 @@ const updateProfilePicture = async (req, res) => {
     const userId = req.user.id;
     // console.log('image file is',image);
 
-    if(!image){
+    if (!image) {
       return res.status(404).json({
         success: false,
-        message: 'Image is required before upload'
-      })
+        message: "Image is required before upload",
+      });
     }
 
-    // upload profile image on clodinary
-    const savedImg = await uploadOnCloudinary(
-      image,
-      process.env.FOLDER_NAME,
-    );
+    // find id of user
+    const user = await User.findById({ _id: userId });
 
-    //  find and update 
-    const updatedProfile = await User.findByIdAndUpdate(
-      { _id: userId },
-      { image: savedImg.secure_url },
-      { new: true }
-    );
+    // upload profile image on clodinary
+    // const savedImg = await uploadOnCloudinary(image, process.env.FOLDER_NAME);
+
+    //  update in user details
+    console.log('image is', user.image)
 
     return res.send({
       success: true,
       message: `Image Updated successfully`,
-      data: updatedProfile,
+      data: user,
     });
   } catch (error) {
     return res.status(500).json({
@@ -178,13 +174,13 @@ const getEnrolledCourses = async (req, res) => {
       })
       .exec();
 
-      // validate
-      if (!userDetails) {
-        return res.status(400).json({
-          success: false,
-          message: `Could not find user with id: ${userDetails._id}`,
-        });
-      }
+    // validate
+    if (!userDetails) {
+      return res.status(400).json({
+        success: false,
+        message: `Could not find user with id: ${userDetails._id}`,
+      });
+    }
 
     userDetails = userDetails.toObject();
     var subSectionLength = 0;
@@ -196,41 +192,45 @@ const getEnrolledCourses = async (req, res) => {
 
       // after checking course we check the courseCotent
       for (let j = 0; j < userDetails?.courses[i]?.courseContent?.length; j++) {
-        subSectionLength +=  userDetails?.courses[i]?.courseContent[j]?.subSection?.length
-      // console.log('total subsection', subSectionLength);
+        subSectionLength +=
+          userDetails?.courses[i]?.courseContent[j]?.subSection?.length;
+        // console.log('total subsection', subSectionLength);
 
         courseTotalDurationInSeconds += userDetails?.courses[i]?.courseContent[
           j
         ]?.subSection?.reduce(
-          (preValue, currValue) => preValue + parseInt(currValue.timeDuration), 0
-        )
-      // console.log("duration in seconds", courseTotalDurationInSeconds);
+          (preValue, currValue) => preValue + parseInt(currValue.timeDuration),
+          0
+        );
+        // console.log("duration in seconds", courseTotalDurationInSeconds);
 
         // save totalDuration in proper time formate
-        userDetails.courses[i].totalDuration = convertSecondsToDuration(courseTotalDurationInSeconds)
+        userDetails.courses[i].totalDuration = convertSecondsToDuration(
+          courseTotalDurationInSeconds
+        );
       }
 
       // check course progress
       const courseProgress = await CourseProgress.findOne({
         courseId: userDetails?.courses[i]?._id,
-        userId: userDetails?._id
-      })
+        userId: userDetails?._id,
+      });
 
-       let totalCompletedVideos = courseProgress?.completedVideos?.length
+      let totalCompletedVideos = courseProgress?.completedVideos?.length;
       //  console.log('Total completed Videos', totalCompletedVideos);
 
-       if(subSectionLength === 0){
-        console.log('total subsection', subSectionLength);
-        userDetails.courses[i].progressPercentage = 100
-       }
-       else{
-        const percentage = Math.round(totalCompletedVideos / subSectionLength *100)
-        console.log('percentage', percentage);
-        userDetails.courses[i].progressPercentage = percentage
-       }
-
+      if (subSectionLength === 0) {
+        console.log("total subsection", subSectionLength);
+        userDetails.courses[i].progressPercentage = 100;
+      } else {
+        const percentage = Math.round(
+          (totalCompletedVideos / subSectionLength) * 100
+        );
+        console.log("percentage", percentage);
+        userDetails.courses[i].progressPercentage = percentage;
+      }
     }
-    
+
     return res.status(200).json({
       success: true,
       data: userDetails.courses,
@@ -243,33 +243,31 @@ const getEnrolledCourses = async (req, res) => {
   }
 };
 
-const instructorDashboard = async(req, res) => {
-	try{
-		const courseDetails = await Course.find({instructor:req.user.id});
+const instructorDashboard = async (req, res) => {
+  try {
+    const courseDetails = await Course.find({ instructor: req.user.id });
 
-		const courseData  = courseDetails.map((course)=> {
-			const totalStudentsEnrolled = course.studentsEnrolled.length
-			const totalAmountGenerated = totalStudentsEnrolled * course.price
+    const courseData = courseDetails.map((course) => {
+      const totalStudentsEnrolled = course.studentsEnrolled.length;
+      const totalAmountGenerated = totalStudentsEnrolled * course.price;
 
-			//create an new object with the additional fields
-			const courseDataWithStats = {
-				_id: course._id,
-				courseName: course.courseName,
-				courseDescription: course.courseDescription,
-				totalStudentsEnrolled,
-				totalAmountGenerated,
-			}
-			return courseDataWithStats
-		})
+      //create an new object with the additional fields
+      const courseDataWithStats = {
+        _id: course._id,
+        courseName: course.courseName,
+        courseDescription: course.courseDescription,
+        totalStudentsEnrolled,
+        totalAmountGenerated,
+      };
+      return courseDataWithStats;
+    });
 
-		res.status(200).json({courses:courseData});
-
-	}
-	catch(error) {
-		console.error(error);
-		res.status(500).json({message:"Internal Server Error"});
-	}
-}
+    res.status(200).json({ courses: courseData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
 export {
   updateProfile,
@@ -277,5 +275,5 @@ export {
   deleteAccount,
   getUserAllDetails,
   getEnrolledCourses,
-  instructorDashboard
+  instructorDashboard,
 };
