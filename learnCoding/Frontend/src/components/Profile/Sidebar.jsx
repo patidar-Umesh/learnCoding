@@ -65,7 +65,7 @@ export default function Sidebar() {
             }
             className="px-8 py-2 text-sm sm:block hidden font-medium text-richblack-300"
           >
-            <div className="flex  items-center gap-x-2">
+            <div className="flex  items-center text-[1rem] gap-x-2">
               <VscSignOut className="text-lg" />
               <span>Logout</span>
             </div>

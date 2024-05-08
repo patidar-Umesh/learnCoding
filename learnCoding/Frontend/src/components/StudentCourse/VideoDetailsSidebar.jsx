@@ -57,19 +57,17 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
         <div className="">
           <div className="sm:mt-[0] mt-[45px]">
             {/* buttons */}
-            <div className="sm:ml-4 ml-[2px] mt-4 justify-aroud space-y-2 sm:justify-between items-center flex-col sm:flex">
+            <div className="sm:ml-4 ml-[2px] mt-4 justify-aroud space-y-2 sm:justify-between items-center flex-col sm:flex lg:flex-row ">
               <Button
                 onClick={() => navigate("/dashboard/enrolled-courses")}
                 btnText="Back"
-                className="bg-yellow-50 text-[8px]  px-[6px]" 
+                className="bg-yellow-50 sm:text-[.9rem] text-[8px] px-[6px]" 
               />
-              <div>
                 <Button
                   btnText="Add Review"
-                  className="bg-yellow-50 text-[8px]  px-[6px]"
+                  className="bg-yellow-50 text-[8px] sm:text-[.9rem] px-[6px]"
                   onClick={() => handleAddReview()}
                 />
-              </div>
             </div>
             {/* heading or title */}
             <div className="sm:m-4 m-2 text-[.4rem] sm:text-[1rem]">
@@ -108,7 +106,7 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
                   <div className=" select-none">
                     {section?.subSection?.map((subSec, subIndex) => (
                       <div
-                        className={`flex sm:gap-x-5 gap-x-2 gap-y-1 text-[.5rem] sm:text-[1.1rem] sm:p-5 my-1  ${
+                        className={`flex sm:gap-x-5 gap-x-2 gap-y-1 text-[.5rem] sm:text-[1.1rem] sm:py-2 my-1  ${
                           videoBarActive === subSec._id
                             ? "bg-yellow-200 text-richblack-900"
                             : "bg-pure-greys-600 text-white"
@@ -123,7 +121,7 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
                       >
                         <input
                           type="checkbox"
-                          className="text-[.5rem] sm:text-[1rem]"
+                          className=" ml-2 sm:h-[30px] sm:w-[30px]"
                           checked={completedLectures?.includes(subSec?._id)}
                           onChange={() => {}}
                         />

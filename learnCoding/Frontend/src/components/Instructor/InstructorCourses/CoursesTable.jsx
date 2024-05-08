@@ -41,17 +41,17 @@ export default function CoursesTable({ courses, setCourses }) {
     <>
       <table className="rounded-xl border border-richblack-800 ">
         <thead>
-          <tr className="flex gap-x-10 rounded-t-md border-b border-b-richblack-800 px-6 py-2">
-            <th className="flex-1 text-left text-sm font-medium uppercase text-richblack-100">
+          <tr className="flex gap-x-2 sm:gap-x-10 rounded-t-md border-b border-b-richblack-800 px-6 py-2">
+            <th className="flex-1 text-left text-[.6rem] sm:text-sm font-medium uppercase text-richblack-100">
               Courses
             </th>
-            <th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <th className="text-left text-[.6rem] sm:text-smfont-medium uppercase text-richblack-100">
               Duration
             </th>
-            <th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <th className="text-left text-[.6rem] sm:text-sm font-medium uppercase text-richblack-100">
               Price
             </th>
-            <th className="text-left text-sm font-medium uppercase text-richblack-100">
+            <th className="text-left text-[.6rem] sm:text-sm font-medium uppercase text-richblack-100">
               Actions
             </th>
           </tr>
@@ -68,15 +68,15 @@ export default function CoursesTable({ courses, setCourses }) {
             courses?.map((course) => (
               <tr
                 key={course._id}
-                className="flex gap-x-10 border-b border-richblack-800 px-6 py-8"
+                className="flex gap-x-2 sm:gap-x-10 border-b border-richblack-800  px-6 py-8"
               >
-                <td className="flex flex-1 gap-x-4">
+                <td className="flex flex-1 gap-1 sm:gap-x-4">
                   <img
                     src={course?.image}
                     alt={course?.courseName}
-                    className="h-[148px] w-[220px] rounded-lg object-cover"
+                    className="sm:h-[148px] h-[100px] w-[100px] sm:w-[220px] rounded-lg object-cover"
                   />
-                  <div className="flex flex-col justify-between">
+                  <div className="flex ml-2 flex-col justify-between">
                     <p className="text-lg font-semibold text-richblack-5">
                       {course.courseName}
                     </p>
@@ -93,8 +93,8 @@ export default function CoursesTable({ courses, setCourses }) {
                       Created: {formatDate(course.createdAt)}
                     </p>
                     {course.status === COURSE_STATUS.DRAFT ? (
-                      <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-pink-100">
-                        <HiClock size={14} />
+                      <p className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[20px] font-medium text-pink-100">
+                        <HiClock size={14}  />
                         Drafted
                       </p>
                     ) : (
@@ -127,6 +127,7 @@ export default function CoursesTable({ courses, setCourses }) {
                   </button>
 
                   <button
+                  
                     disabled={loading}
                     onClick={() => {
                       setConfirmationModal({
@@ -144,7 +145,7 @@ export default function CoursesTable({ courses, setCourses }) {
                       })
                     }}
                     title="Delete"
-                    className="px-1 transition-all duration-200 hover:scale-110 hover:text-[#ff0000]"
+                    className="px-1  transition-all duration-200 hover:scale-110 hover:text-[#ff0000]"
                   >
                     <RiDeleteBin6Line size={20} />
                   </button>

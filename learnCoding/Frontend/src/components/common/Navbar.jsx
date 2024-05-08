@@ -122,14 +122,14 @@ const Navbar = () => {
               <>
                 {/* Login button */}
                 <Button
-                  className="border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md"
+                  className="border border-richblack-700 !bg-richblack-800 !px-[12px] !py-[8px] text-richblack-100 rounded-md"
                   btnText="Log in"
                   onClick={() => navigate("/login")}
                 />
 
                 {/* signup button */}
                 <Button
-                  className="border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md"
+                  className="border border-richblack-700 !bg-richblack-800 !px-[12px] !py-[8px] text-richblack-100 rounded-md"
                   btnText="Sign Up"
                   onClick={() => navigate("/signup")}
                 />

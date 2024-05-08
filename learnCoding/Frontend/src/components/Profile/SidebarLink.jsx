@@ -31,7 +31,7 @@ export default function SidebarLink({ link, iconName }) {
         }`}
       ></span>
       
-      <div className="flex text-[.6rem]  items-center  gap-x-2">
+      <div className="flex text-[.8rem] sm:text-[1rem] items-center  gap-x-2">
         <Icon className="text-lg hidden sm:block" />
         <span>{link.name}</span>
       </div>
