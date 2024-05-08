@@ -7,8 +7,6 @@ import Button from "../common/Button.jsx";
 const VideoDetailsSidebar = ({ setReviewModal }) => {
   const [activeStatus, setActiveStatus] = useState("");
   const [videoBarActive, setVideoBarActive] = useState("");
-  // const [active, setActive] = useState(true);
-
   const navigate = useNavigate();
   const location = useLocation();
   const { sectionId, subSectionId } = useParams();
@@ -47,93 +45,96 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
   // add review handler
   const handleAddReview = () => {
     setReviewModal(true);
-    console.log("handleAddReview",);
+    console.log("handleAddReview");
   };
-
- 
 
   const openClosehanlder = (sectionId) => {
     setActiveStatus((prev) => (prev === sectionId ? null : sectionId));
   };
   return (
     <>
-      <div className="text-white">
-        <div>
-          {/* buttons */}
-          <div className="ml-4 mt-4 justify-between items-center flex">
-            <Button
-              onClick={() => navigate('/dashboard/enrolled-courses')}
-              btnText="Back"
-              className="bg-yellow-50"
-            />
-            <div>
+      <div className="relative">
+        <div className="">
+          <div className="sm:mt-[0] mt-[45px]">
+            {/* buttons */}
+            <div className="sm:ml-4 ml-[2px] mt-4 justify-aroud space-y-2 sm:justify-between items-center flex-col sm:flex">
               <Button
-                btnText="Add Review"
-                className="bg-yellow-50"
-                onClick={()=>handleAddReview()}
+                onClick={() => navigate("/dashboard/enrolled-courses")}
+                btnText="Back"
+                className="bg-yellow-50 text-[.5rem]"
               />
+              <div>
+                <Button
+                  btnText="Add Review"
+                  className="bg-yellow-50  px-1 flex text-[.5rem]"
+                  onClick={() => handleAddReview()}
+                />
+              </div>
+            </div>
+            {/* heading or title */}
+            <div className="sm:m-4 m-2 text-[.4rem] sm:text-[1rem]">
+              <p>
+                <span className="text-[#d4b325]">Course Name : </span>
+                {courseEntireData?.courseDetails?.courseTitle}
+              </p>
+              <p>
+                <span className="text-[#d4b325]">Total Videos :</span>{" "}
+                {completedLectures?.length} / {totalNoOfLectures}
+              </p>
             </div>
           </div>
-          {/* heading or title */}
-          <div className="m-4">
-            <p>
-              <span className="text-[#d4b325]">Course Name : </span>
-              {courseEntireData?.courseDetails?.courseTitle}
-            </p>
-            <p>
-              <span className="text-[#d4b325]">Total Videos :</span>{" "}
-              {completedLectures?.length} / {totalNoOfLectures}
-            </p>
-          </div>
-        </div>
 
-        {/*  sections and subSections */}
-        <div className="ml-2 select-none ">
-          {courseSectionData?.map((section, index) => (
-            <div className="my-1" key={index}>
-              {/* section */}
-              <div
-                className="bg-[gray] text-[]  px-1 py-2 items-center gap-y-4 flex justify-between cursor-pointer"
-                onClick={() => openClosehanlder(section?._id)}
-              >
-                <div>{section?.sectionName}</div>
-                {activeStatus === section?._id ? (
-                  <FaChevronUp  />
-                ) : (
-                  <FaChevronDown  />
+          {/*  sections and subSections */}
+          <div className="sm:ml-2 mx-auto px-1 select-none ">
+            {courseSectionData?.map((section, index) => (
+              <div className="my-1  transition-all duration-300" key={index}>
+                {/* section */}
+                <div
+                  className="bg-[#5c5b5b] text-[] py-1 px-1 sm:py-2 sm:text-[1.5rem] items-center  sm:gap-y-4 flex justify-between cursor-pointer"
+                  onClick={() => openClosehanlder(section?._id)}
+                >
+                  <div className="sm:text-[1rem] text-[.4rem]">
+                    {section?.sectionName}
+                  </div>
+                  {activeStatus === section?._id ? (
+                    <FaChevronUp className="text-[.3rem] sm:text-[1rem]" />
+                  ) : (
+                    <FaChevronDown className="text-[.3rem] sm:text-[1rem]" />
+                  )}
+                </div>
+
+                {/* subSections */}
+                {activeStatus === section?._id && (
+                  <div className=" select-none">
+                    {section?.subSection?.map((subSec, subIndex) => (
+                      <div
+                        className={`flex sm:gap-x-5 gap-x-2 gap-y-1 text-[.5rem] sm:text-[1.1rem] sm:p-5 my-1  ${
+                          videoBarActive === subSec._id
+                            ? "bg-yellow-200 text-richblack-900"
+                            : "bg-pure-greys-600 text-white"
+                        }`}
+                        key={subIndex}
+                        onClick={() => {
+                          navigate(
+                            `/view-course/${courseEntireData?.courseDetails?._id}/section/${section?._id}/sub-section/${subSec?._id}`
+                          );
+                          setVideoBarActive(subSec?._id);
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          className="text-[.5rem] sm:text-[1rem]"
+                          checked={completedLectures?.includes(subSec?._id)}
+                          onChange={() => {}}
+                        />
+                        <span>{subSec.title}</span>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
-
-              {/* subSections */}
-              {activeStatus === section?._id && (
-                <div className=" select-none transition-transform duration-200 ease-in-out">
-                  {section?.subSection?.map((subSec, subIndex) => (
-                    <div
-                      className={`flex gap-x-5 gap-y-1 p-5 my-1  ${
-                        videoBarActive === subSec._id
-                          ? "bg-yellow-200 text-richblack-900"
-                          : "bg-pure-greys-600 text-white"
-                      }`}
-                      key={subIndex}
-                      onClick={() => {
-                        navigate(
-                          `/view-course/${courseEntireData?.courseDetails?._id}/section/${section?._id}/sub-section/${subSec?._id}`
-                        );
-                        setVideoBarActive(subSec?._id);
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={completedLectures?.includes(subSec?._id)}
-                        onChange={() => {}}
-                      />
-                      <span>{subSec.title}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </>

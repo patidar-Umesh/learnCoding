@@ -3,9 +3,8 @@ import { AiOutlineCaretDown } from "react-icons/ai";
 import { VscDashboard, VscSignOut } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
-import useOnClickOutside from "../../utils/useOnClickOutside";
-import { logout } from "../../apiServices/apiHandler/authAPI";
+import useOnClickOutside from "../../utils/useOnClickOutside.js";
+import { logout } from "../../apiServices/apiHandler/authAPI.js";
 
 export default function UserProfileDropdown() {
   const { user } = useSelector((state) => state.profile);

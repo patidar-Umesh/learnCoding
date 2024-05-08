@@ -119,7 +119,7 @@ const CourseDetailsPage = () => {
     // _id: courseId,
     courseName,
     courseDescription,
-    thumbnail,
+    image,
     whatYouWillLearn,
     courseContent,
     ratingAndReview,
@@ -128,6 +128,7 @@ const CourseDetailsPage = () => {
     createdAt,
   } = response.data?.courseDetails;
 
+  console.log('image', image);
   return (
     <>
       <div className={`relative w-full bg-richblack-800`}>
@@ -137,7 +138,7 @@ const CourseDetailsPage = () => {
             <div className="relative block max-h-[30rem] lg:hidden">
               <div className="absolute bottom-0 left-0 h-full w-full shadow-[#161D29_0px_-64px_36px_-28px_inset]"></div>
               <img
-                src={thumbnail}
+                src={image}
                 alt="course thumbnail"
                 className="aspect-auto w-full"
               />

@@ -66,10 +66,10 @@ export default function ChangeProfilePicture() {
           <img
             src={previewSource || user?.image}
             alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[78px] rounded-full object-cover"
+            className="aspect-square w-[60px] sm:w-[78px] rounded-full object-cover"
           />
 
-          <div className="space-y-2">
+          <div className="space-y-2 sm:space-y-1">
             <p>Change Profile Picture</p>
 
             <div className="flex flex-row gap-3">
@@ -86,13 +86,13 @@ export default function ChangeProfilePicture() {
                 onClick={handleClick}
                 disabled={loading}
                 btnText="Select"
-                className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
+                className="bg-[white]"
               />
 
               <Button
                 type="submit"
                 btnText={loading ? "Uploading..." : "Upload"}
-                className="flex gap-x-2 bg-yellow-50 items-center justify-center"
+                className="flex gap-x-2 bg-yellow-50 !py-2 !px-3 items-center justify-center"
                 onClick={handleFileUpload}
                 children={
                   !loading && (

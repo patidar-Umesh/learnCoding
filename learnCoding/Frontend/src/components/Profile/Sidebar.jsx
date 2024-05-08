@@ -27,26 +27,32 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="flex h-[80px] sm:h-[calc(100vh-3.5rem)] sm:order-[0] order-2 min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 sm:bg-richblack-800 py-10">
+      <div className="flex h-[80px] sm:h-[calc(100vh-3.5rem)] sm:order-[0] order-2 w-full min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 sm:bg-richblack-800 py-10">
 
-        <div className="flex flex-row sm:flex-col">
+        <div className="flex flex-row justify-center items-center sm:flex-col">
           {sidebarLinks.map((link) => {
             if (link.type && user?.accountType !== link.type) return null
             return (
               <SidebarLink key={link.id} link={link} iconName={link.icon} />
             )
           })}
+          <div className="block sm:hidden">
+          <SidebarLink 
+            link={{ name: "Settings", path: "/dashboard/settings" }}
+            iconName="VscSettingsGear"
+          />
+          </div>
         </div>
 
         <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
 
-        <div className="sm:flex hidden  sm:flex-col">
-          <SidebarLink
+        <div className="sm:flex hidden   sm:flex-col">
+          <SidebarLink 
             link={{ name: "Settings", path: "/dashboard/settings" }}
             iconName="VscSettingsGear"
           />
 
-          <button
+         <button
             onClick={() =>
               setConfirmationModal({
                 text1: "Are you sure?",
@@ -57,15 +63,15 @@ export default function Sidebar() {
                 btn2Handler: () => setConfirmationModal(null),
               })
             }
-            className="px-8 py-2 text-sm font-medium text-richblack-300"
+            className="px-8 py-2 text-sm sm:block hidden font-medium text-richblack-300"
           >
-            <div className="flex items-center gap-x-2">
+            <div className="flex  items-center gap-x-2">
               <VscSignOut className="text-lg" />
               <span>Logout</span>
             </div>
           </button>
+         </div>
 
-        </div>
       </div>
       {confirmationModal && <ConfirmationModal modalData={confirmationModal} />}
     </>

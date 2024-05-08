@@ -1,4 +1,4 @@
-import React, { useEffect,  useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { markLectureAsComplete } from "../../apiServices/apiHandler/courseDetailsAPI.js";
@@ -10,6 +10,7 @@ import {
   ForwardControl,
   ReplayControl,
   BigPlayButton,
+  PlaybackRateMenuButton,
 } from "video-react";
 import "video-react/dist/video-react.css";
 import Button from "../common/Button.jsx";
@@ -39,7 +40,7 @@ const VideoDetails = () => {
           (section) => section._id === sectionId
         );
 
-        console.log("section data", sectionData);
+        // console.log("section data", sectionData);
 
         // get subsection first video
         const subSectionVideo = sectionData?.[0].subSection?.filter(
@@ -53,8 +54,15 @@ const VideoDetails = () => {
     videoDetails();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-
-  }, [courseSectionData, courseEntireData, location.pathname, courseId, navigate, sectionId, subSectionId]);
+  }, [
+    courseSectionData,
+    courseEntireData,
+    location.pathname,
+    courseId,
+    navigate,
+    sectionId,
+    subSectionId,
+  ]);
 
   // first video check handler
   const isFirstVideo = () => {
@@ -253,20 +261,21 @@ const VideoDetails = () => {
           src={videoData?.videoUrl}
         >
           {/* play btn  */}
-          <BigPlayButton position="center" />
+            <BigPlayButton position="center" />
 
           {/* loading spinner */}
           <LoadingSpinner />
 
           {/* forward bakcword  */}
-          <ControlBar autoHide={false}>
-            <ReplayControl seconds={5} />
+          <ControlBar  autoHide={false}>
+            <ReplayControl  seconds={5} />
             <ForwardControl seconds={5} />
+            <PlaybackRateMenuButton rates={[0.5, 1, 1.5, 2]} order={7.1} />
           </ControlBar>
         </Player>
       )}
 
-      <div>
+      <div className="sm:text-[1rem] text-[.5rem]">
         <h1>{videoData?.title}</h1>
         <p>{videoData?.description}</p>
       </div>

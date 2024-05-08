@@ -87,7 +87,7 @@ function LoginForm() {
       </div>
 
       <div className="w-[100%]">
-        <Button type="submit"  onClick={handleOnSubmit} className='w-full bg-yellow-50 text-[1rem]'  btnText="Sign In" />
+        <Button type="submit"  onClick={handleOnSubmit} className='w-full py-[10px] bg-yellow-50 text-[1rem]'  btnText="Sign In" />
       </div>
     </form>
   );

@@ -45,6 +45,7 @@ const cartSlice = createSlice({
       const courseId = action.payload
       const index = state.cart.findIndex((item) => item._id === courseId)
 
+        console.log('index of ', index);
       if (index >= 0) {
         state.totalItems--
         state.total -= state.cart[index].price

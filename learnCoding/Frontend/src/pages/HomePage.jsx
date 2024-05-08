@@ -32,12 +32,11 @@ const HomePage = () => {
           throw new Error("Could Not Fetch Course Categories");
         }
         setCourse(response?.data?.data);
-        console.log("courses ", response?.data?.data);
+        // console.log("courses ", response?.data?.data);
       } catch (error) {
         console.log("Get Course api error", error);
         toast.error(error.message);
       }
-      // toast.dismiss(toastId);
     };
 
     getall();
@@ -78,17 +77,20 @@ const HomePage = () => {
         </div>
 
         <div className="flex flex-row gap-7 mt-8">
+          <Link to='/signup' >
           <Button
             className="bg-yellow-50 text-black"
-            linkto={"/signup"}
             btnText="Learn More"
-          />
+            />
+          </Link>
+          <Link to='/login' >
 
           <Button
             className="bg-richblack-200 text-black"
-            linkto={"/login"}
             btnText=" Book a Demo"
           />
+          </Link>
+
         </div>
 
         <div className="mx-3 my-12 shadow-blue-200">

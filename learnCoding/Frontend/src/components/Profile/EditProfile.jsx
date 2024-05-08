@@ -161,13 +161,13 @@ export default function EditProfile() {
 
         <div className="flex justify-end gap-2">
           <Link to="/dashboard/my-profile">
-            <Button btnText="Cancel" className='px-2 py-2' />
+            <Button btnText="Cancel" className='bg-[gray]' />
           </Link>
           <Link to='/dashboard/my-profile"'>
             <Button
               btnText="Save"
               type="submit"
-              className="bg-yellow-50 px-2 py-2" 
+              className="bg-yellow-50 " 
               onClick={handleSubmit(submitProfileForm)}
             />
           </Link>

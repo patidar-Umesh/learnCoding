@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Input from "../../components/common/Input";
 import { changePassword } from "../../apiServices/apiHandler/SettingsAPI";
 import Button from "../common/Button";
@@ -31,8 +31,7 @@ export default function UpdatePassword() {
     }
 
     try {
-       await changePassword(formData, token);
-      
+      await changePassword(formData, token);
     } catch (error) {
       console.log("Password not changed", error.message);
     }
@@ -91,17 +90,19 @@ export default function UpdatePassword() {
           </div>
         </div>
         <div className="flex justify-end gap-2">
-          <Button
-            btnText="Cancel"
-            type="button"
-            onClick={() => navigate("/dashboard/my-profile")}
-          />
+          <Link to="/dashboard/my-profile">
+            <Button
+              btnText="Cancel"
+              type="button"
+              className="bg-[gray]"
+            />
+          </Link>
 
           <Button
             onClick={changePasswordHandler}
             type="submit"
             btnText="Update"
-            className="bg-yellow-50"
+            className="bg-yellow-50 "
           />
         </div>
       </form>

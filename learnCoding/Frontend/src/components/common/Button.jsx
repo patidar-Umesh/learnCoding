@@ -14,8 +14,9 @@ const Button = ({
         onClick={onClick}
         type={type}
         disabled={disabled}
-        className={` text-center text-[16px]  flex justify-center items-center bg-richblack-200 rounded-md font-bold
-        hover:scale-95 transition-all text-black duration-200 ${className}
+        className={` text-center text-[14px] sm:text-[18px] sm:px-6 sm:py-4 flex justify-center items-center 
+        sm:bg-richblack-200 rounded-md font-bold py-1 px-3  gap-x-1
+        hover:scale-95 cursor-pointer transition-all text-black duration-200 ${className}
         `}
         {...props}
       >

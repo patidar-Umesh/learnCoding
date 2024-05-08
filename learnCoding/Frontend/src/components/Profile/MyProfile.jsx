@@ -37,7 +37,7 @@ useEffect(()=>{
         </div>
         <Button
           btnText="Edit"
-          className='py-1 px-2 bg-yellow-50 gap-x-1 '
+          className=' bg-yellow-50 '
           onClick={() => {
             navigate("/dashboard/settings")
           }}
@@ -52,7 +52,7 @@ useEffect(()=>{
           <p className="text-lg font-semibold text-richblack-5">About</p>
           <Button
             btnText="Edit"
-            className='py-1 px-2 bg-yellow-50 gap-x-1 '
+            className='bg-yellow-50'
             onClick={() => {
               navigate("/dashboard/settings")
             }}
@@ -79,7 +79,7 @@ useEffect(()=>{
           </p>
           <Button
             btnText="Edit"
-            className='py-1 px-2 bg-yellow-50 gap-x-1 '
+            className='bg-yellow-50'
             onClick={() => {
               navigate("/dashboard/settings")
             }}

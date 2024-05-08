@@ -16,13 +16,13 @@ const CourseCard = ({ course }) => {
     <>
       <Link to={`/courses/${course._id}`}>
         <div
-          className="w-[250px]  border-2 rounded-lg border-[#e5de7e]"
+          className="w-[250px]   rounded-lg "
         >
           <div className="rounded-lg ">
             <img
               src={course?.image}
               alt="course thumbnail"
-              className={` w-full h-[250px] m-0 rounded-xl object-contain `}
+              className={` w-full h-[250px] m-0 rounded-xl object-cover `}
             />
           </div>
 

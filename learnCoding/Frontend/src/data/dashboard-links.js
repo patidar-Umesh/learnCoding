@@ -40,11 +40,11 @@ export const sidebarLinks = [
     path: "/dashboard/purchase-history",
     type: ACCOUNT_TYPE.STUDENT,
     icon: "VscHistory",
-  },
-  {
-    id: 1,
-    name: "Setting",
-    path: "/dashboard/settings",
-    icon: "VscSettingsGear",
-  },
+  }
+  // {
+  //   id: 7,
+  //   name: "Setting",
+  //   path: "/dashboard/settings",
+  //   icon: "VscSettingsGear",
+  // },
 ];

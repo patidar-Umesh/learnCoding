@@ -187,7 +187,7 @@ function SignupForm() {
             <Button
             onClick={handleOnSubmit}
               type="submit"
-              className="w-full text-[1rem] bg-yellow-50"
+              className="w-full text-[1rem] py-[12px] bg-yellow-50"
               btnText="Create Account"
               active="true"
             />
