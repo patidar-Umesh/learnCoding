@@ -14,6 +14,11 @@ import { getCourseDetails } from "../apiServices/apiHandler/courseDetailsAPI.js"
 import { buyCourse } from "../apiServices/apiHandler/studentFeaturesAPI.js";
 import GetAvgRating from "../utils/avgRating.js";
 import ErrorPage from "./ErrorPage.jsx";
+import Button from "../components/common/Button.jsx";
+import { ACCOUNT_TYPE } from "../utils/constants.js";
+import {toast} from 'react-hot-toast'
+import { addToCart } from "../store/slices/cartSlice.js";
+
 
 const CourseDetailsPage = () => {
   const { user } = useSelector((state) => state.profile);
@@ -27,7 +32,7 @@ const CourseDetailsPage = () => {
   const { courseId } = useParams();
   const [response, setResponse] = useState(null);
   const [confirmationModal, setConfirmationModal] = useState(null);
-
+console.log('course', response?.data?.courseDetails);
   const fetchCourse = async () => {
     // console.log("course details response: ");
     try {
@@ -116,7 +121,6 @@ const CourseDetailsPage = () => {
   }
 
   const {
-    // _id: courseId,
     courseName,
     courseDescription,
     image,
@@ -128,20 +132,61 @@ const CourseDetailsPage = () => {
     createdAt,
   } = response.data?.courseDetails;
 
-  console.log('image', image);
+// add to cart handler
+const handleAddToCart = () => {
+  if (user && user?.accountType === ACCOUNT_TYPE.INSTRUCTOR) {
+    toast.error("You are an Instructor. You can't buy a course.");
+    return;
+  }
+
+  if (token) {
+    dispatch(addToCart( response?.data?.courseDetails));
+    return;
+  }
+  setConfirmationModal({
+    text1: "You are not logged in!",
+    text2: "Please login to add To Cart",
+    btn1Text: "Login",
+    btn2Text: "Cancel",
+    btn1Handler: () => navigate("/login"),
+    btn2Handler: () => setConfirmationModal(null),
+  });
+};
+  
+  
   return (
     <>
       <div className={`relative w-full bg-richblack-800`}>
         {/* Hero Section */}
         <div className="mx-auto box-content px-4 lg:w-[1260px] 2xl:relative ">
           <div className="mx-auto grid min-h-[450px] max-w-maxContentTab justify-items-center py-8 lg:mx-0 lg:justify-items-start lg:py-0 xl:max-w-[810px]">
-            <div className="relative block max-h-[30rem] lg:hidden">
-              <div className="absolute bottom-0 left-0 h-full w-full shadow-[#161D29_0px_-64px_36px_-28px_inset]"></div>
+            <div className="relative flex-col space-y-4 flex justify-center items-center max-h-[30rem] lg:hidden">
+              
               <img
                 src={image}
+
                 alt="course thumbnail"
-                className="aspect-auto w-full"
+                className="aspect-auto h-[150px] w-[150px]"
               />
+              <div className="flex lg:hidden  justify-center items-center gap-4">
+            <Button
+              onClick={
+                user &&
+                studentsEnrolled?.includes(user?._id) ? navigate("/dashboard/enrolled-courses") :
+                handleBuyCourse
+              }
+              btnText={
+                user && studentsEnrolled?.includes(user?._id)
+                  ? "Go to Course"
+                  : "Buy Now"
+              }
+              className="bg-yellow-50"
+            />
+
+            {(!user || !studentsEnrolled.includes(user?._id)) && (
+            <Button onClick={handleAddToCart} className='!bg-[gray]' btnText="Add to Cart" />
+            )}
+          </div>
             </div>
             <div
               className={`z-30 my-5 flex flex-col justify-center gap-4 py-5 text-lg text-richblack-5`}

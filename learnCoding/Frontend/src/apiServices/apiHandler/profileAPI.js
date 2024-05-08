@@ -76,7 +76,7 @@ export async function getInstructorData(token) {
       Authorization: `Bearer ${token}`,
     })
 
-    console.log("get isntructor details is", response);
+    // console.log("get isntructor details is", response);
     result = response?.data?.courses
 
   }

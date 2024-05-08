@@ -19,7 +19,7 @@ const Instructor = () => {
       const instructorApiData = await getInstructorData(token);
       const result = await fetchInstructorCourses(token);
 
-      console.log("instructor Api Data", instructorApiData);
+      // console.log("instructor Api Data", instructorApiData);
 
       if (instructorApiData.length) setInstructorData(instructorApiData);
 
@@ -55,7 +55,7 @@ const Instructor = () => {
         </div>
       ) : courses.length > 0 ? (
         <div>
-          <div className=" h-[500px] ">
+          <div className=" h-[270px] bg-[] sm:h-[500px] ">
             <div className="flex h-[100%]  gap-x-4 justify-around items-center">
               {/* left section */}
               <div className="w-1/2 h-[100%]">
@@ -63,27 +63,27 @@ const Instructor = () => {
               </div>
 
               {/* right section */}
-              <div className=" bg-[#4c4949] h-[370px] mt-6 flex flex-col items-c justify-around p-10 gap-y-10 text-center  w-1/3">
+              <div className="  bg-richblack-700  h-[200px] sm:h-[370px] mt-6 flex flex-col items-c justify-around sm:p-10 p-1 sm:gap-y-10 text-center  w-1/3">
                 
-                <p className="font-bold text-[#e99550] text-left w-full">
+                <p className="font-bold text-richblack-100 text-left w-full">
                   Statistics
                 </p>
                 <div>
-                  <p className="font-bold text-left text-[#dbdb5d]">
+                  <p className="font-bold text-left text-richblack-300">
                     Total Courses{" "}
                     <span className="text-white ml-[100px]">
                       {courses.length}{" "}
                     </span>
                   </p>
 
-                  <p className="font-bold text-left text-[#dbdb5d]">
+                  <p className="font-bold text-left text-richblack-300">
                     Total Enrolled Students{" "}
                     <span className="text-white ml-[30px]">
                       {totalStudents}
                     </span>
                   </p>
 
-                  <p className="font-bold text-left text-[#dbdb5d]">
+                  <p className="font-bold text-left text-richblack-300">
                     Total Income{" "}
                     <span className="text-white ml-[80px]">{totalAmount}</span>
                   </p>
@@ -103,18 +103,18 @@ const Instructor = () => {
             </div>
             <div className="flex bg-[]">
               {courses.slice(0, 3).map((course) => (
-                <Link to={`/courses/${course?._id}`}>
-                <div className="w-[300px] h-[300px]">
+                <Link key={course._id} to={`/courses/${course?._id}`}>
+                <div  className="w-[150px] h-[150px] sm:w-[300px] sm:h-[300px]">
                   <img
                   alt="img"
-                    className="h-[200px] w-[200px] object-cover"
+                    className="sm:h-[200px] h-[100px] w-[100px] sm:w-[200px] object-cover"
                     src={course.image}
                   />
-                  <div>
+                  <div className="text-[.7rem]">
                     <p>{course.courseTitle}</p>
-                    <div className="flex gap-x-2">
+                    <div className="flex sm:flex-row flex-col sm:gap-x-2">
                       <p>{course.studentsEnrolled.length} Students Enrolled</p>
-                      <p> | </p>
+                      <p className="hidden sm:block"> | </p>
                       <p> Rs {course.price}</p>
                     </div>
                   </div>

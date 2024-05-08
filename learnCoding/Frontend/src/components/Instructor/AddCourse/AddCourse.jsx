@@ -4,7 +4,7 @@ export default function AddCourse() {
   return (
     <>
       <div className="flex w-[100%] gap-x-4 items-start justify-center ">
-        <div className="flex w-[70%]  flex-col">
+        <div className="flex sm:w-[70%]  w-[100%] flex-col">
           <h1 className="mb-14 text-3xl font-medium text-richblack-5">
             Add Course
           </h1>

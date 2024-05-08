@@ -19,7 +19,6 @@ const InstructorChart = ({courses}) => {
         return colors;
     }
 
-    //create data for chart displaying student info
 
     const chartDataForStudents = {
         labels: courses?.map((course)=> course.courseName),
@@ -32,7 +31,6 @@ const InstructorChart = ({courses}) => {
     }
 
 
-    //create data for chart displaying iincome info
     const chartDataForIncome = {
         labels:courses?.map((course)=> course.courseName),
         datasets: [
@@ -44,10 +42,6 @@ const InstructorChart = ({courses}) => {
     }
 
 
-    //create options
-    const options = {
-
-    };
 
 
   return (
@@ -57,20 +51,20 @@ const InstructorChart = ({courses}) => {
       <div className='flex  gap-x-5'>
         <button 
         onClick={() => setCurrChart("students")}
-         type="button" className="text-white bg-[#e99e18] focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+         type="button" className="text-[black] bg-yellow-25   focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
             Student
             </button>
-        <button className='class="text-white bg-[#e99e18] focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"'
+        <button className='text-[black] bg-yellow-25  focus:ring-4  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800'
         onClick={() => setCurrChart("income")}
         >
             Income
         </button>
       </div>
-    <div className='bg-[#4c4949]  p-10 flex justify-center items-center'>
-      <div className='h-[300px]  w-[300px]'>
+    <div className='bg-richblack-700  p-10 flex justify-center items-center'>
+      <div className='sm:h-[300px] h-[100px] w-[100px] sm:w-[300px]'>
         <Pie 
             data={currChart === "students" ? chartDataForStudents : chartDataForIncome}
-            options={options}
+            // options={options}
         />
       </div>
     </div>

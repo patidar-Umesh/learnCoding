@@ -59,9 +59,9 @@ const ContactForm = () => {
       {/* contact from */}
       <div className="mt-7">
         <form className="flex flex-col ">
-          <div className="flex flex-col bg-red-500 flex-wrap gap-5 lg:flex-row">
+          <div className="flex flex-wrap gap-x-2 gap-y-2 w-[100%]  ">
             {/* First name */}
-            <div className="flex flex-col gap-2 lg:w-[48%]">
+            <div className="flex  gap-2 w-[48%]">
               <Input
                 label="First Name"
                 type="text"
@@ -74,7 +74,7 @@ const ContactForm = () => {
             </div>
 
             {/* last name */}
-            <div className="flex flex-col gap-2 lg:w-[48%]">
+            <div className="flex flex-col gap-2 w-[48%]">
               <Input
                 label="Last Name"
                 type="text"
@@ -88,7 +88,7 @@ const ContactForm = () => {
             </div>
 
             {/* email  */}
-            <div className="flex flex-col gap-2 lg:w-[100%] ">
+            <div className="flex flex-col gap-2 w-[100%] ">
               <Input
                 label="Eamil Address"
                 type="email"
@@ -102,7 +102,7 @@ const ContactForm = () => {
             </div>
 
             {/* phone number */}
-            <div className="flex justify-center items-center gap-5 lg:w-[100%]">
+            <div className="flex justify-center items-center gap-5 w-[100%]">
               <div className="flex w-[81px] flex-col lg:w-[20%] gap-2">
                 <label className="font-[500] text-white text-[1rem] w-max">
                   Phone Nubmer
@@ -111,19 +111,19 @@ const ContactForm = () => {
                   type="text"
                   name="code"
                   id="code"
-                  className="rounded-lg  bg-richblack-700 lg:w-[75%] p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none"
+                  className="rounded-lg  bg-richblack-700 w-[75%] p-3 text-[16px] leading-[24px] text-richblack-5 shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none"
                   {...register("countrycode", { required: true })}
                 >
                   {CountryCode?.map((code, index) => {
                     return (
-                      <option key={index} defaultValue="+91" value={code.code}>
+                      <option key={index} selected={code.code === '+91'} value={code.code}>
                         {code.code} -{code.country}
                       </option>
                     );
                   })}
                 </select>
               </div>
-              <div className="flex w-[calc(100%-90px)] flex-col gap-2 lg:w-full">
+              <div className="flex w-[calc(100%-90px)] flex-col gap-2 sm:w-full">
                 <Input
                   type="number"
                   name="phonenumber"
@@ -146,7 +146,7 @@ const ContactForm = () => {
             </div>
 
             {/* text area */}
-            <div className="flex flex-col lg:w-full gap-2">
+            <div className="flex flex-col w-full gap-2">
               <label
                 htmlFor="message"
                 className="font-[500] text-white text-[1.2rem]"
@@ -156,7 +156,7 @@ const ContactForm = () => {
               <textarea
                 name="message"
                 id="message"
-                cols="30"
+                cols="20"
                 rows="7"
                 placeholder="Enter your message here"
                 className="rounded-lg bg-richblack-700 p-3 text-[16px] leading-[24px] text-white shadow-[0_1px_0_0] shadow-white/50 placeholder:text-richblack-400 focus:outline-none"
@@ -170,7 +170,7 @@ const ContactForm = () => {
             </div>
 
             {/* submit btn */}
-            <div className="w-full">
+            <div className="w-full mt-2">
               <Button
                 type="submit"
                 onClick={handleSubmit(submitContactForm)}

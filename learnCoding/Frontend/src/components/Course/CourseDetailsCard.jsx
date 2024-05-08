@@ -15,7 +15,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // console.log("image is", course);
+  console.log("course is", course);
 
   // copy link handler
   const handleShare = () => {
