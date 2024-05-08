@@ -1,7 +1,7 @@
 import { Course } from "../models/course.model.js";
 import { CourseProgress } from "../models/courseProgress.model.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Profile } from "../models/profile.model.js";
 import convertSecondsToDuration from "../utils/secToDuration.js";
 
@@ -134,11 +134,15 @@ const updateProfilePicture = async (req, res) => {
     // find id of user
     const user = await User.findById({ _id: userId });
 
+    // delete before upload image
+    const deletedImage = await deleteFromCloudinary(user?.image)
+    console.log('deleted image', deletedImage);
+
     // upload profile image on clodinary
     // const savedImg = await uploadOnCloudinary(image, process.env.FOLDER_NAME);
 
     //  update in user details
-    console.log('image is', user.image)
+    console.log('image is', user.email)
 
     return res.send({
       success: true,

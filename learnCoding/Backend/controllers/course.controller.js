@@ -154,18 +154,10 @@ const creatCourse = async (req, res) => {
 // edit course
 const editCourse = async (req, res) => {
   try {
-    const {
-      courseId,
-      courseTitle,
-      whatYouWillLearn,
-      courseDescription,
-      price,
-      category,
-      instructions,
-    } = req.body;
+    const { courseId } = req.body;
     const updates = req.body;
+    console.log("all updates", req.body);
 
-    // console.log("edit course",courseId, courseTitle, whatYouWillLearn,  courseDescription, price, category,instructions );
     const course = await Course.findById(courseId);
 
     if (!course) {
