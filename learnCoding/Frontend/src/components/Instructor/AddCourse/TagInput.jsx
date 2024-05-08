@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 import Input from "../../common/Input";
-
+import Button from '../../common/Button'
 export default function TagInput({
   label,
   name,
@@ -14,25 +14,27 @@ export default function TagInput({
   const { editCourse, course } = useSelector((state) => state.course);
 
   const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
+  // const [isMobileView, setIsMobileView] = useState(false);
 
   useEffect(() => {
     if (editCourse) {
       setTags(course?.tag || []);
     }
-  }, [editCourse, course]); 
+  }, [editCourse, course]);
 
   useEffect(() => {
     setValue(name, tags);
-  }, [setValue, name, tags]); 
+  }, [setValue, name, tags]);
 
   // Function to handle user input when tags are added
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" || event.key === ",") {
+    if (event.key === "Enter" || event.key === "," || event.key === "Next") {
       event.preventDefault();
       const tagsValue = event.target.value.trim();
-      if (tagsValue) { 
-        setTags([...tags, tagsValue]); 
-        event.target.value = ""; 
+      if (tagsValue) {
+        setTags([...tags, tagsValue]);
+        event.target.value = "";
       }
     }
   };
@@ -41,6 +43,20 @@ export default function TagInput({
   const handleDeleteTag = (tagIndex) => {
     const newTags = tags.filter((_, index) => index !== tagIndex);
     setTags(newTags);
+  };
+
+  // for mobile view
+  const addTagInMobileView = (event) => {
+    setTagInput(event.target.value);
+  };
+
+  // handler for mobile view
+  const handleMobileTagAdd = () => {
+    if (tagInput.trim()) {
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
+      // setIsMobileTagInputVisible(false);
+    }
   };
 
   // Render the component
@@ -56,7 +72,7 @@ export default function TagInput({
         {tags?.map((tag, index) => (
           <div
             key={index}
-            className="m-1 flex items-center rounded-full bg-yellow-400 px-2 py-1 text-sm text-richblack-5"
+            className="m-1 flex items-center rounded-full bg-yellow-400 sm:px-2 py-1 text-sm text-richblack-5"
           >
             {/* Render the tag value */}
             {tag}
@@ -74,13 +90,21 @@ export default function TagInput({
         <Input
           id={name}
           name={name}
+          className="hidden sm:block "
           type="text"
           placeholder={placeholder}
           onKeyDown={handleKeyDown}
           error={errors[name] && `${label} is required`}
         />
+            <Input
+              type="text"
+              className="sm:hidden  inline-block "
+              placeholder="Enter tag "
+              value={tagInput}
+              onChange={addTagInMobileView}
+            />
+            <Button onClick={handleMobileTagAdd} className='sm:hidden block' btnText='Add'/>
       </div>
-      
     </div>
   );
 }

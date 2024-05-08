@@ -79,6 +79,7 @@ export default function Upload({
             ) : (
               <Player aspectRatio="16:9" playsInline src={previewSource} />
             )}
+
             {!viewData && (
               <button
                 type="button"
@@ -95,8 +96,8 @@ export default function Upload({
           </div>
         ) : (
           
-          <div
-            className="flex w-full flex-col items-center p-6"
+          <label
+            className="flex w-full flex-col cursor-pointer items-center p-6"
             {...getRootProps()}
           >
             <input {...getInputProps()} ref={inputRef} />
@@ -116,7 +117,7 @@ export default function Upload({
               <li>Recommended size 1024x576</li>
             </ul>
             
-          </div>
+          </label>
         )}
       </div>
 
