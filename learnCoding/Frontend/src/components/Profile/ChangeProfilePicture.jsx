@@ -21,8 +21,8 @@ export default function ChangeProfilePicture() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    console.log("imageFile", imageFile);
-    console.log(file);
+    // console.log("imageFile", imageFile);
+    // console.log(file);
     if (file) {
       setImageFile(file);
       previewFile(file);
@@ -38,7 +38,7 @@ export default function ChangeProfilePicture() {
   };
 
   const handleFileUpload = () => {
-    console.log("uploading...");
+    // console.log("uploading...");
     try {
       setLoading(true);
       const formData = new FormData();

@@ -28,7 +28,7 @@ export default function Upload({
     }
   }
 
-  console.log('image file outside',selectedFile)
+  // console.log('image file ',selectedFile)
 
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -39,7 +39,7 @@ export default function Upload({
   })
 
   const previewFile = (file) => {
-    console.log('image file',file)
+    // console.log('image file',file)
     const reader = new FileReader()
     reader.readAsDataURL(file)
     reader.onloadend = () => {

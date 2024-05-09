@@ -27,9 +27,9 @@ export default function SubSectionModal({
     getValues,
   } = useForm()
 
-  console.log("view", modalData.videoUrl)
-  console.log("edit", edit)
-  console.log("add", add)
+  // console.log("view", modalData.videoUrl)
+  // console.log("edit", edit)
+  // console.log("add", add)
 
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)

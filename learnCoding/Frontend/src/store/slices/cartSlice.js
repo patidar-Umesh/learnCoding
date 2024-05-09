@@ -23,10 +23,12 @@ const cartSlice = createSlice({
       // add to cart
     addToCart: (state, action) => {
       const course = action.payload
+      
+      // find index for check cart is present or not
       const index = state.cart.findIndex((item) => item._id === course._id)
 
       if (index >= 0) {
-        toast.error("Course already in cart")
+        toast.error("Course already Added in Cart")
         return
       }
 
@@ -34,6 +36,7 @@ const cartSlice = createSlice({
       state.totalItems ++
       state.total += course.price
 
+      // save data in localstorage
       localStorage.setItem("cart", JSON.stringify(state.cart))
       localStorage.setItem("total", JSON.stringify(state.total))
       localStorage.setItem("totalItems", JSON.stringify(state.totalItems))
@@ -45,7 +48,7 @@ const cartSlice = createSlice({
       const courseId = action.payload
       const index = state.cart.findIndex((item) => item._id === courseId)
 
-        console.log('index of ', index);
+        // console.log('index of ', index);
       if (index >= 0) {
         state.totalItems--
         state.total -= state.cart[index].price

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom"
 import { editCourseDetails } from "../../../apiServices/apiHandler/courseDetailsAPI"
 import { resetCourseState, setStep } from "../../../store/slices/courseSlice"
 import { COURSE_STATUS } from "../../../utils/constants"
-import IconBtn from "../../common/IconBtn"
+import Button from "../../common/Button"
 
 export default function PublishCourse() {
   const { register, handleSubmit, setValue, getValues } = useForm()
@@ -94,7 +94,7 @@ export default function PublishCourse() {
           >
             Back
           </button>
-          <IconBtn disabled={loading} text="Save Changes" />
+          <Button disabled={loading} btnText="Save Changes" />
         </div>
       </form>
     </div>

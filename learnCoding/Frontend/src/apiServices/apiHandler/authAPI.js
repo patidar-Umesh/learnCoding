@@ -99,7 +99,6 @@ export function login(email, password, navigate) {
         email,
         password,
       });
-
       // console.log("Login Api Response is", response)
 
       if (!response.data.success) {

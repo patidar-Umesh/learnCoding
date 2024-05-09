@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../common/Input";
 import Button from "../common/Button";
@@ -10,15 +10,18 @@ import {toast} from 'react-hot-toast'
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {loading} = useSelector(state => state.auth)
+
+  console.log('loading', loading);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
   const { email, password } = formData;
 
+  // on change handler
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -26,7 +29,9 @@ function LoginForm() {
     }));
   };
 
-  const handleOnSubmit = (e) => {
+
+  // login handler
+  const loginHanlder = (e) => {
     e.preventDefault();
 
     if(!formData.email && !formData.password ){
@@ -39,7 +44,7 @@ function LoginForm() {
 
   return (
     <form
-      onSubmit={handleOnSubmit}
+      onSubmit={loginHanlder}
       className="mt-6 flex w-full flex-col gap-y-4"
     >
       <div className="w-full">
@@ -87,7 +92,7 @@ function LoginForm() {
       </div>
 
       <div className="w-[100%]">
-        <Button type="submit"  onClick={handleOnSubmit} className='w-full py-[10px] bg-yellow-50 text-[1rem]'  btnText="Sign In" />
+        <Button type="submit"  onClick={loginHanlder} className='w-full py-[10px] bg-yellow-50 text-[1rem]'  btnText="Sign In" />
       </div>
     </form>
   );
