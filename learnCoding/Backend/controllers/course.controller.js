@@ -168,14 +168,41 @@ const editCourse = async (req, res) => {
     }
 
     if (req.files) {
-      console.log("image", req.files.image);
+      // console.log("image", req.files.image); 
+      //if video file availabel then delete from cloudinary
       const image = req.files.image;
 
-      const uploadedImage = await uploadOnCloudinary(
+      if(!image){
+        return res.status(404).json({
+          success: false,
+          message: 'image file is required'
+        })
+      }
+      const deletedImage = await deleteFromCloudinary(course?.image);
+      // console.log("deleted image result :", deletedVideo);
+
+      if(deletedImage?.result !== 'ok'){
+        // console.log('Gettign error from cloudinary image delete Api', deletedImage);
+        return res.json({
+          success : false,
+          message: 'Gettign error from cloudinary video delete Api'
+        })
+      }
+
+      const updatedImage = await uploadOnCloudinary(
         image,
         process.env.CLOUDINARY_IMAGE_FOLDER
       );
-      course.image = uploadedImage?.secure_url;
+
+      
+      if(!updatedImage){
+        // console.log('Gettign error from cloudinary image upload Api', updatedImage);
+        return res.json({
+          success : false,
+          message: 'Gettign error from cloudinary image upload Api'
+        })
+      }
+      course.image = updatedImage?.secure_url;
     }
 
     for (const key in updates) {

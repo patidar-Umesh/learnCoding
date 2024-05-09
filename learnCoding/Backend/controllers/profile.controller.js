@@ -1,7 +1,10 @@
 import { Course } from "../models/course.model.js";
 import { CourseProgress } from "../models/courseProgress.model.js";
 import { User } from "../models/user.model.js";
-import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
+import {
+  deleteFromCloudinary,
+  uploadOnCloudinary,
+} from "../utils/cloudinary.js";
 import { Profile } from "../models/profile.model.js";
 import convertSecondsToDuration from "../utils/secToDuration.js";
 
@@ -131,25 +134,29 @@ const updateProfilePicture = async (req, res) => {
       });
     }
 
-    // find id of user
+    // find user by id
     const user = await User.findById({ _id: userId });
 
-    // delete before upload image
-    const deletedImage = await deleteFromCloudinary(user?.image)
-    // console.log('deleted image', deletedImage);
-
-    if (deletedImage?.result !== 'ok') {
-      return res.status(404).json({
-        success: false,
-        message: "Getting error from Cloudinary delete api",
-      });
+    // if image is available for updateion then delete file from cloudinary
+    if (image) {
+      const deletedImage = await deleteFromCloudinary(user?.image);
+      console.log('deleted image', deletedImage);
     }
 
-    // upload profile image on clodinary
-    const savedImg = await uploadOnCloudinary(image, process.env.FOLDER_NAME);
+    // if (deletedImage?.result !== "ok") {
+    //   console.log('Getting error from Cloudinary delete api', deletedImage);
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: "Getting error from Cloudinary delete api",
+    //   });
+    // }
 
-    
-    if (savedImg?.result !== 'ok') {
+    // upload profile image on clodinary
+    const updatedImage = await uploadOnCloudinary(image, process.env.CLOUDINARY_DP_FOLDER);
+    // console.log('saved image', updatedImage);
+   
+    if (!updatedImage) {
+    console.log('Getting error from Cloudinary upload api ', updatedImage);
       return res.status(404).json({
         success: false,
         message: "Getting error from Cloudinary upload api",
@@ -157,10 +164,8 @@ const updateProfilePicture = async (req, res) => {
     }
 
     //  update in user details
-    user.image = savedImg?.secureUrl
-    await user.save()
-
-    // console.log('image is', user)
+    user.image = updatedImage?.secure_url;
+    await user.save();
 
     return res.send({
       success: true,

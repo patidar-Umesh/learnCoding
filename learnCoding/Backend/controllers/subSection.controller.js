@@ -87,29 +87,48 @@ const updateSubSection = async (req, res) => {
     const { title, description } = req.body;
     const videoFile = req.files?.video;
 
-    console.log("video file is", videoFile);
+    // console.log('ids', subSectionId, sectionId );
+    // console.log("video file is", videoFile);
 
     const subSection = await SubSection.findById(subSectionId);
+
     if (!subSection) {
       return res.status(404).json({
         success: false,
         message: "SubSection not found",
       });
     }
-
-    if(title || description){
-      subSection.title = title
-      subSection.description = description
+    
+    if (!videoFile) {
+      return res.status(404).json({
+        success: false,
+        essage: "Video file is required",
+      });
     }
 
-
-    // upload video file on cloudinary
+    if (title || description) {
+      subSection.title = title;
+      subSection.description = description;
+    }
+  
     if (videoFile) {
+      //if video file availabel then delete from cloudinary
+      const deletedVideo = await deleteFromCloudinary(subSection?.videoUrl);
+      // console.log("deleted image result :", deletedVideo);
+
+      if(deletedVideo?.result !== 'ok'){
+        // console.log('Gettign error from cloudinary video delete Api', deletedVideo);
+        return res.json({
+          success : false,
+          message: 'Gettign error from cloudinary video delete Api'
+        })
+      }
+      // upload video file on cloudinary
       const uploadedVideoFile = await uploadOnCloudinary(
         videoFile,
         process.env.CLOUDINARY_VIDEO_FOLDER
       );
-      console.log(`upladed video file is ${uploadedVideoFile?.secure_url}`);
+      // console.log(`upladed video file is ${uploadedVideoFile?.secure_url}`);
 
       if (!uploadedVideoFile) {
         return res.status(400).json({
@@ -117,20 +136,19 @@ const updateSubSection = async (req, res) => {
           message: " Error getting when upload on cloudinary",
         });
       }
-      
+
       // save all data
-      subSection.videoUrl = uploadedVideoFile?.secure_url
-      subSection.timeDuration = uploadedVideoFile?.duration
-      
+      subSection.videoUrl = uploadedVideoFile?.secure_url;
+      subSection.timeDuration = uploadedVideoFile?.duration;
     }
 
-    await subSection.save()
+    await subSection.save();
 
     const updatedSection = await Section.findById(sectionId)
       .populate("subSection")
       .exec();
 
-    console.log(`updated section ${updatedSection}`);
+    // console.log(`updated section ${updatedSection}`);
 
     return res.status(200).json({
       success: true,
