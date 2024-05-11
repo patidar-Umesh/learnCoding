@@ -35,7 +35,7 @@ const deleteFromCloudinary = async (file) => {
     let result = publicId?.slice(7, 9).join("/");
     result = result?.split(".").slice(0, 1).join();
 
-    console.log("public id", result);
+    // console.log("public id", result);
 
     return await cloudinary.uploader.destroy(result, {
       resource_type: `${fileType ? "video" : "image"}`,

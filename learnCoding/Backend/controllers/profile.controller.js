@@ -247,13 +247,13 @@ const getEnrolledCourses = async (req, res) => {
       //  console.log('Total completed Videos', totalCompletedVideos);
 
       if (subSectionLength === 0) {
-        console.log("total subsection", subSectionLength);
+        // console.log("total subsection", subSectionLength);
         userDetails.courses[i].progressPercentage = 100;
       } else {
         const percentage = Math.round(
           (totalCompletedVideos / subSectionLength) * 100
         );
-        console.log("percentage", percentage);
+        // console.log("percentage", percentage);
         userDetails.courses[i].progressPercentage = percentage;
       }
     }
@@ -272,13 +272,15 @@ const getEnrolledCourses = async (req, res) => {
 
 const instructorDashboard = async (req, res) => {
   try {
-    const courseDetails = await Course.find({ instructor: req.user.id });
+      // fetch id from req user
+      const userId = req.user.id
+      const courseDetails = await Course.find({ instructor:userId });
 
-    const courseData = courseDetails.map((course) => {
-      const totalStudentsEnrolled = course.studentsEnrolled.length;
+      const courseData = courseDetails.map((course) => {
+      const totalStudentsEnrolled = course.studentsEnrolled?.length;
       const totalAmountGenerated = totalStudentsEnrolled * course.price;
 
-      //create an new object with the additional fields
+      //create object 
       const courseDataWithStats = {
         _id: course._id,
         courseName: course.courseName,
@@ -286,7 +288,13 @@ const instructorDashboard = async (req, res) => {
         totalStudentsEnrolled,
         totalAmountGenerated,
       };
-      return courseDataWithStats;
+      // console.log('course data ', courseDataWithStats);
+
+      return res.status(200).json({
+        success: true,
+        message: 'successfully fatched information for insturctor dashboard',
+        courseDataWithStats
+      })
     });
 
     res.status(200).json({ courses: courseData });

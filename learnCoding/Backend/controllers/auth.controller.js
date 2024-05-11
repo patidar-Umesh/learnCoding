@@ -22,9 +22,9 @@ const sendOTP = async (req, res) => {
 
     // send res if email exist
     if (existEmail) {
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
-        message: "User already registred with this email",
+        message: "Something went wrong",
       });
     }
 
@@ -48,18 +48,18 @@ const sendOTP = async (req, res) => {
       existOTP = await Otp.findOne({ otp: generatedOTP });
     }
 
-    // save email and OTP in DB
+    // save email and OTP 
     let savedOTPEmail = await Otp.create({ email: email, otp: generatedOTP });
     // console.log(`Saved data is ${savedOTPEmail}`);
 
     // send res
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "OTP Generated successfully",
     });
   } catch (error) {
-    console.log(`OTP is not gererated ${error}`);
-    res.status(500).json({
+    // console.log(`OTP is not gererated ${error}`);
+    return res.status(500).json({
       success: false,
       message: `OTP is not gererated ${error}`,
     });
@@ -112,7 +112,7 @@ const signUp = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: `Password and ConfirmPassword  should be same`,
+        message: `Password and ConfirmPassword should be same`,
       });
     }
 
@@ -123,7 +123,7 @@ const signUp = async (req, res) => {
     if (existedUser) {
       return res.status(400).json({
         success: false,
-        message: `This User is already registred with ${existedUser}`,
+        message: `Something went wrong`,
       });
     }
 

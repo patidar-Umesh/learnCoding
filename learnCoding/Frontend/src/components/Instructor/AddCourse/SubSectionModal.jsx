@@ -146,6 +146,7 @@ export default function SubSectionModal({
         <form
           className="space-y-8 px-8 py-10"
         >
+        
           {/* Lecture Video Upload */}
           <Upload
             name="lectureVideo"
@@ -157,6 +158,7 @@ export default function SubSectionModal({
             viewData={view ? modalData.videoUrl : null}
             editData={edit ? modalData.videoUrl : null}
           />
+
           {/* Lecture Title */}
           <div className="flex flex-col space-y-2">
             <Input

@@ -260,6 +260,12 @@ const allCourses = async (req, res) => {
     const courses = await Course.find().populate("ratingAndReview");
     // console.log(`all courses is ${courses}`);
 
+    if(!courses){
+      return res.status(404).json({
+        succes: false,
+        message: 'No course found'
+      })
+    }
     return res.status(200).json({
       success: true,
       data: courses,
@@ -308,13 +314,7 @@ const getCourseDetails = async (req, res) => {
       });
     }
 
-    // if (courseDetails.status === "Draft") {
-    //   return res.status(403).json({
-    //     success: false,
-    //     message: `Accessing a draft course is forbidden`,
-    //   });
-    // }
-
+    
     let totalDurationInSeconds = 0;
     courseDetails.courseContent.forEach((content) => {
       content.subSection.forEach((subSection) => {
@@ -385,7 +385,7 @@ const getFullCourseDetails = async (req, res) => {
     if (courseDetails.status === "Draft") {
       return res.status(403).json({
         success: false,
-        message: `Accessing a draft course is forbidden`,
+        message: `Can not access course of 'Draft' Status`,
       });
     }
 
@@ -418,16 +418,24 @@ const getFullCourseDetails = async (req, res) => {
 // get course by instructor
 const getInstructorCourses = async (req, res) => {
   try {
-    // Get the instructor ID from the authenticated user or request body
+    // fetch instructor id  
     const instructorId = req.user.id;
 
-    // Find all courses belonging to the instructor
+    // Find all courses of  instructor
     const instructorCourses = await Course.find({
       instructor: instructorId,
     }).sort({ createdAt: -1 });
 
-    // Return the instructor's courses
-    res.status(200).json({
+
+    if(!instructorCourses){
+      return res.status(404).json({
+        success: false,
+        message: 'No course found related this instructor Id'
+      })
+    }
+
+    // retrun  courses
+    return res.status(200).json({
       success: true,
       data: instructorCourses,
     });
@@ -435,8 +443,7 @@ const getInstructorCourses = async (req, res) => {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "Failed to retrieve instructor courses",
-      error: error.message,
+      message: "Failed to fetch the instructor courses",
     });
   }
 };
@@ -488,10 +495,10 @@ const deleteCourse = async (req, res) => {
     const deletedImageFile = await deleteFromCloudinary(course?.image);
 
     if (deletedImageFile?.result !== "ok") {
-      console.log("Getting error from cloudinary image");
+      // console.log("Getting error from cloudinary image");
       return res.status(404).json({
         success: false,
-        message: "somthing went wrong when delete image from coudinary",
+        message: "somthing went wrong when delete image from cloudinary",
       });
     }
 
@@ -504,7 +511,7 @@ const deleteCourse = async (req, res) => {
     await Section.findByIdAndDelete({ _id: course.courseContent });
 
     // delete  course
-    const deletedCourse = await Course.findByIdAndDelete({ _id: courseId });
+     await Course.findByIdAndDelete({ _id: courseId });
 
     // delete course id from user
     await User.findByIdAndUpdate(
@@ -515,7 +522,7 @@ const deleteCourse = async (req, res) => {
       { new: true }
     );
 
-    console.log("course deleted successfully");
+    // console.log("course deleted successfully");
     return res.status(200).json({
       success: true,
       message: "Course deleted successfully",

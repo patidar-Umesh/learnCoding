@@ -54,7 +54,7 @@ const forgotPasswordToken = async (req, res) => {
   } catch (error) {
     return res.status(404).json({
       success: false,
-      message: " Something wrong while change reset password",
+      message: " Something went wrong while reset password",
     });
   }
 };
