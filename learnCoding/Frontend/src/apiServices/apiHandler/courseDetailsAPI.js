@@ -142,7 +142,7 @@ export const createSection = async (data, token) => {
 // create a subsection
 export const createSubSection = async (data, token) => {
   let result = null;
-  console.log("data is ", data);
+  // console.log("data is ", data);
   const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector("POST", CREATE_SUBSECTION_API, data, {
@@ -166,14 +166,14 @@ export const createSubSection = async (data, token) => {
 // update a section
 export const updateSection = async (data, token) => {
   let result = null;
-  console.log("update section data", data);
+  // console.log("update section data", data);
   const toastId = toast.loading("Loading...");
 
   try {
     const response = await apiConnector("PUT", UPDATE_SECTION_API, data, {
       Authorization: `Bearer ${token}`,
     });
-    console.log("Update section Api Response......", response);
+    // console.log("Update section Api Response......", response);
 
     if (!response?.data?.success) {
       throw new Error("Could Not Update Section");
@@ -197,7 +197,7 @@ export const updateSubSection = async (data, token) => {
     const response = await apiConnector("PUT", UPDATE_SUBSECTION_API, data, {
       Authorization: `Bearer ${token}`,
     });
-    console.log("Update sub section Api Response......", response);
+    // console.log("Update sub section Api Response......", response);
 
     if (!response?.data?.success) {
       throw new Error("Could Not Update Lecture");
@@ -214,7 +214,7 @@ export const updateSubSection = async (data, token) => {
 
 // delete a section
 export const deleteSection = async (data, token) => {
-  console.log("id", data.sectionId, token);
+  // console.log("id", data.sectionId, token);
   let result = null;
   const toastId = toast.loading("Loading...");
 
@@ -223,7 +223,7 @@ export const deleteSection = async (data, token) => {
       Authorization: `Bearer ${token}`,
     });
 
-    console.log("Delete Section Api Response........", response);
+    // console.log("Delete Section Api Response........", response);
 
     if (!response?.data?.success) {
       throw new Error("Could Not Delete Section");
@@ -241,13 +241,13 @@ export const deleteSection = async (data, token) => {
 // delete a subsection
 export const deleteSubSection = async (data, token) => {
   let result = null;
-  console.log("data is", data);
+  // console.log("data is", data);
   const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector("DELETE", DELETE_SUBSECTION_API, data, {
       Authorization: `Bearer ${token}`,
     });
-    console.log("Delete sub Section Api Response.........", response);
+    // console.log("Delete sub Section Api Response.........", response);
 
     if (!response?.data?.success) {
       throw new Error("Could Not Delete Lecture");
@@ -297,7 +297,7 @@ export const deleteCourse = async (data, token) => {
     const response = await apiConnector("DELETE", DELETE_COURSE_API, data, {
       Authorization: `Bearer ${token}`,
     });
-    console.log("Delete course Api Response......", response);
+    // console.log("Delete course Api Response......", response);
 
     if (!response?.data?.success) {
       throw new Error("Could Not Delete Course");
@@ -312,7 +312,7 @@ export const deleteCourse = async (data, token) => {
 
 // get full details of a course
 export const getFullDetailsOfCourse = async (courseId, token) => {
-  // console.log("courseid 324", courseId, token);
+  // console.log("courseid ", courseId, token);
   // const toastId = toast.loading("Loading...");
 
   let result = null;
@@ -351,10 +351,10 @@ export const markLectureAsComplete = async (data, token) => {
     const response = await apiConnector("POST", LECTURE_COMPLETION_API, data, {
       Authorization: `Bearer ${token}`,
     });
-    console.log(
-      "Mark lecture completed API Response......",
-      response
-    );
+    // console.log(
+    //   "Mark lecture completed API Response......",
+    //   response
+    // );
 
     if (!response.data.message) {
       throw new Error(response.data.error);
@@ -379,7 +379,7 @@ export const createRating = async (data, token) => {
       Authorization: `Bearer ${token}`,
     });
 
-    console.log("Create Rating and Review Api Response......", response);
+    // console.log("Create Rating and Review Api Response......", response);
     if (!response?.data?.success) {
       throw new Error("Could Not Create Rating");
     }

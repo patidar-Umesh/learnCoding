@@ -8,7 +8,7 @@ const {
   UPDATE_DISPLAY_PICTURE_API,
   UPDATE_PROFILE_API,
   CHANGE_PASSWORD_API,
-  DELETE_PROFILE_API,
+  DELETE_ACCOUNT_API,
 } = settingsEndpoints;
 
 export function updateDisplayPicture(token, formData) {
@@ -86,19 +86,19 @@ export function deleteProfile(token, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
     try {
-      const response = await apiConnector("DELETE", DELETE_PROFILE_API, null, {
+      const response = await apiConnector("DELETE", DELETE_ACCOUNT_API, null, {
         Authorization: `Bearer ${token}`,
       });
-      console.log("DELETE_PROFILE_API API RESPONSE............", response);
+      console.log("Delete account Api Response....", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
-      toast.success("Profile Deleted Successfully");
+      toast.success("Account Deleted Successfully");
       dispatch(logout(navigate));
     } catch (error) {
-      console.log("DELETE_PROFILE_API API ERROR............", error);
-      toast.error("Could Not Delete Profile");
+      console.log("Delete account Api Error....", error);
+      toast.error("Could Not Delete Account");
     }
     toast.dismiss(toastId);
   };

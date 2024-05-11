@@ -30,7 +30,7 @@ const CourseReviewModal = ({ setReviewModal }) => {
   };
 
   const ratingAndReviewHandler = async (data) => {
-    console.log('rating .....');
+    // console.log('rating .....');
     await createRating(
       {
         courseId: courseEntireData?.courseDetails?._id,

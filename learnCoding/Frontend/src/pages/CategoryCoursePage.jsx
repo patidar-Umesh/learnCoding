@@ -131,8 +131,8 @@ const CategoryCoursePage = () => {
             {/* course card without slider */}
             {categoryPageData?.data?.mostSellingCourses
               ?.slice(0, 4)
-              .map((course, i) => (
-                <CourseCard course={course} key={i} />
+              .map((course, index) => (
+                <CourseCard course={course} key={index} />
               ))}
           </div>
         </div>

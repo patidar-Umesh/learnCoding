@@ -10,7 +10,6 @@ import {
 } from "../store/slices/studentCourseSlice.js";
 import VideoDetailsSidebar from "../components/StudentCourse/VideoDetailsSidebar.jsx";
 import CourseReviewModal from "../components/StudentCourse/CourseReviewModal.jsx";
-import Button from "../components/common/Button.jsx";
 import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6";
 
 const StudentCoursePage = () => {
@@ -19,10 +18,10 @@ const StudentCoursePage = () => {
   const [reviewModal, setReviewModal] = useState(null);
   const dispatch = useDispatch();
   const [active, setActive] = useState(false);
-  console.log("active", active);
+  // console.log("active", active);
 
   const activeHandler = () => {
-  console.log("active", active);
+  // console.log("active", active);
     setActive(prev => !prev)
   }
 

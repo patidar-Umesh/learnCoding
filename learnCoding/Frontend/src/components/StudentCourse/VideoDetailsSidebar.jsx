@@ -45,7 +45,7 @@ const VideoDetailsSidebar = ({ setReviewModal }) => {
   // add review handler
   const handleAddReview = () => {
     setReviewModal(true);
-    console.log("handleAddReview");
+    // console.log("handleAddReview");
   };
 
   const openClosehanlder = (sectionId) => {

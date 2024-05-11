@@ -109,7 +109,7 @@ const VideoDetails = () => {
 
   // go to next handler
   const goToNextVideo = () => {
-    console.log("next btn clicked");
+    // console.log("next btn clicked");
     // find current section index
     const currentSectionIndex = courseSectionData?.findIndex(
       (section) => section._id === sectionId
@@ -150,7 +150,7 @@ const VideoDetails = () => {
 
   // go to previous video handler
   const goToPrevVideo = () => {
-    console.log("prev btn clicked");
+    // console.log("prev btn clicked");
     // find current section index
     const currentSectionIndex = courseSectionData.findIndex(
       (section) => section._id === sectionId
@@ -160,7 +160,7 @@ const VideoDetails = () => {
     const currentSubSectionIndex = courseSectionData[
       currentSectionIndex
     ]?.subSection.findIndex((subSec) => subSec._id === subSectionId);
-    console.log("currentSubSectionIndex", currentSubSectionIndex);
+    // console.log("currentSubSectionIndex", currentSubSectionIndex);
 
     if (currentSubSectionIndex !== 0) {
       // previous sub section id
@@ -169,14 +169,14 @@ const VideoDetails = () => {
           currentSubSectionIndex - 1
         ]._id;
 
-      console.log(
-        `/view-course/${courseId}/section/${sectionId}/sub-section/${prevSubSectionId}`
-      );
+      // console.log(
+      //   `/view-course/${courseId}/section/${sectionId}/sub-section/${prevSubSectionId}`
+      // );
       navigate(
         `/view-course/${courseId}/section/${sectionId}/sub-section/${prevSubSectionId}`
       );
 
-      console.log("currentSubSectionIndex", currentSubSectionIndex);
+      // console.log("currentSubSectionIndex", currentSubSectionIndex);
     } else {
       // get previous section id
       const prevSectionId = courseSectionData[currentSectionIndex - 1]._id;

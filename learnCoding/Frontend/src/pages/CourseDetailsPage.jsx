@@ -32,7 +32,9 @@ const CourseDetailsPage = () => {
   const { courseId } = useParams();
   const [response, setResponse] = useState(null);
   const [confirmationModal, setConfirmationModal] = useState(null);
-console.log('course', response?.data?.courseDetails);
+
+// console.log('course', response?.data?.courseDetails);
+
   const fetchCourse = async () => {
     // console.log("course details response: ");
     try {
