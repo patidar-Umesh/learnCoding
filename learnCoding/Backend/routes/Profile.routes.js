@@ -12,7 +12,7 @@ import {
 const router = Router();
 
 // Delete user Account
-router.delete("/deleteProfile", verifyJWT, deleteAccount);
+router.delete("/delete-account", verifyJWT, deleteAccount);
 
 // update profile
 router.put("/update-profile", verifyJWT, updateProfile);
