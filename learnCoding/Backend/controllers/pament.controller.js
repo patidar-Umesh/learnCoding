@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import crypto, { sign } from "crypto";
 import { courseEnrollmentEmail } from "../mailTemplates/courseEnrollmentEmail.js";
 import { CourseProgress } from "../models/courseProgress.model.js";
+import { paymentSuccessEmail } from "../mailTemplates/paymentSuccessEmail.js";
 
 // capture payment function
 const capturePayment = async (req, res) => {
