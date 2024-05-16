@@ -34,7 +34,7 @@ const TimelineSection = () => {
       <div className='flex w-[100%] flex-col sm:flex-row justify-between items-center'>
 
 {/* left section */}
-        <div className='w-[100%] sm:w-[45%]  flex flex-col gap-5'>
+        <div className='w-[100%] sm:w-[45%] mt-[200px] flex flex-col gap-5'>
             {
                 timeline.map( (element, index) => {
                     return (

@@ -56,7 +56,7 @@ export async function buyCourse(
       }
     );
 
-    console.log("line nu 47");
+    // console.log("line nu 47");
     if (!orderResponse.data.success) {
       throw new Error(orderResponse.data.data);
     }

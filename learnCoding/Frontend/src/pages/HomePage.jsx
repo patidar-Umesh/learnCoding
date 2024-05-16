@@ -198,7 +198,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="mx-auto mt-[20px] w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-7">
+        <div className="mx-auto mt-[200px] sm:mt-[200px] w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-7">
           <div className="flex flex-col sm:flex-row gap-1 sm:gap-5 mb-0 mt-0 sm:mb-10 sm:mt-[95px]">
             <div className="text-4xl font-semibold w-[100%] sm:w-[45%]">
               Get the Skills you need for a
