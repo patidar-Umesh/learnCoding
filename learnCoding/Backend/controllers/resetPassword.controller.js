@@ -1,6 +1,6 @@
 import { User } from "../models/user.model.js";
 import mailSender from "../utils/nodemailer.js";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 
 //forgotPasswordToken
 const forgotPasswordToken = async (req, res) => {
@@ -36,7 +36,8 @@ const forgotPasswordToken = async (req, res) => {
     // console.log(`update info is ${updateInfo}`);
 
     // send email
-    const url = `http://localhost:5173/reset-password/${token}`;
+    const url = `
+    https://learncoding-backend.onrender.com/api/v1/user/reset-password/${token}`;
 
     const emailInfo = await mailSender(
       email,
@@ -65,16 +66,16 @@ const forgotPassword = async (req, res) => {
     // fetch data
     const { token, password, confirmPassword } = req.body;
 
-     //check user in db with token
-     const userDetails = await User.findOne({ token: token });
+    //check user in db with token
+    const userDetails = await User.findOne({ token: token });
 
-     //check user in db
-     if (!userDetails) {
-       return res.status(400).json({
-         success: false,
-         message: "Token is invalid",
-       });
-     }
+    //check user in db
+    if (!userDetails) {
+      return res.status(400).json({
+        success: false,
+        message: "Token is invalid",
+      });
+    }
 
     //validation
     if (password !== confirmPassword) {
@@ -109,7 +110,6 @@ const forgotPassword = async (req, res) => {
       success: true,
       message: "Password reset Successful",
     });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
