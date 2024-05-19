@@ -96,7 +96,7 @@ export default function Upload({
           </div>
         ) : (
           
-          <label
+          <div
             className="flex w-full flex-col cursor-pointer items-center p-6"
             {...getRootProps()}
           >
@@ -117,7 +117,7 @@ export default function Upload({
               <li>Recommended size 1024x576</li>
             </ul>
             
-          </label>
+          </div>
         )}
       </div>
 
