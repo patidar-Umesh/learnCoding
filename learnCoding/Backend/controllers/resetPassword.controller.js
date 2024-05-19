@@ -37,7 +37,7 @@ const forgotPasswordToken = async (req, res) => {
 
     // send email
     const url = `
-    https://learncoding-backend.onrender.com/api/v1/user/reset-password/${token}`;
+    https://learncoding1.netlify.app/user/reset-password/${token}`;
 
     const emailInfo = await mailSender(
       email,
