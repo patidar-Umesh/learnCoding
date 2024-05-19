@@ -56,31 +56,29 @@ const App = () => {
 
         <Route
           path="/signup"
-          element={<OpenRoute children={<SignupPage />} />}
+          element={<SignupPage />} 
         />
-        <Route path="/login" element={<OpenRoute children={<LoginPage />} />} />
+        <Route path="/login"  element={<LoginPage />} />
 
         <Route
           path="/forgot-password"
-          element={<OpenRoute children={<ForgotPasswordPage />} />}
+          element={<ForgotPasswordPage />} 
         />
 
         <Route
           path="/verify-email"
-          element={<OpenRoute children={<VerifyEmailPage />} />}
+          element={<VerifyEmailPage />} 
         />
 
         <Route
           path="/reset-password/:token"
-          element={<OpenRoute children={<UpdatePasswordPage />} />}
-        />
+          element={<UpdatePasswordPage />} />
 
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
 
-        <Route element={<PrivateRoute children={<DashboardPage />} />}>
+          <Route element={<DashboardPage/>}>
           <Route path="/dashboard/my-profile" element={<MyProfile />} />
-
           <Route path="/dashboard/Settings" element={<Settings />} />
 
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
@@ -106,16 +104,15 @@ const App = () => {
           )}
         </Route>
 
-        <Route element={<PrivateRoute children={<StudentCoursePage />} />}>
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
+            <Route element={<StudentCoursePage/>}></Route>
               <Route
                 path="/view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
                 element={<VideoDetails />}
               />
             </>
           )}
-        </Route>
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>

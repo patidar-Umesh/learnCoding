@@ -10,7 +10,7 @@ import {toast} from 'react-hot-toast'
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {loading} = useSelector(state => state.auth)
+  const {loading} = useSelector((state) => state.auth)
 
   console.log('loading', loading);
   const [formData, setFormData] = useState({
