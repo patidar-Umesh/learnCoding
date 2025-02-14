@@ -83,6 +83,7 @@ const signUp = async (req, res) => {
     // console.log(req.files.image);
 
     console.log(
+      'firstName',
       firstName,
       lastName,
       email,
@@ -189,6 +190,7 @@ const login = async (req, res) => {
   try {
     // fetch data from body
     const { email, password } = req.body;
+    console.log('email', email,  password);
 
     // validate data
     if (!email && !password) {
