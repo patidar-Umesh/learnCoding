@@ -68,7 +68,6 @@ export function signUp(
         email,
         password,
         confirmPassword,
-        otp,
       });
 
       // console.log("SignUp Api Response is ....", response);
@@ -76,6 +75,7 @@ export function signUp(
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
+      
       toast.success("Signup Successful");
       navigate("/login");
     } catch (error) {
