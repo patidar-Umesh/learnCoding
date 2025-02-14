@@ -76,7 +76,7 @@ const signUp = async (req, res) => {
       email,
       password,
       confirmPassword,
-      otp,
+      // otp,
       accountType,
     } = req.body;
 
@@ -88,7 +88,7 @@ const signUp = async (req, res) => {
       email,
       password,
       confirmPassword,
-      otp,
+      // otp,
       accountType
     );
 
@@ -99,7 +99,7 @@ const signUp = async (req, res) => {
       !email ||
       !password ||
       !confirmPassword ||
-      !otp ||
+      // !otp ||
       !accountType
     ) {
       return res.status(403).json({
@@ -128,22 +128,22 @@ const signUp = async (req, res) => {
     }
 
     // check recent OTP
-    const recentOTP = await Otp.find({ otp: otp, email: email })
-      .sort({ createdAt: -1 })
-      .limit(1);
+    // const recentOTP = await Otp.find({ otp: otp, email: email })
+    //   .sort({ createdAt: -1 })
+    //   .limit(1);
 
 
-    if (recentOTP.length === 0) {
-      return res.status(400).json({
-        success: false,
-        message: `OTP not found `,
-      });
-    } else if (otp !== recentOTP[0].otp) {
-      return res.status(400).json({
-        success: false,
-        message: `Invalid OTP `,
-      });
-    }
+    // if (recentOTP.length === 0) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: `OTP not found `,
+    //   });
+    // } else if (otp !== recentOTP[0].otp) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: `Invalid OTP `,
+    //   });
+    // }
 
     // hash password
     const hashPassword = await bcrypt.hash(password, 10);
