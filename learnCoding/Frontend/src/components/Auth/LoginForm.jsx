@@ -39,6 +39,7 @@ function LoginForm() {
       return 
     }
 
+    
     dispatch(login(email, password, navigate));
   };
 
