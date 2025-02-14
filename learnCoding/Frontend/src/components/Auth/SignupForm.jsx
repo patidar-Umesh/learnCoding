@@ -56,7 +56,7 @@ function SignupForm() {
     };
 
     dispatch(setSignupData(signupData));
-    dispatch(sendOtp(formData.email, navigate));
+    // dispatch(sendOtp(formData.email, navigate));
     setFormData({
       firstName: "",
       lastName: "",
