@@ -1,6 +1,6 @@
 // import all require packages and files
 import { User } from "../models/user.model.js";
-import { Otp } from "../models/otp.model.js";
+// import { Otp } from "../models/otp.model.js";
 import otpGenerator from "otp-generator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
