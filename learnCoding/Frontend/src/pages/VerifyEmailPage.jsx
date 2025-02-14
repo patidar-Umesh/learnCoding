@@ -39,7 +39,6 @@ const VerifyEmailPage = () => {
         email,
         password,
         confirmPassword,
-        otp,
         navigate
       )
     );

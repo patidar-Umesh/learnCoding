@@ -65,10 +65,10 @@ const App = () => {
           element={<ForgotPasswordPage />} 
         />
 
-        <Route
+        {/* <Route
           path="/verify-email"
           element={<VerifyEmailPage />} 
-        />
+        /> */}
 
         <Route
           path="/reset-password/:token"

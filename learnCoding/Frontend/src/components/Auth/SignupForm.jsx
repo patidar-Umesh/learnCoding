@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { sendOtp } from "../../apiServices/apiHandler/authAPI";
+import { sendOtp, signUp } from "../../apiServices/apiHandler/authAPI";
 import { setSignupData } from "../../store/slices/authSlice";
 import { ACCOUNT_TYPE } from "../../utils/constants.js";
 import Tab from "../common/Tab"
@@ -38,6 +38,7 @@ function SignupForm() {
 
   // Handle Form Submission
   const handleOnSubmit = (e) => {
+    console.log('firstName', lastName, email, password, confirmPassword);
     e.preventDefault();
 
      if (!formData.firstName || !formData.lastName ||!formData.email ||
@@ -56,6 +57,7 @@ function SignupForm() {
     };
 
     dispatch(setSignupData(signupData));
+    
     // dispatch(sendOtp(formData.email, navigate));
     setFormData({
       firstName: "",
@@ -65,6 +67,18 @@ function SignupForm() {
       confirmPassword: "",
     });
     setAccountType(ACCOUNT_TYPE.STUDENT);
+
+    dispatch(
+      signUp(
+        accountType,
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        navigate
+      )
+    );
   };
 
   // data to pass to Tab component
